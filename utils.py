@@ -16,6 +16,8 @@ import pandas as pd
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
+import aiohttp
+import asyncio
 
 def generatePrompts(data):
     data1 = "{\\n company_name:'"+data['company_name']+(f",\n company_website:{data.get('company_website', '')}" if data.get("company_website") else "")+"',\\n job_role:'"+data['job_role']+"',\\n job_description:'"+data['job_description']+("',\\n resume:'"+data['resume']+"'\\n }" if data['resume'] else "")
@@ -37,7 +39,7 @@ def generatePrompts(data):
         ]
     return prompts
 
-def get_response(question, results, errorJsons, citations1, index):
+async def get_response(question,index):
     model = "google/gemini-2.5-flash-preview"
     plugins = [{"id": "web", "max_results": 10}] if index in (0, 1) else []
 
@@ -110,33 +112,34 @@ def get_response(question, results, errorJsons, citations1, index):
     # Retry loop
     while True:
         try:
-            response = requests.post(
-                url="https://openrouter.ai/api/v1/chat/completions",
-                headers={"Authorization": "Bearer " + API_KEY},
-                data=jdumps
-            )
+            async with aiohttp.ClientSession() as session:
+                async with session.post(
+                    url="https://openrouter.ai/api/v1/chat/completions",
+                    headers={
+        "Authorization": f"Bearer {API_KEY}",
+        "Content-Type": "application/json"
+    }
+,
+                    data=json.dumps(request_payload)
+                ) as response:
+                    data = await response.json()
 
-            data = response.json()
+                    citations = []
+                    if index in (0, 1):
+                        annotations = data.get("choices", [])[0].get("message", {}).get("annotations", [])
+                        for annotation in annotations:
+                            url_citation = annotation.get("url_citation", {})
+                            url_citation.pop("start_index", None)
+                            url_citation.pop("end_index", None)
+                            citations.append(url_citation)
 
-            # Collect citations if applicable
-            if index in (0, 1):
-                annotations = data.get("choices", [])[0].get("message", {}).get("annotations", [])
-                citations = []
-                for annotation in annotations:
-                    url_citation = annotation.get("url_citation", {})
-                    url_citation.pop("start_index", None)
-                    url_citation.pop("end_index", None)
-                    citations.append(url_citation)
-                citations1[index] = citations
+                    tool_args = data.get("choices", [])[0].get("message", {}).get("tool_calls", [])[0].get("function", {}).get("arguments", "{}")
+                    parsed_response = json.loads(tool_args)
 
-            # Store structured response
-            tool_args = data.get("choices", [])[0].get("message", {}).get("tool_calls", [])[0].get("function", {}).get("arguments", "{}")
-            results[index] = json.loads(tool_args)
-            break
-
+                    return parsed_response, citations, None
         except Exception as e:
-            print(f"Error occurred: {e}. Retrying in 2 seconds...")
-            time.sleep(2)
+            print(f"[ASYNC] Error: {e}, retrying in 2 seconds...")
+            await asyncio.sleep(2)
 
 def structureGuide(results: List[Dict[str, Any]], citations: List[List[Dict[str, str]]], companyData: Dict[str, Any], id: str) -> Dict[str, Any]:
 

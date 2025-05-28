@@ -16,6 +16,7 @@ from werkzeug.utils import secure_filename
 from env import SECRET_KEY,ACCESS_KEY,UPDATE_CSV_KEY
 from database import googleAuth, userNotes
 import utils
+import asyncio
 
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -86,19 +87,14 @@ async def generate_guide(
 
         prompts = utils.generatePrompts(updated_data)
         
-        manager = Manager()
-        results = manager.list([None] * len(prompts))
-        citations = manager.list([None] * len(prompts))
-        errorJsons = manager.list([None] * len(prompts))
-        processes = []
+        results_with_meta = await asyncio.gather(
+        *[utils.get_response(prompt, i) for i, prompt in enumerate(prompts)]
+        )
 
-        for i, prompt in enumerate(prompts):
-            process = Process(target=utils.get_response, args=(prompt, results, errorJsons, citations, i))
-            processes.append(process)
-            process.start()
-
-        for process in processes:
-            process.join()
+        results, citations, errorJsons = zip(*results_with_meta)
+        results = list(results)
+        citations = list(citations)
+        errorJsons = list(errorJsons)
 
         guide_id = str(uuid4())
         newGuide = utils.structureGuide(list(results), list(citations), updated_data, guide_id)
