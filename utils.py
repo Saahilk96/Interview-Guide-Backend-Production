@@ -191,7 +191,7 @@ class TokenPayload(BaseModel):
 
 class NoteItem(BaseModel):
     type: str
-    content: Union[str, Dict[str, Any], List[Any]]
+    content: List[Any]
 
 class NoteData(BaseModel):
     note: Optional[List[NoteItem]] = None
