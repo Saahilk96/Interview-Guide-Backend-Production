@@ -11,7 +11,6 @@ werkzeug==3.0.2
 
 # MongoDB async driver
 motor==3.3.1
-bson==0.5.10
 
 # Google API integration
 google-api-python-client==2.126.0
