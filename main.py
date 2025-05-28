@@ -9,7 +9,6 @@ import os
 from uuid import uuid4
 from datetime import datetime, timedelta, timezone
 import PyPDF2
-from multiprocessing import Process, Manager
 import json
 from bson.json_util import dumps
 from werkzeug.utils import secure_filename
