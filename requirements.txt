@@ -1,0 +1,33 @@
+# FastAPI and ASGI server
+fastapi==0.110.0
+uvicorn[standard]==0.29.0
+
+# Security
+python-jose[cryptography]==3.3.0
+
+# File handling and PDF
+PyPDF2==3.0.1
+werkzeug==3.0.2
+
+# MongoDB async driver
+motor==3.3.1
+bson==0.5.10
+
+# Google API integration
+google-api-python-client==2.126.0
+google-auth==2.29.0
+google-auth-oauthlib==1.2.0
+google-auth-httplib2==0.2.0
+googleapis-common-protos==1.63.0
+
+# Data processing
+pandas==2.2.2
+
+# HTTP requests
+requests==2.31.0
+
+# CORS Middleware
+starlette==0.36.3  # Comes with FastAPI but good to specify explicitly
+
+# Environment variables (assuming env.py handles sensitive keys)
+python-dotenv==1.0.1

@@ -1,9 +1,9 @@
-from fastapi import FastAPI, File, UploadFile, Form, Header, HTTPException, Path, status, Depends, Request, Query, Body
+from fastapi import FastAPI, File, UploadFile, Form, Header, HTTPException, Path, status, Depends, Request, Query
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.encoders import jsonable_encoder
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from typing import List, Dict, Any,Optional
+from typing import Optional
 from jose import jwt, ExpiredSignatureError, JWTError
 import os
 from uuid import uuid4
