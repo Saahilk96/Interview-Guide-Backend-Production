@@ -40,7 +40,7 @@ def generatePrompts(data):
     return prompts
 
 async def get_response(question,index):
-    model = "google/gemini-2.5-flash-preview"
+    model = "google/gemini-2.5-flash-preview-05-20"
     plugins = [{"id": "web", "max_results": 10}] if index in (0, 1) else []
 
     print(f"Index: {index}, Model: {model}, Plugins: {plugins}")
