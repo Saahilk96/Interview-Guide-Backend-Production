@@ -212,13 +212,13 @@ async def google_login(payload: utils.TokenPayload, x_api_key: str = Depends(uti
                 'favorite_product_question', 'product_design', 'product_sense',
                 'product_strategy', 'analytical_estimation', 'technical'
             ]):
-                uNotes.append({"guideId": note["guideId"], "haveNotes": True})
+                uNotes.append({"note": utils.convert_objectid(note), "haveNotes": True})
             else:
-                uNotes.append({"guideId": note["guideId"], "haveNotes": False})
+                uNotes.append({"note": utils.convert_objectid(note), "haveNotes": False})
 
         # Filter user's existing notes
         filteredNotes = [entry["id"] for entry in user.get("history", [])]
-        haveNotes = [note for note in uNotes if note["guideId"] in filteredNotes]
+        haveNotes = [note for note in uNotes if note["note"]["guideId"] in filteredNotes]
 
         return JSONResponse(content=jsonable_encoder({
             "status": "Ok",
