@@ -68,6 +68,10 @@ async def generate_guide(
         user = await googleAuth.find_one({"email": user_email})
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
+        
+        if user_email!="karkerasaahil@gmail.com" and user_email!="shahreenhossain22@gmail.com" and user_email!="aletishiva218@gmail.com":
+            if user["limit"]==3:
+                raise HTTPException(status_code=405, detail="Reached limit, upgrade to pro")
 
         if not resume or resume.filename == '':
             user_history = json.loads(dumps(user)).get("history", [])
@@ -101,7 +105,9 @@ async def generate_guide(
         user_history = user.get("history", [])
         user_history.append(newGuide)
 
-        result = await googleAuth.update_one({"email": user_email}, {"$set": {"history": user_history}})
+        updatedLimit = user["limit"]+1 if (user_email!="karkerasaahil@gmail.com" and user_email!="shahreenhossain22@gmail.com" and user_email!="aletishiva218@gmail.com") else user["limit"]
+    
+        result = await googleAuth.update_one({"email": user_email}, {"$set": {"history": user_history,"limit":updatedLimit}})
         
         notes = {
             "guideId": guide_id,
@@ -190,7 +196,7 @@ async def google_login(payload: utils.TokenPayload, x_api_key: str = Depends(uti
             user = {
                 "name": user_name,
                 "email": user_email,
-                "credits": 100,
+                "limit": 0,
                 "history": [],
                 "createdAt": datetime.now()
             }
