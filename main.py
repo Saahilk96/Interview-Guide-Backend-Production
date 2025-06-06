@@ -522,7 +522,7 @@ async def join_waitlist(
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
         
-        alreadyWaitlistUser = await waitList.find_one({"email":user_email})
+        alreadyWaitlistUser = await waitList.find_one({"user_email":user_email})
         if alreadyWaitlistUser:
             return JSONResponse(
             status_code=208,
