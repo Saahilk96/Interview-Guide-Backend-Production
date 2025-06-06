@@ -258,23 +258,23 @@ async def fetch_data_and_convert_to_csv(googleAuthCollection, waitListCollection
     df_google = pd.DataFrame(google_data)
 
     # Fetch data from waitListCollection
-    waitlist_cursor = waitListCollection.find({}, {'_id': 0, 'email': 1})
+    waitlist_cursor = waitListCollection.find({}, {'_id': 0, 'user_email': 1,'user_name':1,"formData.feature":1,"formData.email":1,"formData.pay_range":1})
     waitlist_data = await waitlist_cursor.to_list(length=None)
 
     # Format createdAt field in waitlist_data
+    modified_data = []
     for doc in waitlist_data:
-        if 'createdAt' in doc and isinstance(doc['createdAt'], datetime):
-            doc['createdAt'] = doc['createdAt'].strftime('%d %b, %Y %H:%M:%S')
-        elif 'createdAt' in doc:
-            try:
-                doc['createdAt'] = datetime.fromisoformat(
-                    str(doc['createdAt']).replace('Z', '+00:00')
-                ).strftime('%d %b, %Y %H:%M:%S')
-            except Exception:
-                doc['createdAt'] = ''
+        modified_doc = {
+            "User Email": doc.get("user_email", ""),
+            "User Name": doc.get("user_name", ""),
+            "Feature": doc.get("formData", {}).get("feature", ""),
+            "Waiting List Email": doc.get("formData", {}).get("email", ""),
+            "Price": doc.get("formData", {}).get("pay_range", "")
+        }
+        modified_data.append(modified_doc)
 
     # Convert to DataFrame
-    df_waitlist = pd.DataFrame(waitlist_data)
+    df_waitlist = pd.DataFrame(modified_data)
 
     # Save both DataFrames to different sheets in one Excel file
     excel_path = "data.xlsx"
