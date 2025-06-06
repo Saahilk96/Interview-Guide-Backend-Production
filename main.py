@@ -524,9 +524,11 @@ async def join_waitlist(
         
         alreadyWaitlistUser = await waitList.find_one({"user_email":user_email})
         if alreadyWaitlistUser:
+            result = await waitList.update_one({"user_email":user["email"]},{"formData":{"email":email,"feature":feature,"pay_range":pay_range}})
+
             return JSONResponse(
             status_code=208,
-            content={"message": "Already joined waitlist"}
+            content={"message": "Updated user waitlist"}
         )
 
         result = await waitList.insert_one({"user_email":user["email"],"user_name":user["name"],"formData":{"email":email,"feature":feature,"pay_range":pay_range}})
