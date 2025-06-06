@@ -280,7 +280,7 @@ async def fetch_data_and_convert_to_csv(googleAuthCollection, waitListCollection
     excel_path = "data.xlsx"
     with pd.ExcelWriter(excel_path, engine='xlsxwriter') as writer:
         df_google.to_excel(writer, sheet_name='interview Guide', index=False)
-        # df_waitlist.to_excel(writer, sheet_name='wait List', index=False)
+        df_waitlist.to_excel(writer, sheet_name='wait List', index=False)
 
     return excel_path
 
