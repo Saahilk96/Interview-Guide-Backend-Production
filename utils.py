@@ -217,11 +217,33 @@ def save_service_account_file():
 SERVICE_ACCOUNT_FILE = save_service_account_file()
 
 # Convert MongoDB collection data to CSV
-async def fetch_data_and_convert_to_csv(collection):
-    cursor = collection.find({}, {'_id': 0, 'name': 1, 'email': 1, 'createdAt': 1})
-    data = await cursor.to_list(length=None)
+# async def fetch_data_and_convert_to_csv(googleAuthCollection,waitListCollecton):
+#     cursor = googleAuthCollection.find({}, {'_id': 0, 'name': 1, 'email': 1, 'createdAt': 1})
+#     data = await cursor.to_list(length=None)
 
-    for doc in data:
+#     for doc in data:
+#         if 'createdAt' in doc and isinstance(doc['createdAt'], datetime):
+#             doc['createdAt'] = doc['createdAt'].strftime('%d %b, %Y %H:%M:%S')
+#         elif 'createdAt' in doc:
+#             try:
+#                 doc['createdAt'] = datetime.fromisoformat(
+#                     str(doc['createdAt']).replace('Z', '+00:00')
+#                 ).strftime('%d %b, %Y %H:%M:%S')
+#             except Exception:
+#                 doc['createdAt'] = ''
+
+#     df = pd.DataFrame(data)
+#     csv_path = "data.csv"
+#     df.to_csv(csv_path, index=False)
+#     return csv_path
+
+async def fetch_data_and_convert_to_csv(googleAuthCollection, waitListCollection):
+    # Fetch data from googleAuthCollection
+    google_cursor = googleAuthCollection.find({}, {'_id': 0, 'name': 1, 'email': 1, 'createdAt': 1})
+    google_data = await google_cursor.to_list(length=None)
+
+    # Format createdAt field in google_data
+    for doc in google_data:
         if 'createdAt' in doc and isinstance(doc['createdAt'], datetime):
             doc['createdAt'] = doc['createdAt'].strftime('%d %b, %Y %H:%M:%S')
         elif 'createdAt' in doc:
@@ -232,10 +254,36 @@ async def fetch_data_and_convert_to_csv(collection):
             except Exception:
                 doc['createdAt'] = ''
 
-    df = pd.DataFrame(data)
-    csv_path = "data.csv"
-    df.to_csv(csv_path, index=False)
-    return csv_path
+    # Convert to DataFrame
+    df_google = pd.DataFrame(google_data)
+
+    # Fetch data from waitListCollection
+    waitlist_cursor = waitListCollection.find({}, {'_id': 0, 'email': 1})
+    waitlist_data = await waitlist_cursor.to_list(length=None)
+
+    # Format createdAt field in waitlist_data
+    for doc in waitlist_data:
+        if 'createdAt' in doc and isinstance(doc['createdAt'], datetime):
+            doc['createdAt'] = doc['createdAt'].strftime('%d %b, %Y %H:%M:%S')
+        elif 'createdAt' in doc:
+            try:
+                doc['createdAt'] = datetime.fromisoformat(
+                    str(doc['createdAt']).replace('Z', '+00:00')
+                ).strftime('%d %b, %Y %H:%M:%S')
+            except Exception:
+                doc['createdAt'] = ''
+
+    # Convert to DataFrame
+    df_waitlist = pd.DataFrame(waitlist_data)
+
+    # Save both DataFrames to different sheets in one Excel file
+    excel_path = "data.xlsx"
+    with pd.ExcelWriter(excel_path, engine='xlsxwriter') as writer:
+        df_google.to_excel(writer, sheet_name='interview Guide', index=False)
+        # df_waitlist.to_excel(writer, sheet_name='wait List', index=False)
+
+    return excel_path
+
 
 # Upload or update CSV to Google Drive
 def upload_csv_to_drive(file_path):
@@ -245,11 +293,11 @@ def upload_csv_to_drive(file_path):
     service = build('drive', 'v3', credentials=creds)
 
     file_metadata = {
-        'name': 'data.csv',
+        'name': 'data.xlsx',
         'mimeType': 'application/vnd.google-apps.spreadsheet',
         'parents': [FOLDER_ID],
     }
-    media = MediaFileUpload(file_path, mimetype='text/csv')
+    media = MediaFileUpload(file_path, mimetype='text/xlsx')
 
     if CSV_FILE_ID:
         service.files().update(fileId=CSV_FILE_ID, media_body=media).execute()
