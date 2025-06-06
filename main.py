@@ -13,7 +13,7 @@ import json
 from bson.json_util import dumps
 from werkzeug.utils import secure_filename
 from env import SECRET_KEY,ACCESS_KEY,UPDATE_CSV_KEY
-from database import googleAuth, userNotes
+from database import googleAuth, userNotes,waitList
 import utils
 import asyncio
 
@@ -502,6 +502,45 @@ async def update_csv(updatecsvkey: str = Query(...)):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to update CSV: {str(e)}")
+
+@app.post("/join_waitlist")
+async def join_waitlist(
+    x_api_key: str = Header(..., alias="x-api-key"),
+    token: str = Form(...),
+    email: str = Form(...),
+    feature: str = Form("N/A"),
+    pay_range: str = Form("N/A")
+):
+    if x_api_key != ACCESS_KEY:
+        raise HTTPException(status_code=400, detail="Missing or invalid access key")
+
+    try:
+        idinfo = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])["idinfo"]
+        user_email = idinfo['email']
+
+        user = await googleAuth.find_one({"email": user_email})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        alreadyWaitlistUser = await waitList.find_one({"email":user_email})
+        if alreadyWaitlistUser:
+            return JSONResponse(
+            status_code=208,
+            content={"message": "Already joined waitlist"}
+        )
+
+        result = await waitList.insert_one({"user_email":user["email"],"user_name":user["name"],"formData":{"email":email,"feature":feature,"pay_range":pay_range}})
+        return JSONResponse(
+            status_code=200,
+            content={"message": "Joined waitlist"}
+        )
+    except ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token has expired")
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 
 if __name__ == "__main__":
     import uvicorn

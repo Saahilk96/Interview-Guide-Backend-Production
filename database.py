@@ -5,3 +5,4 @@ client = AsyncIOMotorClient(MONGO_URI)
 Interview_Guide: AsyncIOMotorDatabase = client["Interview_Guide"]
 googleAuth: AsyncIOMotorCollection = Interview_Guide["googleAuth"]
 userNotes: AsyncIOMotorCollection = Interview_Guide["userNotes"]
+waitList: AsyncIOMotorCollection = Interview_Guide["waitlist"]
