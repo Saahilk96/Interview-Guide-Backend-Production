@@ -240,7 +240,7 @@ SERVICE_ACCOUNT_FILE = save_service_account_file()
 #     df.to_csv(csv_path, index=False)
 #     return csv_path
 
-async def fetch_data_and_convert_to_csv(googleAuthCollection, waitListCollection):
+async def fetch_data_and_convert_to_csv(googleAuthCollection, waitListCollection,blogPostWaitList):
     # Fetch data from googleAuthCollection
     google_cursor = googleAuthCollection.find({}, {'_id': 0, 'name': 1, 'email': 1, 'createdAt': 1})
     google_data = await google_cursor.to_list(length=None)
@@ -279,11 +279,27 @@ async def fetch_data_and_convert_to_csv(googleAuthCollection, waitListCollection
     # Convert to DataFrame
     df_waitlist = pd.DataFrame(modified_data)
 
+    # Fetch data from waitListCollection
+    blogPostwaitlist_cursor = blogPostWaitList.find({}, {'_id': 0, 'user_email': 1,'user_name':1,"formData.feature":1,"formData.email":1,"formData.pay_range":1})
+    blogPostwaitlist_data = await blogPostwaitlist_cursor.to_list(length=None)
+
+    # Format createdAt field in waitlist_data
+    blogPostmodified_data = []
+    for doc in blogPostwaitlist_data:
+        modified_doc = {
+            "User Email": doc.get("user_email", "")
+        }
+        blogPostmodified_data.append(modified_doc)
+
+    # Convert to DataFrame
+    df_waitlist_blogPost = pd.DataFrame(blogPostmodified_data)
+
     # Save both DataFrames to different sheets in one Excel file
     excel_path = "data.xlsx"
     with pd.ExcelWriter(excel_path, engine='xlsxwriter') as writer:
         df_google.to_excel(writer, sheet_name='interview Guide', index=False)
         df_waitlist.to_excel(writer, sheet_name='wait List', index=False)
+        df_waitlist_blogPost.to_excel(writer, sheet_name='blogPost wait List', index=False)
 
 
     return excel_path

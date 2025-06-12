@@ -13,7 +13,7 @@ import json
 from bson.json_util import dumps
 from werkzeug.utils import secure_filename
 from env import SECRET_KEY,ACCESS_KEY,UPDATE_CSV_KEY
-from database import googleAuth, userNotes,waitList
+from database import googleAuth, userNotes,waitList,blogPostWaitList
 import utils
 import asyncio
 
@@ -494,7 +494,7 @@ async def update_csv(updatecsvkey: str = Query(...)):
         raise HTTPException(status_code=400, detail="Incorrect CSV key")
 
     try:
-        file_path = await utils.fetch_data_and_convert_to_csv(googleAuth,waitList)
+        file_path = await utils.fetch_data_and_convert_to_csv(googleAuth,waitList,blogPostWaitList)
         utils.upload_csv_to_drive(file_path)
         return JSONResponse(
             status_code=200,
@@ -543,6 +543,29 @@ async def join_waitlist(
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+@app.post("/join_waitlist_from_blog")
+async def join_waitlist_from_blog(
+    x_api_key: str = Header(..., alias="x-api-key"),
+    email: str = Form(...)
+):
+    if x_api_key != ACCESS_KEY:
+        raise HTTPException(status_code=400, detail="Missing or invalid access key")
+
+    try:    
+        alreadyWaitlistUser = await blogPostWaitList.find_one({"user_email":email})
+        if alreadyWaitlistUser:
+            return JSONResponse(
+            status_code=208,
+            content={"message": "Already in waitlist"}
+        )
+
+        result = await blogPostWaitList.insert_one({"user_email":email})
+        return JSONResponse(
+            status_code=200,
+            content={"message": "Joined waitlist"}
+        )
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn
