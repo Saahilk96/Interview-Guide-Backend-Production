@@ -18,6 +18,7 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 import aiohttp
 import asyncio
+import dResAns
 
 def generatePrompts(data):
     data1 = "{\\n company_name:'"+data['company_name']+(f",\n company_website:{data.get('company_website', '')}" if data.get("company_website") else "")+"',\\n job_role:'"+data['job_role']+"',\\n job_description:'"+data['job_description']+("',\\n resume:'"+data['resume']+"'\\n }" if data['resume'] else "")
@@ -107,11 +108,13 @@ async def get_response(question,index):
         }
     }
 
-    jdumps = json.dumps(request_payload)
 
     # Retry loop
     while True:
         try:
+            if index==9:
+                return dResAns.product_sense, [], None
+            
             async with aiohttp.ClientSession() as session:
                 async with session.post(
                     url="https://openrouter.ai/api/v1/chat/completions",
