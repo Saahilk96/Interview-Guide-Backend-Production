@@ -114,6 +114,8 @@ async def get_response(question,index):
         try:
             if index==9:
                 return dResAns.product_sense, [], None
+            if index==10:
+                return dResAns.product_strategy, [], None
             
             async with aiohttp.ClientSession() as session:
                 async with session.post(

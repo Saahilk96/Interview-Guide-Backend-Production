@@ -804,3 +804,493 @@ product_sense = {
   
   ]
 }
+
+
+product_strategy = {
+    "type":"new1",
+"quick_summary": "",
+  "sub_modules": [
+    {
+      "title": "What Actually Is Product Strategy?",
+      "completed": False,
+      "summary": "Product strategy is just a fancy way of saying: can you zoom out and make decisions that actually move the business forward and not just add shiny features?. In a PM interview, strategy questions test whether you can think almost like a founder or exec. You're not being asked to wireframe a button. You're being asked: Where should the team go next and why does it matter?",
+      "content": "Product strategy is just a fancy way of saying: can you zoom out and make decisions that actually move the business forward and not just add shiny features?. In a PM interview, strategy questions test whether you can think almost like a founder or exec. You're not being asked to wireframe a button. You're being asked: Where should the team go next and why does it matter?",
+      "type":"ul",
+      "points": [
+        {
+          "main": "Why This Shows Up in Interviews",
+          "subPoints": [
+            {
+                "type":"text",
+                "text":"The best PMs don’t just ship features. They think:"
+            },
+            {
+                "type":"ul",
+                "subPoints":[
+                    "\"What bets are worth making right now?\"",
+                    "\"Where is the market going and how do we stay relevant?\"",
+                    "\"What actually helps the company grow?\""
+                ]
+            },
+             {
+                "type":"text",
+                "text":"That's strategy. And it matters because companies don’t want a task-doer they want someone who knows where to steer the ship."
+            },
+            {
+                "type":"text",
+                "text":"These questions help interviewers see if you can:"
+            },
+            {
+                "type":"ul",
+                "subPoints":[
+                    "Tackle open-ended problems without freaking out",
+                    "Make smart trade-offs under constraints",
+                    "Connect product decisions to business outcomes"
+                ]
+            }
+
+          ]
+        },
+        {
+          "main": "How is Product Strategy questions different than Product Design questions?",
+          "subPoints": [
+           {
+            "type":"text",
+            "text":"Product strategy focuses on what should be built and why, the big picture thinking along with the product market fit, growth strategy and goals. Strategy is the map. Whereas product design focuses on how you should build the product, the user experience, the usability, the UX flows and the user delight of the product. Design is how smooth the ride is once you’re on the road."
+           }
+          ]
+        },
+        {
+          "main": "What Top Companies Are Really Looking For",
+          "subPoints": [
+            {
+              "type":"text",
+              "text":"Places like Meta, Stripe, Amazon, and Spotify want to see if you can:"
+            },
+            {
+              "type":"ul",
+              "subPoints":[
+                "Stay calm in the chaos (there’s never one “right” answer)",
+                "Build a logical, compelling case for your ideas",
+                "Think about the customer and the business",
+                "Make decisions even when data is fuzzy"
+              ]
+            },
+            {
+              "type":"text",
+              "text":"They're not testing if you have an PhD in product management. They're testing if you can think clearly, prioritize well, and justify your decisions."
+            }
+          ]
+        },
+        {
+          "main": "Common Real Product Strategy Questions",
+          "subPoints": [
+              {
+                "type":"text",
+                "text":"Some examples I’ve seen and practiced with:"
+              },
+              {
+                "type":"ul",
+                "subPoints":[
+                  "“You’re the PM for YouTube Shorts. What would you prioritize to grow usage?”",
+                  "“Spotify wants to expand into audiobooks. How would you evaluate that opportunity?”",
+                  "“Meta’s ad revenue is flat—what should the Ads team do next?”",
+                  "“Should Google Maps launch a premium subscription?”",
+                  "“How should Amazon grow Prime in new international markets?”"
+                ]
+              },
+              {
+                "type":"text",
+                "text":"These all boil down to: Can you connect product work to real goals and explain your thinking in a structured way?"
+              }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "5-Step Product Strategy Interview Framework",
+      "completed": False,
+      "summary": "Product strategy interviews can feel overwhelming, but having a structured approach makes all the difference. This framework keeps you organized, shows strategic thinking, and demonstrates how you balance business needs with execution reality. Use this as your north star for any product strategy question.",
+      "content": "Product strategy interviews can feel overwhelming, but having a structured approach makes all the difference. This framework keeps you organized, shows strategic thinking, and demonstrates how you balance business needs with execution reality. Use this as your north star for any product strategy question.",
+      "type":"none",
+      "points": [
+        {
+          "main": "Step 1: Clarify the Goal",
+          "subPoints": [
+            {
+                "type":"text",
+                "text":"What it is: Before diving into solutions, nail down exactly what success looks like. Most candidates jump straight to brainstorming, but the best PMs spend time upfront ensuring they're solving the right problem."
+            },
+            {
+              "title":"Key Questions to Ask:",
+              "type":"ul",
+              "subPoints":[
+                "\"What's the primary business objective we're trying to achieve?\"",
+                "\"What's our timeline for seeing results?\"",
+                "\"Are there any constraints I should be aware of - budget, resources, technical limitations?\"",
+                "\"How does this fit into the broader company strategy?\"",
+                "\"What would success look like in 6 months vs. 2 years?\""
+              ]
+            },
+            {
+              "type":"text",
+              "text":"Example: Interviewer: \"How would you grow our marketplace platform?\""
+            },
+            {
+              "type":"text",
+              "text":"Your Response: \"Before I dive into growth strategies, let me clarify a few things. When you say 'grow,' are we primarily focused on user acquisition, revenue growth, or engagement? What's our current biggest bottleneck - supply side, demand side, or conversion? And what's the timeline we're working with - are we looking for quick wins or sustainable long-term growth?\""
+            },
+            {
+              "type":"text",
+              "text":"This shows you think strategically and don't make assumptions."
+            }
+          ]
+        },
+        {
+          "main": "Step 2: Analyze the Market",
+          "subPoints": [
+            {
+                "type":"text",
+                "text":"What it is: Demonstrate market awareness by analyzing the competitive landscape, user behavior, and market dynamics. This isn't about showing off. It's about grounding your strategy in reality."
+            },
+           {
+            "title":"Framework to Use:",
+            "type":"ul",
+            "subPoints":[
+              "Market Size & Trends: What's the TAM? Is the market growing or contracting?",
+              "Competition: Who are the key players? What are their strengths/weaknesses?",
+              "User Behavior: How do customers currently solve this problem? What are their pain points?",
+              "External Forces: Regulatory changes, technology shifts, economic factors"
+            ]
+           },
+           {
+            "type":"text",
+            "text":"Example: Sample answer for a food delivery app growth question:"
+           },
+           {
+            "type":"text",
+            "text":"\"Let me analyze the current market landscape. The food delivery market is still growing but slowing post-COVID, with increased competition from DoorDash, Uber Eats, and regional players. Users are becoming more price-sensitive and demanding faster delivery times. I'm seeing trends toward ghost kitchens and vertical integration. Our key advantage seems to be [X], but we're facing pressure on [Y]. This context will shape which growth strategies make sense.\""
+           },
+           {
+            "type":"text",
+            "text":"Pro Tip: If you don't know specific market details, be honest but show your thinking process: \"I'd want to research the exact market size, but based on general trends I'm seeing...\""
+           }
+          ]
+        },
+       {
+          "main": "Step 3: Evaluate Strategic Options",
+          "subPoints": [
+            {
+                "type":"text",
+                "text":"What it is: Generate 2-3 distinct strategic buckets and evaluate each one systematically. Don't just list options. Show how you think through trade-offs."
+            },
+           {
+                "title":"Evaluation Criteria:",
+                "type":"ul",
+                "subPoints":[
+                  "Impact: How much will this move the needle on our goal?",
+                  "Feasibility: Can we actually execute this with our resources/timeline?",
+                  "Strategic Fit: Does this align with our core competencies and long-term vision?",
+                  "Risk: What could go wrong and how likely is it?"
+                ]
+            },
+             {
+                "type":"text",
+                "text":"Example Structure: For growing a B2B SaaS product:"
+            },
+            {
+                "type":"text",
+                "text":"\"I see three main strategic options:"
+            },
+            {
+              "title":"Option 1: Expand Market Reach",
+              "type":"ul",
+              "subPoints":[
+                "Focus on new customer segments or geographic markets",
+                "High impact potential, moderate feasibility",
+                "Requires new go-to-market capabilities"
+              ]
+            },
+            {
+              "title":"Option 2: Deepen Customer Value",
+              "type":"ul",
+              "subPoints":[
+                "Add new features or product lines for existing customers",
+                "Moderate impact, high feasibility",
+                "Leverages existing relationships and product knowledge"
+              ]
+            },
+            {
+              "title":"Option 3: Platform Strategy",
+              "subPoints":[
+                "Build integrations and become central to customer workflows",
+                "High long-term impact, low short-term feasibility",
+                "Significant technical investment required"
+              ]
+            },
+            {
+              "type":"text",
+              "text":"Each has different resource requirements and risk profiles...\""
+            }
+          ]
+        },
+        {
+          "main": "Step 4: Prioritize with Trade-Offs",
+          "subPoints": [
+            {
+                "type":"text",
+                "text":"What it is: Make a clear recommendation and explain your reasoning. The best PMs don't just pick an option. They articulate why they chose that option over alternatives and how they'd mitigate risks."
+            },
+            {
+              "title":"How to Frame Trade-Offs:",
+              "type":"ul",
+              "subPoints":[
+                "\"I'm recommending [X] over [Y] because...\"",
+                "\"The main trade-off is [short-term cost] for [long-term benefit]\"",
+                "\"This comes with risks around [Z], which I'd address by...\"",
+                "\"We're betting that [key assumption] holds true\""
+              ]
+            },
+            {
+              "title":"Example in Action:",
+              "type":"none",
+              "subPoints":[
+                "\"I'm recommending we focus on deepening customer value (option 2) over expanding market reach. Here's my reasoning:\"",
+                "\"Why this over market expansion: While new markets have higher upside, our current customer retention rate of 85% suggests we're not maximizing value from existing relationships. It's typically 5-7x cheaper to expand existing accounts than acquire new ones.\"",
+                "\"Key Trade-Off: We're trading potential rapid growth for sustainable, profitable growth. This is the right choice given our current burn rate and the need to show unit economics improvement.\"",
+                "\"Risk Mitigation: The main risk is that we hit a ceiling on expansion within existing accounts. I'd mitigate this by setting clear expansion metrics and having a 'pivot trigger' - if we don't see 20% expansion revenue within 6 months, we re-evaluate.\""
+              ]
+            }
+          ]
+        },
+        {
+          "main": "Step 5: Define Success Metrics & Next Steps",
+          "subPoints": [
+            {
+                "type":"text",
+                "text":"What it is: Show you can translate strategy into measurable outcomes and concrete next steps. This demonstrates you can execute, not just strategize."
+            },
+           {
+                "title":"Metrics Framework:",
+                "type":"ul",
+                "subPoints":[
+                  "Leading Indicators: What metrics predict success? (e.g., trial signups, feature adoption)",
+                  "Lagging Indicators: What metrics confirm success? (e.g., revenue, retention)",
+                  "Business Metrics: Revenue, market share, customer lifetime value",
+                  "Product Metrics: User engagement, feature adoption, conversion rates"
+                ]
+            },
+             {
+                "type":"text",
+                "text":"Example Structure: For the customer value expansion strategy:"
+            },
+            {
+                "type":"text",
+                "text":"\"Here's how I'd measure success and roll this out:"
+            },
+            {
+               "title":"Success Metrics:",
+               "type":"ul",
+               "subPoints":[
+                "Leading: Feature adoption rate, customer health score, expansion conversations initiated",
+                "Lagging: Expansion revenue, net revenue retention, customer satisfaction scores",
+                "Target: 25% \of existing customers adopt new features within 90 days, driving 15% \increase in annual revenue per user"
+               ]
+            },
+            {
+              "title":"MVP Approach:",
+              "type":"ul",
+              "subPoints":[
+                "Month 1: Ship basic version to 10% \of customers (our highest-value segment)",
+                "Month 2: Iterate based on feedback, expand to 25% \of customers",
+                "Month 3: Full rollout with refined onboarding and support processes"
+              ] 
+            },
+            {
+              "title":"Key Assumptions to Test:",
+              "type":"ul",
+              "subPoints":[
+                "Customers will pay for additional value (validate with pricing research)",
+                "Our support team can handle increased complexity (monitor ticket volume)",
+                "Integration doesn't cannibalize existing revenue (track replacement vs. additive usage)\""
+              ]
+            }
+          ]
+        },
+        {
+          "main": "Putting It All Together",
+          "subPoints": [
+            {
+                "type":"text",
+                "text":"This framework works because it:"
+            },
+            {
+              "type":"ul",
+              "subPoints":[
+                "Shows structured thinking instead of random brainstorming",
+                "Demonstrates business acumen by connecting strategy to outcomes",
+                "Reveals how you handle ambiguity through clarifying questions",
+                "Proves you can execute with concrete metrics and next steps"
+              ]
+            },
+            {
+              "type":"text",
+              "text":"Practice Tip: Don't memorize this framework but do internalize the logic. Do some mock interviews with friends and with enough practice goals, context, options, trade-offs, and measurement will become natural ways of thinking. Use this structure as training wheels until it becomes second nature."
+            },
+            {
+              "type":"text",
+              "text":"Remember, interviewers aren't looking for the \"right\" answer. They want to see how you think through complex problems and make decisions with incomplete information. This framework gives you a reliable way to showcase that thinking process."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "5 Practice Product Strategy Interview Questions",
+      "completed": False,
+      "summary": "",
+      "content": "",
+      "type":"ol",
+      "points": [
+        {
+          "main": "Monetization Strategy:",
+          "subPoints": [
+            {
+                "type":"text",
+                "text":"\"How would you monetize a product like Google Maps?\""
+            },
+             {
+                "type":"text",
+                "text":"Hint: Think about who uses it (consumers, businesses), who pays today (advertisers, API users), and where untapped value might lie. Consider freemium models, partnerships, or upsells for high-intent users."
+            }
+          ]
+        },
+        {
+          "main": "Growth Strategy:",
+          "subPoints": [
+            {
+                "type":"text",
+                "text":"\"Instagram usage is declining among Gen Z. What would you do?\""
+            },
+           {
+                "type":"text",
+                "text":"Hint: Start with why. Do discovery: is it product fatigue, competition, cultural shift? Segment users by behavior and platform. Then brainstorm features, partnerships, or changes in positioning to re-engage that group."
+            }
+          ]
+        },
+       {
+          "main": "Competitive Defense:",
+          "subPoints": [
+            {
+                "type":"text",
+                "text":"\"Spotify’s podcast dominance is being challenged by YouTube. What’s your strategy?\""
+            },
+           {
+                "type":"text",
+                "text":"Hint: Think in layers: product experience, creator ecosystem, monetization. Where is YouTube stronger? Where is Spotify better? Consider exclusive content, algorithm upgrades, and creator incentives."
+            }
+          ]
+        },
+        {
+          "main": "Market Expansion:",
+          "subPoints": [
+            {
+                "type":"text",
+                "text":"\"How would you expand Duolingo into a new international market?\""
+            },
+           {
+                "type":"text",
+                "text":"Hint: Pick a specific country. Think about language demand, mobile access, cultural attitudes toward learning, and local competitors. Then outline a go-to-market plan (product, pricing, partnerships, promotion)."
+            }
+          ]
+        },
+        {
+          "main": "Product Portfolio Strategy:",
+          "subPoints": [
+            {
+                "type":"text",
+                "text":"\"You’re PM at Amazon. Should Prime Gaming be bundled or spun out as its own service?\""
+            },
+           {
+                "type":"text",
+                "text":"Hint: Use a decision framework. What’s the business goal? Retention, revenue, user growth or something else? Evaluate the pros and cons of bundling (cross-sell potential, complexity, cost). Then recommend based on customer value and business alignment."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Product Strategy Interview Rubric",
+      "completed": False,
+      "summary": "Most top tech companies like Google, Meta, Amazon use structured rubrics to evaluate how you think, not just what you say. Let’s break down the 3 core areas they care about most, and what separates a “meh” answer from a great one. Take a look at the rubric. It breaks down the categories into structured thinking, product creativity and strategy and tech and execution. Broadly it can be scored into four categories—needs improvement, somewhat okay, strong responses and exceptional responses. ",
+      "content": "Most top tech companies like Google, Meta, Amazon use structured rubrics to evaluate how you think, not just what you say. Let’s break down the 3 core areas they care about most, and what separates a “meh” answer from a great one. Take a look at the rubric. It breaks down the categories into structured thinking, product creativity and strategy and tech and execution. Broadly it can be scored into four categories—needs improvement, somewhat okay, strong responses and exceptional responses. ",
+      "type":"none",
+      "points": [
+        {
+          "main": "Category: Structured Thinking",
+          "subPoints": [
+            {
+                "type":"text",
+                "text":"1/4 - Needs Improvement: No clear structure, jumps into solutions, rambles, or backtracks."
+            },
+             {
+                "type":"text",
+                "text":"2/4 - Mixed: Has some structure, but it's shaky or incomplete. Misses key step like clarifying goals."
+            },
+             {
+                "type":"text",
+                "text":"3/4 - Strong: Organized, walks through logical buckets, clarifies assumptions."
+            },
+             {
+                "type":"text",
+                "text":"4/4 - Exceptional: Crystal clear framing, goal-first, structured like a consultant. Prioritizes effectively and drives the convo with confidence."
+            }
+          ]
+        },
+        {
+          "main": "Category: Product Creativity & Strategy",
+          "subPoints": [
+            {
+                "type":"text",
+                "text":"1/4 - Needs Improvement: Generic ideas, lacks understanding of user or business value."
+            },
+            {
+                "type":"text",
+                "text":"2/4 - Mixed: Ideas are obvious or surface-level, with limited strategic tradeoff discussion."
+            },
+            {
+                "type":"text",
+                "text":"3/4 - Strong: Strong ideas rooted in user needs or business logic. Prioritizes reasonably."
+            },
+            {
+                "type":"text",
+                "text":"4/4 - Exceptional: Insightful, innovative ideas tied to users, competition, and growth. Shows big-picture product vision + practical strategy."
+            }
+          ]
+        },
+        {
+          "main": "Category: Tech & Execution Insight",
+          "subPoints": [
+           {
+                "type":"text",
+                "text":"1/4 - Needs Improvement: Ignores feasibility, suggests unrealistic features."
+            },
+            {
+                "type":"text",
+                "text":"2/4 - Mixed: Aware of build vs. buy, but vague about technical constraints or data needs."
+            },
+            {
+                "type":"text",
+                "text":"3/4 - Strong: Thinks in MVPs, mentions trade-offs, rollout plans, or data signals."
+            },
+            {
+                "type":"text",
+                "text":"4/4 - Exceptional: Demonstrates deep intuition for what’s technically feasible, how to experiment fast, and how to collaborate with engineering or data science."
+            }
+          ]
+        }
+      ]
+    }
+  
+  ]
+}
