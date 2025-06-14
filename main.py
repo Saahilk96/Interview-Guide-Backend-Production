@@ -70,7 +70,7 @@ async def generate_guide(
             raise HTTPException(status_code=404, detail="User not found")
         
         if user_email!="karkerasaahil@gmail.com" and user_email!="shahreenhossain22@gmail.com" and user_email!="aletishiva218@gmail.com":
-            if user["limit"]==3:
+            if user["limit"]==2:
                 raise HTTPException(status_code=405, detail="Reached limit, upgrade to pro")
 
         if not resume or resume.filename == '':
