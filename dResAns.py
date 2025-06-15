@@ -14,11 +14,7 @@ product_sense = {
           "subPoints": [
             {
                 "type":"text",
-                "text":"Great PMs don’t just ship features they solve real problems."
-            },
-             {
-                "type":"text",
-                "text":"In interviews, product sense questions help companies assess whether you can:"
+                "text":"Great PMs don’t just ship features they solve real problems. In interviews, product sense questions help companies assess whether you can:"
             },
             {
                 "type":"ul",
@@ -66,16 +62,8 @@ product_sense = {
           "subPoints": [
             {
                 "type":"text",
-                "text":"\"One of my favorite products is Notion. I use it to track books I’m reading, plan out projects, and connect random ideas across pages. What I love is how modular it is. I can create docs, tables, and boards all linked together. It makes my messy brain feel organized. "
+                "text":"\"One of my favorite products is Notion. I use it to track books I’m reading, plan out projects, and connect random ideas across pages. What I love is how modular it is. I can create docs, tables, and boards all linked together. It makes my messy brain feel organized. But one pain point? Search. If I don’t remember the exact wording, I can’t find things. I’d improve it by adding smart tagging or semantic search to help resurface related content without having to dig. This example works because it shows:"
             },
-             {
-                "type":"text",
-            "text":"But one pain point? Search. If I don’t remember the exact wording, I can’t find things. I’d improve it by adding smart tagging or semantic search to help resurface related content without having to dig."
-             },
-              {
-                "type":"text",
-            "text":"This example works because it shows:"
-              },
             {
               
                         "type":"ul",
@@ -560,12 +548,12 @@ product_sense = {
                     "Prompt: You’ve been asked to build a new tool to help remote teams feel more connected. What’s your idea?",
                     "Hint: Think async vs sync, calendar fatigue, spontaneous connection, or rituals that build team identity."
                     ]
-            },
-            {
-                "title":"Elevate Your Product Sense Thinking",
-                "type":"ul",
-                "subPoints":[]
-            },
+            }
+          ]
+        },
+        {
+            "main":"Elevate Your Product Sense Thinking",
+            "subPoints":[
             {
                 "type":"text",
                 "text":"Good product sense shows structure. Great product sense shows insight. Here’s how to level up each part of your answer:"
@@ -601,12 +589,12 @@ product_sense = {
                     "Good: \"Let’s add folders.\"",
                     "Great: \"Let’s introduce a ‘Smart Inbox’ with auto-categorization (fans, brand inquiries, spam), reply templates, and insights for high-ROI conversations—leveraging ML and existing Instagram data.\""
                 ]
-            },
-            {
-                "title":"Common Mistakes to Avoid",
-                "type":"none",
-                "subPoints":[]
-            },
+            }
+            ]
+        },
+        {
+            "main":"Common Mistakes to Avoid",
+            "subPoints":[
             {
                 "type":"text",
                 "text":"Avoid these traps even if your structure is solid:"
@@ -621,7 +609,7 @@ product_sense = {
                     "Missing creativity → Add a surprising, delightful twist that shows you think like a builder, not just a fixer."
                 ]
             }
-          ]
+            ]
         }
       ]
     },
@@ -834,11 +822,7 @@ product_strategy = {
             },
              {
                 "type":"text",
-                "text":"That's strategy. And it matters because companies don’t want a task-doer they want someone who knows where to steer the ship."
-            },
-            {
-                "type":"text",
-                "text":"These questions help interviewers see if you can:"
+                "text":"That's strategy. And it matters because companies don’t want a task-doer they want someone who knows where to steer the ship. These questions help interviewers see if you can:"
             },
             {
                 "type":"ul",
@@ -1148,8 +1132,8 @@ product_strategy = {
     {
       "title": "5 Practice Product Strategy Interview Questions",
       "completed": False,
-      "summary": "",
-      "content": "",
+      "summary": "There are broadly 5 types of product strategy questions. These mock questions will help you practice different muscles needed to creatively think through your strategy for monetization, growth, competition, market expansion and the portfolio of products. The hints are here simply as suggestions, so don’t be afraid to take your own creative path to test your strategy skills.",
+      "content": "There are broadly 5 types of product strategy questions. These mock questions will help you practice different muscles needed to creatively think through your strategy for monetization, growth, competition, market expansion and the portfolio of products. The hints are here simply as suggestions, so don’t be afraid to take your own creative path to test your strategy skills.",
       "type":"ol",
       "points": [
         {
