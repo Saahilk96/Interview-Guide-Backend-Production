@@ -5,8 +5,8 @@ product_sense = {
     {
       "title": "What is Product Sense?",
       "completed": False,
-      "summary": "Product sense is your ability to look at a product and confidently say: Here’s what makes it work, here’s what’s missing, and here’s how I’d make it better. It’s how you connect the dots between user needs, product design, and business impact and it’s one of the most important skills interviewers look for in a PM candidate.",
-      "content": "Product sense is your ability to look at a product and confidently say: Here’s what makes it work, here’s what’s missing, and here’s how I’d make it better. It’s how you connect the dots between user needs, product design, and business impact and it’s one of the most important skills interviewers look for in a PM candidate.",
+      "summary": "Product sense is your ability to look at a product and confidently say: <i>\"Here’s what makes it work, here’s what’s missing, and here’s how I’d make it better.\"</i> It’s how you connect the dots between user needs, product design, and business impact and it’s one of the most important skills interviewers look for in a PM candidate.",
+      "content": "Product sense is your ability to look at a product and confidently say: <i>\"Here’s what makes it work, here’s what’s missing, and here’s how I’d make it better.\"</i> It’s how you connect the dots between user needs, product design, and business impact and it’s one of the most important skills interviewers look for in a PM candidate.",
       "type":"ul",
       "points": [
         {
@@ -83,7 +83,7 @@ product_sense = {
                   "title":"Product sense = empathy + creativity + judgment.",
                   "type":"none",
                   "subPoints":[
-                      "It’s your chance to show interviewers: “I don’t just use products. I understand them. And I know how to make them better.”"
+                      "It’s your chance to show interviewers: <i>\"I don’t just use products. I understand them. And I know how to make them better.\"</i>"
                   ]
               }
           ]
@@ -514,7 +514,7 @@ product_sense = {
                 "type":"none",
                 "subPoints":[
                     "Prompt: How would you improve Instagram’s direct messaging experience?",
-                    "Hint: Consider use cases like group chats, creator-fan interaction, spam filtering, or cross-platform communication."
+                    "<i>Hint:</i> Consider use cases like group chats, creator-fan interaction, spam filtering, or cross-platform communication."
                     ]
             },
              {
@@ -522,7 +522,7 @@ product_sense = {
                 "type":"none",
                 "subPoints":[
                     "Prompt: Imagine you’re building a new feature for Uber’s driver app. What would you build and why?",
-                    "Hint: Think about driver pain points—earnings transparency, safety, downtime, navigation, etc."
+                    "<i>Hint:</i> Think about driver pain points—earnings transparency, safety, downtime, navigation, etc."
                     ]
             },
              {
@@ -530,7 +530,7 @@ product_sense = {
                 "type":"none",
                 "subPoints":[
                     "Prompt: You’re launching a new feature for Duolingo to help intermediate learners stay engaged. What do you build?",
-                    "Hint: Look at retention challenges, gamification, habit loops, or social accountability."
+                    "<i>Hint:</i> Look at retention challenges, gamification, habit loops, or social accountability."
                     ]
             },
              {
@@ -538,7 +538,7 @@ product_sense = {
                 "type":"none",
                 "subPoints":[
                     "Prompt: How would you improve LinkedIn’s job search experience for college seniors?",
-                    "Hint: Think about segmentation by confidence level, guidance needs, or industries. Consider emotional barriers too."
+                    "<i>Hint:</i> Think about segmentation by confidence level, guidance needs, or industries. Consider emotional barriers too."
                     ]
             },
             {
@@ -546,7 +546,7 @@ product_sense = {
                 "type":"none",
                 "subPoints":[
                     "Prompt: You’ve been asked to build a new tool to help remote teams feel more connected. What’s your idea?",
-                    "Hint: Think async vs sync, calendar fatigue, spontaneous connection, or rituals that build team identity."
+                    "<i>Hint:</i> Think async vs sync, calendar fatigue, spontaneous connection, or rituals that build team identity."
                     ]
             }
           ]
@@ -648,8 +648,8 @@ product_sense = {
                 "title":"Resources:",
                 "type":"ul",
                 "subPoints":[
-                    "Prompt: You’re launching a new feature for Duolingo to help intermediate learners stay engaged. What do you build?",
-                    "Hint: Look at retention challenges, gamification, habit loops, or social accountability."
+                    "<i>The Mom Test</i> (book) – how to ask better product questions",
+                    "IDEO’s Human-Centered Design Kit – practical frameworks for empathy building"
                     ]
             }
           ]
@@ -718,7 +718,7 @@ product_sense = {
                 "type":"ul",
                 "subPoints":[
                     "Sprint by Jake Knapp – structured product testing",
-                    "Creative Confidence by the Kelley brothers – building creative habits",
+                    "<i>Creative Confidence</i> by the Kelley brothers – building creative habits",
                     "Product Hunt – inspiration for creative product ideas"
                     ]
             }
@@ -885,7 +885,7 @@ product_strategy = {
               },
               {
                 "type":"text",
-                "text":"These all boil down to: Can you connect product work to real goals and explain your thinking in a structured way?"
+                "text":"These all boil down to: <i>Can you connect product work to real goals and explain your thinking in a structured way?</i>"
               }
           ]
         }
@@ -918,7 +918,7 @@ product_strategy = {
             },
             {
               "type":"text",
-              "text":"Example: Interviewer: \"How would you grow our marketplace platform?\""
+              "text":"Example: Interviewer: <i>\"How would you grow our marketplace platform?\"</i>"
             },
             {
               "type":"text",
@@ -949,7 +949,7 @@ product_strategy = {
            },
            {
             "type":"text",
-            "text":"Example: Sample answer for a food delivery app growth question:"
+            "text":"Example: <i>Sample answer for a food delivery app growth question:</i>"
            },
            {
             "type":"text",
@@ -980,7 +980,7 @@ product_strategy = {
             },
              {
                 "type":"text",
-                "text":"Example Structure: For growing a B2B SaaS product:"
+                "text":"Example Structure: <i>For growing a B2B SaaS product:</i>"
             },
             {
                 "type":"text",
@@ -1141,11 +1141,11 @@ product_strategy = {
           "subPoints": [
             {
                 "type":"text",
-                "text":"\"How would you monetize a product like Google Maps?\""
+                "text":"<i>\"How would you monetize a product like Google Maps?\"</i>"
             },
              {
                 "type":"text",
-                "text":"Hint: Think about who uses it (consumers, businesses), who pays today (advertisers, API users), and where untapped value might lie. Consider freemium models, partnerships, or upsells for high-intent users."
+                "text":"<i><b>Hint:</b></i> Think about who uses it (consumers, businesses), who pays today (advertisers, API users), and where untapped value might lie. Consider freemium models, partnerships, or upsells for high-intent users."
             }
           ]
         },
@@ -1154,11 +1154,11 @@ product_strategy = {
           "subPoints": [
             {
                 "type":"text",
-                "text":"\"Instagram usage is declining among Gen Z. What would you do?\""
+                "text":"<i>\"Instagram usage is declining among Gen Z. What would you do?\"</i>"
             },
            {
                 "type":"text",
-                "text":"Hint: Start with why. Do discovery: is it product fatigue, competition, cultural shift? Segment users by behavior and platform. Then brainstorm features, partnerships, or changes in positioning to re-engage that group."
+                "text":"<i><b>Hint:</b></i> Start with why. Do discovery: is it product fatigue, competition, cultural shift? Segment users by behavior and platform. Then brainstorm features, partnerships, or changes in positioning to re-engage that group."
             }
           ]
         },
@@ -1167,11 +1167,11 @@ product_strategy = {
           "subPoints": [
             {
                 "type":"text",
-                "text":"\"Spotify’s podcast dominance is being challenged by YouTube. What’s your strategy?\""
+                "text":"<i>\"Spotify’s podcast dominance is being challenged by YouTube. What’s your strategy?\"</i>"
             },
            {
                 "type":"text",
-                "text":"Hint: Think in layers: product experience, creator ecosystem, monetization. Where is YouTube stronger? Where is Spotify better? Consider exclusive content, algorithm upgrades, and creator incentives."
+                "text":"<i><b>Hint:</b></i> Think in layers: product experience, creator ecosystem, monetization. Where is YouTube stronger? Where is Spotify better? Consider exclusive content, algorithm upgrades, and creator incentives."
             }
           ]
         },
@@ -1180,11 +1180,11 @@ product_strategy = {
           "subPoints": [
             {
                 "type":"text",
-                "text":"\"How would you expand Duolingo into a new international market?\""
+                "text":"<i>\"How would you expand Duolingo into a new international market?\"</i>"
             },
            {
                 "type":"text",
-                "text":"Hint: Pick a specific country. Think about language demand, mobile access, cultural attitudes toward learning, and local competitors. Then outline a go-to-market plan (product, pricing, partnerships, promotion)."
+                "text":"<i><b>Hint:</b></i> Pick a specific country. Think about language demand, mobile access, cultural attitudes toward learning, and local competitors. Then outline a go-to-market plan (product, pricing, partnerships, promotion)."
             }
           ]
         },
@@ -1193,11 +1193,11 @@ product_strategy = {
           "subPoints": [
             {
                 "type":"text",
-                "text":"\"You’re PM at Amazon. Should Prime Gaming be bundled or spun out as its own service?\""
+                "text":"<i>\"You’re PM at Amazon. Should Prime Gaming be bundled or spun out as its own service?\"</i>"
             },
            {
                 "type":"text",
-                "text":"Hint: Use a decision framework. What’s the business goal? Retention, revenue, user growth or something else? Evaluate the pros and cons of bundling (cross-sell potential, complexity, cost). Then recommend based on customer value and business alignment."
+                "text":"<i><b>Hint:</b></i> Use a decision framework. What’s the business goal? Retention, revenue, user growth or something else? Evaluate the pros and cons of bundling (cross-sell potential, complexity, cost). Then recommend based on customer value and business alignment."
             }
           ]
         }
