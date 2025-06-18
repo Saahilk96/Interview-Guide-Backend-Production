@@ -1078,15 +1078,15 @@ product_strategy = {
                "subPoints":[
                 "Leading: Feature adoption rate, customer health score, expansion conversations initiated",
                 "Lagging: Expansion revenue, net revenue retention, customer satisfaction scores",
-                "Target: 25% \of existing customers adopt new features within 90 days, driving 15% \increase in annual revenue per user"
+                "Target: 25% of existing customers adopt new features within 90 days, driving 15% increase in annual revenue per user"
                ]
             },
             {
               "title":"MVP Approach:",
               "type":"ul",
               "subPoints":[
-                "Month 1: Ship basic version to 10% \of customers (our highest-value segment)",
-                "Month 2: Iterate based on feedback, expand to 25% \of customers",
+                "Month 1: Ship basic version to 10% of customers (our highest-value segment)",
+                "Month 2: Iterate based on feedback, expand to 25% of customers",
                 "Month 3: Full rollout with refined onboarding and support processes"
               ] 
             },
@@ -1271,6 +1271,599 @@ product_strategy = {
                 "type":"text",
                 "text":"4/4 - Exceptional: Demonstrates deep intuition for what’s technically feasible, how to experiment fast, and how to collaborate with engineering or data science."
             }
+          ]
+        }
+      ]
+    }
+  
+  ]
+}
+
+analytical_estimation = {
+    "type":"new1",
+"quick_summary": "",
+  "sub_modules": [
+    {
+      "title": "What Is the Analytical Estimation/Execution Round?",
+      "completed": False,
+      "summary": "The analytical estimation or \"execution\" round tests your ability to think quantitatively, solve problems with incomplete data, and make structured decisions under pressure. This is where companies assess whether you can handle the data-driven aspects of product management.",
+      "content": "The analytical estimation or \"execution\" round tests your ability to think quantitatively, solve problems with incomplete data, and make structured decisions under pressure. This is where companies assess whether you can handle the data-driven aspects of product management.",
+      "type":"ul",
+      "points": [
+        {
+          "main": "What Interviewers Are Testing",
+          "subPoints": [
+            {
+                "type":"text",
+                "text":"Core Skills Being Evaluated:"
+            },
+            {
+                "type":"ul",
+                "subPoints":[
+                    "Structured thinking - Can you break down complex problems logically?",
+                    "Quantitative reasoning - Are you comfortable working with numbers and making calculations?",
+                    "Data interpretation - Can you analyze information and draw meaningful insights?",
+                    "Business judgment - Do you understand what drives business value?",
+                    "Clear communication - Can you explain your thinking process clearly?"
+                ]
+            },
+             {
+                "type":"text",
+                "text":"Key Point: Interviewers care more about how you think than getting the \"right\" answer."
+            }
+          ]
+        },
+        {
+          "main": "Common Question Types",
+          "subPoints": [
+           {
+            "title":"Market Sizing",
+            "type":"ul",
+            "subPoints":[
+                "\"How many Uber rides happen in NYC daily?\"",
+                "\"What's the market size for meal delivery apps?\""
+            ] 
+           },
+           {
+            "title":"Metrics & KPIs",
+            "type":"ul",
+            "subPoints":[
+                "\"How would you measure success for Instagram Stories?\"",
+                "\"Our engagement is down 15% - how do you investigate?\""
+            ] 
+           },
+           {
+            "title":"A/B Testing",
+            "type":"ul",
+            "subPoints":[
+                "\"Test A has 10% higher conversion but 20% lower revenue per user. What do you do?\"",
+                "\"How would you test a new checkout flow?\""
+            ] 
+           },
+           {
+            "title":"Business Analysis",
+            "type":"ul",
+            "subPoints":[
+                "\"Should we prioritize the mobile app or desktop feature first?\"",
+                "\"If we cut prices 30%, how much must conversions increase to break even?\""
+            ] 
+           },
+           {
+            "title":"Root Cause Analysis",
+            "type":"ul",
+            "subPoints":[
+                "\"Daily active users dropped 25% last month. Walk me through your investigation.\""
+            ] 
+           }
+          ]
+        },
+        {
+          "main": "Why This Round Matters",
+          "subPoints": [
+            {
+              "type":"text",
+              "text":"Modern PMs must be data-driven. You'll regularly need to:"
+            },
+            {
+              "type":"ul",
+              "subPoints":[
+                "Build business cases with quantitative backing",
+                "Design and interpret experiments",
+                "Define success metrics for features",
+                "Make trade-off decisions between competing priorities",
+                "Communicate findings to technical and non-technical stakeholders"
+              ]
+            }
+          ]
+        },
+        {
+          "main": "Sample Questions with Context",
+          "subPoints": [
+              {
+                "title":"Market Sizing Example:",
+                "type":"ul",
+                "subPoints":[
+                    "\"Estimate the number of pizza deliveries in Chicago on a Friday night.\"",
+                    "<i>What they're testing:</i> Problem decomposition, reasonable assumptions, mathematical thinking."
+                ]
+              },
+             {
+                "title":"Metrics Example:",
+                "type":"ul",
+                "subPoints":[
+                    "\"You launch a 'Save for Later' feature on an e-commerce site. What metrics would you track?\"",
+                    "<i>What they're testing:</i> Understanding of user behavior, business impact, leading vs. lagging indicators."
+                ]
+              },
+              {
+                "title":"A/B Test Example:",
+                "type":"ul",
+                "subPoints":[
+                    "\"Version B increases sign-ups by 12% but decreases 30-day retention by 5%. Both results are statistically significant. Your recommendation?\"",
+                    "<i>What they're testing:</i> Ability to weigh trade-offs, understand long-term vs. short-term impact, make decisions with competing data."
+                ]
+              }
+          ]
+        },
+         {
+          "main": "Quick Tips for Success",
+          "subPoints": [
+              {
+                "type":"ul",
+                "subPoints":[
+                    "Think out loud - Share your reasoning process",
+                    "Ask clarifying questions - Show you understand the problem scope",
+                    "Make reasonable assumptions - State them clearly and explain why",
+                    "Structure your approach - Use frameworks to organize your thinking",
+                    "Check your math - Do quick sanity checks on your calculations"
+                ]
+              }
+          ]
+        }
+
+      ]
+    },
+    {
+      "title": "Estimation & Market Sizing Questions",
+      "completed": False,
+      "summary": "Market sizing questions ask you to estimate quantities without any data - like \"How many cups of coffee are sold in NYC daily?\" or \"How many people buy glasses in the US each year?\" These questions test your ability to break down ambiguous problems and make reasonable assumptions. The interviewer doesn't care about the exact answer - they want to see your structured thinking process.",
+      "content": "Market sizing questions ask you to estimate quantities without any data - like \"How many cups of coffee are sold in NYC daily?\" or \"How many people buy glasses in the US each year?\" These questions test your ability to break down ambiguous problems and make reasonable assumptions. The interviewer doesn't care about the exact answer - they want to see your structured thinking process.",
+      "type":"none",
+      "points": [
+        {
+          "main": "The 5-Step Framework",
+          "subPoints": [
+            {
+                "type":"text",
+                "text":"1. Clarify the question"
+            },
+            {
+                "type":"text",
+                "text":"\"Are we including all of NYC or just Manhattan? Coffee shops only or all coffee sales?\""
+            },
+            {
+                "type":"text",
+                "text":"2. Choose your approach"
+            },
+            {
+                "type":"ul",
+                "subPoints":[
+                    "Top-down: Start with population, narrow down",
+                    "Bottom-up: Count suppliers/locations, estimate volume"
+                ]
+            },
+            {
+                "type":"text",
+                "text":"3. Break into pieces"
+            },
+            {
+                "type":"text",
+                "text":"Don't estimate one huge number. Break it into smaller, manageable chunks."
+            },
+            {
+                "type":"text",
+                "text":"4. State assumptions clearly"
+            },
+            {
+                "type":"text",
+                "text":"\"I'm assuming 70% of people drink coffee and average 2 cups per day\""
+            },
+            {
+                "type":"text",
+                "text":"5. Sanity check"
+            },
+            {
+                "type":"text",
+                "text":"Does your final number make sense? Quick gut check."
+            }
+          ]
+        },
+        {
+          "main": "Example: \"How many cups of coffee sold in NYC daily?\"",
+          "subPoints": [
+            {
+                "type":"text",
+                "text":"Clarify: All five boroughs, all coffee sales"
+            },
+            {
+              "type":"text",
+              "text":"Approach: Top-down (population-based)"
+            },
+            {
+              "type":"text",
+              "text":"Break it down:"
+            },
+            {
+              "type":"ul",
+              "subPoints":[
+                "NYC population: 8.5M",
+                "Daily commuters: 1.5M",
+                "Tourists: 0.2M",
+                "Total people in NYC daily: 10M"
+              ]
+            },
+            {
+              "type":"text",
+              "text":"Assumptions:"
+            },
+            {
+              "type":"ul",
+              "subPoints":[
+                "70% drink coffee",
+                "Average 2 cups per day",
+                "10M × 0.7 × 2 = 14M cups daily"
+              ]
+            },
+            {
+              "type":"text",
+              "text":"Sanity check: 1.4 cups per person seems reasonable"
+            }
+            
+          ]
+        },
+        {
+          "main": "Example: \"How many people buy glasses in US annually?\"",
+          "subPoints": [
+            {
+                "type":"text",
+                "text":"Break it down:"
+            },
+           {
+            "type":"ul",
+            "subPoints":[
+              "US population: 330M",
+              "60% wear prescription glasses: 200M",
+              "Replace every 2.5 years on average"
+            ]
+           },
+           {
+            "type":"text",
+            "text":"Calculate: 200M ÷ 2.5 = 80M purchases annually"
+           },
+           {
+            "type":"text",
+            "text":"Sanity check: 1 in 4 Americans buy glasses yearly - makes sense"
+           }
+          ]
+        },
+       {
+          "main": "Key Tips",
+          "subPoints": [
+            {
+                "type":"ul",
+                "subPoints":[
+                  "Use round numbers (10M not 9.7M)",
+                  "Think out loud - show your process",
+                  "Make reasonable assumptions - don't get stuck on precision",
+                  "Segment when needed (urban vs rural, age groups)",
+                  "Always sanity check your final answer"
+                ]
+            }
+          ]
+        },
+        {
+          "main": "Common Mistakes",
+          "subPoints": [
+            {
+                "type":"ul",
+                "subPoints":[
+                  "Overthinking precision",
+                  "Getting stuck on unknowns",
+                  "Forgetting to check if answer makes sense",
+                  "Not stating assumptions clearly"
+                ]
+              }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Defining Product Metrics",
+      "completed": False,
+      "summary": "Metric definition questions ask you to identify how to measure success for a product or feature. The key is connecting business goals to measurable outcomes. Here is a concrete sample that can help you to structure your responses. ",
+      "content": "Metric definition questions ask you to identify how to measure success for a product or feature. The key is connecting business goals to measurable outcomes. Here is a concrete sample that can help you to structure your responses. ",
+      "type":"none",
+      "points": [
+        {
+          "main": "Framework: Goals → Leading → Lagging",
+          "subPoints": [
+            {
+              "title":"1. Understand the goal",
+              "type":"none",
+              "subPoints":[
+                "What is this product/feature trying to achieve?"
+              ]
+            },
+            {
+              "title":"2. Define leading indicators",
+              "type":"none",
+              "subPoints":[
+                "Early signals that predict success (user behavior, engagement)"
+              ]
+            },
+            {
+              "title":"3. Define lagging indicators",
+              "type":"none",
+              "subPoints":[
+                "Final outcomes that prove success (revenue, retention, growth)"
+              ]
+            }
+          ]
+        },
+        {
+          "main": "Example: Video Sharing Feature",
+          "subPoints": [
+            {
+                "type":"text",
+                "text":"Goal: Increase user engagement and content creation"
+            },
+           {
+                "title":"Leading metrics:",
+                "type":"ul",
+                "subPoints":[
+                  "Video upload rate",
+                  "Share button clicks",
+                  "Time spent watching videos"
+                ]
+            },
+            {
+                "title":"Lagging metrics:",
+                "type":"ul",
+                "subPoints":[
+                  "Monthly active users",
+                  "User retention (7-day, 30-day)",
+                  "Revenue per user"
+                ]
+            },
+            {
+                "title":"Answer structure:",
+                "type":"none",
+                "subPoints":[
+                  "\"I'd track video uploads daily as a leading indicator of content creation, and 30-day retention as a lagging indicator of whether the feature drives long-term engagement.\""
+                ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Diagnosing Metric Drops",
+      "completed": False,
+      "summary": "One of the analytical question can pose you to diagnose why certain metrics dropped for a feature or a product. When a key metric drops unexpectedly in a given problem, use the following systematic approach to find the root cause.",
+      "content": "One of the analytical question can pose you to diagnose why certain metrics dropped for a feature or a product. When a key metric drops unexpectedly in a given problem, use the following systematic approach to find the root cause.",
+      "type":"none",
+      "points": [
+        {
+          "main": "The PUTE Framework",
+          "subPoints": [
+            {
+                "type":"text",
+                "text":"Think through what recent changes could affect the metrics. Use the following framework as reference to diagnose the problem. Think through the:"
+            },
+             {
+                "title":"Product changes",
+                "type":"ul",
+                "subPoints":[
+                  "Recent feature launches",
+                  "A/B tests running",
+                  "Algorithm changes"
+                ]
+            },
+             {
+                "title":"User behavior change",
+                "type":"ul",
+                "subPoints":[
+                  "Seasonal patterns",
+                  "Cohort differences",
+                  "Geographic variations"
+                ]
+            },
+            {
+                "title":"Technical issues",
+                "type":"ul",
+                "subPoints":[
+                  "Bugs or outages",
+                  "Performance problems",
+                  "Tracking errors"
+                ]
+            },
+            {
+                "title":"External factors",
+                "type":"ul",
+                "subPoints":[
+                  "Competitor actions",
+                  "Market changes",
+                  "PR/news events"
+                ]
+            }
+          ]
+        },
+        {
+          "main": "For example if \"DAU dropped 20% overnight\"",
+          "subPoints": [
+            {
+              "title":"Step 1: Segment the data",
+              "type":"ul",
+              "subPoints":[
+                "Which user groups are affected?",
+                "What platforms/regions?",
+                "New vs returning users?"
+              ]
+            },
+              {
+              "title":"Step 2: Check timing",
+              "type":"ul",
+              "subPoints":[
+                "When exactly did it start?",
+                "Gradual or sudden drop?",
+                "Any releases that day?"
+              ]
+            },
+              {
+              "title":"Step 3: Investigate causes",
+              "type":"ul",
+              "subPoints":[
+                "Product: \"Did we launch anything new?\"",
+                "Technical: \"Any outages or bugs reported?\"",
+                "User behavior: \"Any changes in usage patterns?\"",
+                "External: \"Any competitor launches or news?\""
+              ]
+            },
+             {
+              "title":"Step 4: Prioritize investigation",
+              "type":"none",
+              "subPoints":[
+                "Start with most likely causes based on timing and magnitude. ",
+                "With enough practice these concepts will become easier and there will be less interview anxiety."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "A/B Test Design & Analysis",
+      "completed": False,
+      "summary": "In PM interviews, A/B testing questions test your ability to design experiments and make decisions from data. Keep it simple and business-focused.",
+      "content": "In PM interviews, A/B testing questions test your ability to design experiments and make decisions from data. Keep it simple and business-focused.",
+      "type":"none",
+      "points": [
+        {
+          "main": "4-Step Test Design",
+          "subPoints": [
+             {
+                "title":"1. Hypothesis",
+                "type":"none",
+                "subPoints":[
+                  "\"If [change], then [metric] will [improve X%] because [user reason]\""
+                ]
+            },
+             {
+                "title":"2. Setup",
+                "type":"ul",
+                "subPoints":[
+                  "Control: Current version",
+                  "Treatment: Your change",
+                  "Users: How many per group",
+                  "Duration: How long to run"
+                ]
+            },
+            {
+                "title":"3. Success metrics",
+                "type":"ul",
+                "subPoints":[
+                  "Primary: What you're optimizing",
+                  "Guardrails: What you can't break"
+                ]
+            },
+            {
+                "title":"4. Decision criteria",
+                "type":"ul",
+                "subPoints":[
+                  "What result makes you ship vs. kill the deal?"
+                ]
+            }
+          ]
+        },
+        {
+          "main": "Example: Testing Simplified Signup Flow",
+          "subPoints": [
+           {
+            "type":"text",
+            "text":"Hypothesis: \"If we reduce signup from 5 fields to 3, conversion will increase 20% because less friction\""
+           },
+          {
+            "title":"Setup:",
+            "type":"ul",
+            "subPoints":[
+              "Control: 5-field form",
+              "Treatment: 3-field form",
+              "2,000 users per group, 1 week"
+            ]
+          },
+            {
+            "title":"Metrics:",
+            "type":"ul",
+            "subPoints":[
+              "Primary: Signup completion rate",
+              "Guardrails: Profile completeness, user quality"
+            ]
+          },
+          {
+            "type":"text",
+            "text":"Decision: Ship if >10% improvement with no guardrail issues"
+          }
+           
+          ]
+        },
+         {
+          "main": "Analyzing Results",
+          "subPoints": [  
+           {
+            "type":"text",
+            "text":"Is the issue big enough? Does the improvement matter for business goals?"
+           },
+         {
+          "type":"text",
+          "text":"Are there any side effects? For instance, heck your guardrail metrics stayed stable."
+         },
+         {
+          "type":"text",
+          "text":"Always check if it works for everyone. Segment by user type, device, etc."
+         }
+           
+          ]
+        },
+        {
+          "main": "What Interviewers Want to See",
+          "subPoints": [  
+           {
+            "type":"ul",
+            "subPoints":[
+              "Clear hypothesis with business rationale",
+              "Thoughtful metric selection - primary + guardrails",
+              "Practical considerations - sample size, timing",
+              "Sound interpretation of results",
+              "Business judgment on what to do next"
+            ]
+         }
+           
+          ]
+        },
+         {
+          "main": "Quick Reminders",
+          "subPoints": [  
+           {
+            "type":"ul",
+            "subPoints":[
+              "Don't test everything at once",
+              "Run tests long enough for reliable data",
+              "Always check guardrail metrics",
+              "Tie results back to business impact",
+              "Have a plan before you start testing"
+            ]
+         }
+           
           ]
         }
       ]

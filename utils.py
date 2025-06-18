@@ -116,7 +116,9 @@ async def get_response(question,index):
                 return dResAns.product_sense, [], None
             if index==10:
                 return dResAns.product_strategy, [], None
-            
+            if index==11:
+                return dResAns.analytical_estimation, [], None
+
             async with aiohttp.ClientSession() as session:
                 async with session.post(
                     url="https://openrouter.ai/api/v1/chat/completions",
