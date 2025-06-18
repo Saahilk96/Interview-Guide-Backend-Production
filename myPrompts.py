@@ -1581,7 +1581,7 @@ Generate ONE open-ended product design question that:
 4. Requires the candidate to think through a standard product design process (understanding users/problems, brainstorming solutions, considering trade-offs/feasibility, defining success metrics).
 
     ----
-    Give me response in this JSON format only:
+    Give me response in this JSON format only and ensure do not use any *asterisk* symbols anywhere:
     {
     "quick_summary": "Very long information description that summarizes all of these cards or sub modules",
     "sub_modules": [
