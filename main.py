@@ -494,7 +494,7 @@ async def update_csv(updatecsvkey: str = Query(...)):
         raise HTTPException(status_code=400, detail="Incorrect CSV key")
 
     try:
-        file_path = await utils.fetch_data_and_convert_to_csv(googleAuth,waitList,blogPostWaitList)
+        file_path = await utils.fetch_data_and_convert_to_csv(googleAuth,waitList,blogPostWaitList,pricingWaitList)
         utils.upload_csv_to_drive(file_path)
         return JSONResponse(
             status_code=200,
