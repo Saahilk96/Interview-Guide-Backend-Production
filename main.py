@@ -13,7 +13,7 @@ import json
 from bson.json_util import dumps
 from werkzeug.utils import secure_filename
 from env import SECRET_KEY,ACCESS_KEY,UPDATE_CSV_KEY
-from database import googleAuth, userNotes,waitList,blogPostWaitList
+from database import googleAuth, userNotes,waitList,blogPostWaitList,pricingWaitList
 import utils
 import asyncio
 
@@ -566,6 +566,34 @@ async def join_waitlist_from_blog(
         )
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+@app.post("/join_waitlist_from_pricing")
+async def join_waitlist_from_pricing(
+    x_api_key: str = Header(..., alias="x-api-key"),
+    email: str = Form(...),
+    feature: str = Form("N/A"),
+    pay_range: str = Form("N/A")
+):
+    if x_api_key != ACCESS_KEY:
+        raise HTTPException(status_code=400, detail="Missing or invalid access key")
+
+    try:    
+        alreadyWaitlistUser = await pricingWaitList.find_one({"user_email":email})
+        if alreadyWaitlistUser:
+            await pricingWaitList.update_one({"user_email":email},{"$set":{"pay_range":pay_range,"feature":feature}})
+            return JSONResponse(
+            status_code=208,
+            content={"message": "user pricing waitlist updated"}
+        )
+
+        result = await pricingWaitList.insert_one({"user_email":email,"pay_range":pay_range,"feature":feature})
+        return JSONResponse(
+            status_code=200,
+            content={"message": "Joined waitlist"}
+        )
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 
 if __name__ == "__main__":
     import uvicorn
