@@ -1871,3 +1871,368 @@ analytical_estimation = {
   
   ]
 }
+
+
+behavioral_leadership = {
+    "type":"new1",
+"quick_summary": "",
+  "sub_modules": [
+    {
+      "title": "Understand the Company Culture",
+      "completed": False,
+      "summary": "Leadership isn't one-size-fits-all. The leadership that thrives at Amazon (structured, narrative-driven) is different from the leadership that thrives at Meta (fast, bottom-up). This interview is your chance to prove you are the right kind of leader for them. Your goal is to align your personal story with their company values.",
+      "content": "Leadership isn't one-size-fits-all. The leadership that thrives at Amazon (structured, narrative-driven) is different from the leadership that thrives at Meta (fast, bottom-up). This interview is your chance to prove you are the right kind of leader for them. Your goal is to align your personal story with their company values.",
+      "type":"ul",
+      "points": [
+        {
+          "main": "How to Decode Their Culture",
+          "subPoints": [
+            {
+              "type":"ol",
+              "subPoints":[
+                "Research Their Principles: Go beyond the mission statement. Read their leadership principles (like Amazon's 14 LPs) or engineering blogs. What behaviors do they explicitly celebrate? Is it \"Bias for Action\" or \"Think Big\"",
+                "Understand PM Influence: How do decisions <i>actually</i> get made? Is it through data-driven arguments (Google, Meta), detailed written narratives (Amazon), or strong design-led vision (Apple)?",
+                "Align Your Narrative: Intentionally choose stories from your past that reflect their values."
+              ]
+            },
+            {
+              "type":"ul",
+              "subPoints":[
+                "Interviewing at Meta? Tell the story of the fast, scrappy experiment you launched in two weeks to get data, not the one about the year-long waterfall project.",
+                "Interviewing at Amazon? Talk about a time you started with the customer's problem and worked backward, or when you had to dive deep into data to make a tough call."
+              ]
+            },
+            {
+              "type":"text",
+              "text":"Show them you not only understand their culture but that you've already lived it."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Your Story Bank",
+      "completed": False,
+      "summary": "Forget STAR and try using SPSIL for your next behavioral interview. It’s crucial to have a series of stories you have practiced prior to the interview for the most common behavioral interview. This framework will support you to craft a handful of powerful stories that will demonstrate your character, leadership and motivation to your interviewer. ",
+      "content": "Forget STAR and try using SPSIL for your next behavioral interview. It’s crucial to have a series of stories you have practiced prior to the interview for the most common behavioral interview. This framework will support you to craft a handful of powerful stories that will demonstrate your character, leadership and motivation to your interviewer. ",
+      "type":"none",
+      "points": [
+        {
+          "main": "SPSIL Framework",
+          "subPoints": [
+            {
+                "type":"text",
+                "text":"You need 3-5 powerful stories you can adapt to any behavioral question. The SPSIL format is more effective than STAR because there is a \"Lessons\" part that demonstrates introspection and key learnings from your role to show true leadership."
+            },
+            {
+              "type":"ul",
+              "subPoints":[
+              "S - Situation: One sentence. Minimal context.",
+              "P - Problem: The core challenge or conflict.",
+              "S - Solution: What you specifically did. Use \"I\" statements.",
+              "I - Impact: Quantify the result. Use numbers.",
+              "L - Lessons: What you learned about yourself or your process."
+              ]
+            },
+            {
+              "title":"Sample story of leadership & influence:",
+              "subPoints":[
+                "My team was assigned to build a \"pet project\" from a senior VP. The team was demotivated because the project had no clear user need and would distract from our core goals. I built a simple opportunity cost model showing that the project would delay our main roadmap by 2 months, putting our $5M revenue goal at risk. I presented this data to the VP, acknowledging his idea's potential but framing it against our primary commitments. He agreed to de-prioritize the project, saving the team from months of wasted work and keeping our core goals on track. I learned that the most effective way to influence up is to frame the discussion around shared goals and objective data, not opinions."
+              ]
+            }
+          ]
+        }
+        ]
+    },
+    {
+      "title": "Practice Techniques That Actually Work",
+      "completed": False,
+      "summary": "There are five main themes of questions you will get asked about during your behavioral interview. The practical tips is here to help you practice delivering your SPSIL stories during the interview. ",
+      "content": "There are five main themes of questions you will get asked about during your behavioral interview. The practical tips is here to help you practice delivering your SPSIL stories during the interview. ",
+      "type":"none",
+      "points": [
+        {
+          "main": "Prepare for these five themes by mapping your SPSIL stories to them.",
+          "subPoints": [
+            {
+              "type":"ol",
+              "subPoints":[
+                "Drive & Motivation: Why Product Management? Why this company?",
+                "Leading & Managing Conflict: Tell me about a time you disagreed with a stakeholder? How do you handle difficult teammates?",
+                "Driving Results: Tell me about a time you had to deliver with limited resources or data.",
+                "Growth & Learning: What's a major failure you've had? Tell me about a time you had to learn a new skill quickly.",
+                "Cross-Functional Collaboration: How do you align multiple teams? Tell me about a project that involved marketing, sales, and engineering."
+              ]
+            }
+          ]
+        },
+        {
+          "main": "Here is how you can practice to deliver your story during the interview:",
+          "subPoints": [
+          {
+            "type":"ul",
+            "subPoints":[
+              "Whiteboard / Sticky Notes: Write your core stories (just the SPSIL bullet points) on sticky notes. Have a friend ask you random behavioral questions. Practice grabbing the right story and adapting it on the fly. This builds mental flexibility and stops you from sounding like a robot.",
+              "Voice Memo Playback",
+              "Record yourself answering a question. Play it back.This is the fastest way to catch filler words (\"um,\" \"like,\" \"you know\"), rambling, and awkward pacing. It's painful but incredibly effective.",
+              "Peer Mock Interviews: Find another PM who is also prepping. Use the prompts in this guide and give each other honest, direct feedback. This is the best way to simulate the pressure of a live interview.",
+              "The Leadership Grid (Pro Tip): Create a spreadsheet. Make the rows your SPSIL stories. Make the columns the company's leadership principles (e.g., Amazon's LPs). This forces you to map every story to a value, ensuring you're always communicating in a way that resonates with the interviewer's own framework for success."
+            ]
+          }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Behavioral Question Scenario",
+      "completed": False,
+      "summary": "This section will help you exercise key muscles for your behavioral interview and guide your thinking to choose a solid example. This is very comprehensive so only choose the sections that seem most relevant to the company’s values. ",
+      "content": "This section will help you exercise key muscles for your behavioral interview and guide your thinking to choose a solid example. This is very comprehensive so only choose the sections that seem most relevant to the company’s values. ",
+      "type":"none",
+      "points": [
+        {
+          "main": "Customer Obsession",
+          "subPoints": [
+            {
+                "type":"text",
+                "text":"Think about a time you put the customer first, even when it wasn’t easy or convenient. This is about working vigorously to earn and keep customer trust."
+            },
+            {
+              "type":"text",
+              "text":"To help you choose a strong moment, consider these questions:"
+            },
+             {
+                "type":"ul",
+                "subPoints":[
+                  "Was this a situation with a single, high-stakes customer, or did your actions impact a broad group of users?",
+                  "What was the central conflict? Were you balancing the customer's needs against a technical limitation, a business policy, or a tight deadline?",
+                  "What was the risk if you failed to act? Losing the customer, damaging the brand's reputation, or missing a key opportunity?"
+                ]
+            }
+          ]
+        },
+        {
+          "main": "Ownership",
+          "subPoints": [
+            {
+              "type":"text",
+              "text":"Recall a time you stepped up and took full ownership, acting on behalf of the entire company, not just your own team. Let's get specific: "
+            },
+            {
+              "type":"ol",
+              "subPoints":[
+                "Was this a project or task that no one else wanted, or was it something that had been dropped or was failing?",
+                "What was the potential negative outcome if you hadn't taken responsibility?",
+                "Did you have to make a decision or take a risk without a clear green light from your manager?"
+              ]
+            }
+          ]
+        },
+        {
+          "main": "Module 3: Invent & Simplify",
+          "subPoints": [
+            {
+              "type":"text",
+              "text":"Recall a time you made a process, product, or service simpler, smarter, or more efficient. Leaders simplify, they don't add complexity. To surface your best story, consider these questions:"
+            },
+            {
+              "type":"ol",
+              "subPoints":[
+                "What was the complex or inefficient process? How much time or effort was it wasting?",
+                "Did you invent a completely new solution or find a clever way to streamline an existing one?",
+                "Was your solution scalable? Could it be used by others beyond your immediate team?"
+              ]
+            }
+          ]
+        },
+        {
+          "main": "Are Right, A Lot",
+          "subPoints": [
+            {
+              "type":"text",
+              "text":"This principle, ”Are Right, A Lot,” is about having strong judgment and good instincts. Help me reflect on a time you made a tough call with incomplete data, or a time you made a mistake and learned from it. Let's dig a little deeper:"
+            },
+            {
+              "type":"ol",
+              "subPoints":[
+                "What was the situation? Were you disagreeing with the popular opinion or your manager?",
+                "What data did you have, and what data were you missing? How did you bridge that gap to make a call?",
+                "If you were wrong, how did you recognize it and what did you do to correct the course?"
+              ]
+            }
+          ]
+        },
+         {
+          "main": "Insist on the Highest Standards",
+          "subPoints": [
+            {
+              "type":"text",
+              "text":"Let's discuss a time you had to maintain high standards. This isn't about perfection; it's about continuously raising the bar and driving teams to deliver high-quality work. Think about a time when \"good enough\" wasn't good enough."
+            },
+            {
+              "type":"ol",
+              "subPoints":[
+                "Did you have to push back on a teammate, or even your manager, to fix something that was subpar?",
+                "Was this a case of catching a subtle but important issue before a launch or deadline?",
+                "How did you provide this tough feedback or champion the higher standard without alienating your team?"
+              ]
+            }
+          ]
+        },
+         {
+          "main": "Learn & Be Curious",
+          "subPoints": [
+            {
+              "type":"text",
+              "text":"Leaders are never done learning. Help me reflect on a moment where your personal curiosity led to a valuable insight or a positive business impact. To help clarify the moment, let's think through:"
+            },
+            {
+              "type":"ol",
+              "subPoints":[
+                "Was there a question you asked that nobody else was asking?",
+                "Did you investigate a piece of data or a customer comment that others had dismissed?",
+                "Did your curiosity lead you to explore a new tool, skill, or industry trend that ultimately helped your team?"
+              ]
+            }
+          ]
+        },
+        {
+          "main": "Think Big",
+          "subPoints": [
+            {
+              "type":"text",
+              "text":"Think about a time when you had to think big. This is about creating and communicating a bold direction that inspires results, moving beyond incremental thinking. To find a powerful example, let's focus on these questions:"
+            },
+            {
+              "type":"ol",
+              "subPoints":[
+                "What was the original, smaller scope of the project or initiative?",
+                "What was the bold or ambitious vision you pitched instead? How did it connect to a larger customer or business goal?",
+                "How did you inspire others to get on board with this bigger idea?"
+              ]
+            }
+          ]
+        },
+         {
+          "main": "Bias for Action",
+          "subPoints": [
+            {
+              "type":"text",
+              "text":"Speed matters in business. Let's reflect on a time you moved quickly, took calculated risks, and made things happen. To recall a good moment, think about these prompts:",
+            },
+            {
+              "type":"ol",
+              "subPoints":[
+                "Was there a project that was blocked or stuck in \"analysis paralysis\"? How did you unblock it?",
+                "Did you have to make a fast decision with limited information to seize an opportunity or solve a problem?",
+                "How did you balance the need for speed with the need to be careful?"
+              ]
+            }
+          ]
+        },
+         {
+          "main": "Frugality",
+          "subPoints": [
+            {
+              "type":"text",
+              "text":"Reflect on a time you got scrappy, innovative, and self-sufficient. To find the best story, let's ask:",
+            },
+            {
+              "type":"ol",
+              "subPoints":[
+                "Were you faced with a challenge where you had no budget, or a budget was suddenly cut?",
+                "Did you find a way to save the company significant money or, just as importantly, significant time?",
+                "Did you hack together a solution using existing resources instead of buying a new, expensive tool?"
+              ]
+            }
+          ]
+        },
+        {
+          "main": "Earn Trust",
+          "subPoints": [
+            {
+              "type":"text",
+              "text":"Leaders listen attentively, speak candidly, and treat others respectfully. Think of a moment you built or rebuilt trust, especially when it was difficult. Let's focus with these follow-up questions:",
+            },
+            {
+              "type":"ol",
+              "subPoints":[
+                "Did you have to admit a mistake you made and communicate its impact to others?",
+                "Did you need to give difficult but necessary feedback to a colleague or manager?",
+                "How did you build credibility with a skeptical stakeholder or a new team?"
+              ]
+            }
+          ]
+        },
+        {
+          "main": "Dive Deep",
+          "subPoints": [
+            {
+              "type":"text",
+              "text":"Leaders operate at all levels, stay connected to the details, and are skeptical when metrics and anecdotes differ. Reflect on a time you went beyond the surface level to investigate something."
+            },
+            {
+              "type":"ol",
+              "subPoints":[
+                "Was there a metric that seemed \"off\" or too good to be true?",
+                "Did you have to audit a process or system to find the true root cause of a problem?",
+                "What was the key insight you discovered that others had missed?"
+              ]
+            }
+          ]
+        },
+        {
+          "main": "Disagree & Commit",
+          "subPoints": [
+            {
+              "type":"text",
+              "text":"This principle is about fostering healthy debate but, once a decision is made, supporting it wholly. Reflect on a time you respectfully challenged a decision, but ultimately committed to the team's chosen path."
+            },
+            {
+              "type":"ol",
+              "subPoints":[
+                "What was the decision being made, and why did you disagree with it? What was your alternative proposal?",
+                "How did you voice your disagreement respectfully and professionally?",
+                "Once the decision was made against your recommendation, what specific actions did you take to help the chosen path succeed?"
+              ]
+            }
+          ]
+        },
+        {
+          "main": "Hire & Develop the Best",
+          "subPoints": [
+            {
+              "type":"text",
+              "text":"Leaders recognize and develop great talent. This isn't just for managers; it's about mentoring, coaching, and raising the performance bar. Reflect on a time you helped someone else grow."
+            },
+            {
+              "type":"ol",
+              "subPoints":[
+                "Did you mentor a junior colleague or a new hire?",
+                "Did you help a teammate overcome a challenge or develop a new skill?",
+                "How did you identify their potential or their specific need for development?"
+              ]
+            }
+          ]
+        },
+        {
+          "main": "Deliver Results",
+          "subPoints": [
+            {
+              "type":"text",
+              "text":"This is a key principle about focusing on the right inputs and delivering them on time and with high quality, even in the face of setbacks. Reflect on a time you delivered, even when things got tough.",
+            },
+            {
+              "type":"ol",
+              "subPoints":[
+                "What was the key obstacle or ambiguity you faced? A budget cut, a change in strategy, a tight deadline?",
+                "How did you adapt your approach to overcome this challenge?",
+                "How did you keep yourself and your team focused on the final goal?"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

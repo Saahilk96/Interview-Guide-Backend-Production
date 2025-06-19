@@ -118,6 +118,8 @@ async def get_response(question,index):
                 return dResAns.product_strategy, [], None
             if index==11:
                 return dResAns.analytical_estimation, [], None
+            if index==5:
+                return dResAns.behavioral_leadership, [], None
 
             async with aiohttp.ClientSession() as session:
                 async with session.post(
