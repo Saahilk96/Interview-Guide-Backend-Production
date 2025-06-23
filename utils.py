@@ -118,6 +118,8 @@ async def get_response(question,index):
                 return dResAns.product_strategy, [], None
             if index==11:
                 return dResAns.analytical_estimation, [], None
+            # if index==12:
+            #     return dResAns.technical, [], None
             if index==5:
                 return dResAns.behavioral_leadership, [], None
 
@@ -248,7 +250,17 @@ SERVICE_ACCOUNT_FILE = save_service_account_file()
 
 async def fetch_data_and_convert_to_csv(googleAuthCollection, waitListCollection,blogPostWaitList,pricingWaitList):
     # Fetch data from googleAuthCollection
-    google_cursor = googleAuthCollection.find({}, {'_id': 0, 'name': 1, 'email': 1, 'createdAt': 1})
+    google_cursor = googleAuthCollection.aggregate([
+  {
+    "$project": {
+      "_id": 0,
+      "name": 1,
+      "email": 1,
+      "createdAt": 1,
+      "generatedGuides": { "$size": "$history" }
+    }
+  }
+])
     google_data = await google_cursor.to_list(length=None)
 
     # Format createdAt field in google_data
