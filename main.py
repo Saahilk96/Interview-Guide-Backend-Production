@@ -594,6 +594,17 @@ async def join_waitlist_from_pricing(
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+# @app.post("/delete_user")
+# async def delete_user(
+#     email: str = Form(...)
+# ):
+   
+#     await googleAuth.delete_many({"email":email,"history":[]})
+
+#     return JSONResponse(
+#             status_code=200,
+#             content={"message": "Deleted user"}
+#         )
 
 if __name__ == "__main__":
     import uvicorn
