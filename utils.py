@@ -178,6 +178,33 @@ async def get_response(question,index):
                     tool_args = data.get("choices", [])[0].get("message", {}).get("tool_calls", [])[0].get("function", {}).get("arguments", "{}")
                     parsed_response = json.loads(tool_args)
 
+                    questions = [
+                        {
+                            "question":"What do you know about Google's business model and how does the company make money?",
+                            "answer":""
+                        },
+                        {
+                            "question":"How would you describe Google's mission and how does it align with your career goals?",
+                            "answer":""
+                        },
+                        {
+                            "question":"What recent developments or initiatives at Google excite you the most?",
+                            "answer":""
+                        },
+                        {
+                            "question":"How do you see Google's role in the AI and machine learning landscape?",
+                            "answer":""
+                        },
+                        {
+                            "question":"What challenges do you think Google faces in maintaining its market position?",
+                            "answer":""
+                        }
+                    ]
+
+                    if index==0:
+                        parsed_response["questions"]=questions
+                        return parsed_response, citations, None
+
                     return parsed_response, citations, None
         except Exception as e:
             print(f"[ASYNC] Error: {e}, retrying in 2 seconds...")
@@ -349,7 +376,6 @@ async def fetch_data_and_convert_to_csv(googleAuthCollection, waitListCollection
 
     return excel_path
 
-
 # Upload or update CSV to Google Drive
 def upload_csv_to_drive(file_path):
     creds = service_account.Credentials.from_service_account_file(
@@ -371,3 +397,37 @@ def upload_csv_to_drive(file_path):
             body=file_metadata, media_body=media, fields='id'
         ).execute()
         print(f"Uploaded CSV File ID: {file.get('id')}")
+
+async def generate_answer(question):
+    model = "google/gemini-2.5-flash-preview-05-20"
+
+    request_payload = {
+        "model": model,
+        "plugins": [],
+        "messages": [
+            {"role": "user", "content": f"Generate answer for this question in 1-2 sentences: '{question}'"}
+        ]
+    }
+
+    while True:
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.post(
+                    url="https://openrouter.ai/api/v1/chat/completions",
+                    headers={
+                        "Authorization": f"Bearer {API_KEY}",
+                        "Content-Type": "application/json"
+                    },
+                    data=json.dumps(request_payload)
+                ) as response:
+                    data = await response.json()
+
+                    # Extract the response content
+                    content = data.get("choices", [])[0].get("message", {}).get("content", "")
+
+                    # If the content is already a plain string (not a JSON string), just return it
+                    return content
+
+        except Exception as e:
+            print(f"[ASYNC] Error: {e}, retrying in 2 seconds...")
+            await asyncio.sleep(2)

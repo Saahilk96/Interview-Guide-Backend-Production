@@ -596,6 +596,30 @@ async def join_waitlist_from_pricing(
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+@app.post("/generate_answer")
+async def generate_answer(
+    x_api_key: str = Header(..., alias="x-api-key"),
+    question: str = Form(...)
+):
+    if x_api_key != ACCESS_KEY:
+        raise HTTPException(status_code=400, detail="Missing or invalid access key")
+
+    try:
+        answer = await utils.generate_answer(question)
+        return {
+                "status": "Ok",
+                "message":"Answer generated successfully",
+                "answer":answer
+            }
+
+
+    except ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token has expired")
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 # @app.post("/delete_user")
 # async def delete_user(
 #     email: str = Form(...)
