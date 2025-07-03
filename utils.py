@@ -99,6 +99,38 @@ async def get_response(question,index):
                     }
                 }
             }
+        ] if index!=2 else [
+            {
+                "type": "function",
+                "function": {
+                    "name": "structured_module_output",
+                    "description": "",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "quick_summary": {
+                                "type": "string",
+                                "description": ""
+                            },
+                            "sub_modules": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "title": {"type": "string", "description": ""},
+                                        "completed": {"type": "boolean", "description": ""},
+                                        "summary": {"type": "string", "description": ""},
+                                        "content": {"type": "string", "description": ""},
+                                        "htmlContent": {"type":"string","description":""}
+                                    },
+                                    "required": ["title", "completed", "summary", "content", "htmlContent"]
+                                }
+                            }
+                        },
+                        "required": ["quick_summary", "sub_modules"]
+                    }
+                }
+            }
         ],
         "tool_choice": {
             "type": "function",
@@ -107,7 +139,6 @@ async def get_response(question,index):
             }
         }
     }
-
 
     # Retry loop
     while True:
@@ -226,27 +257,6 @@ def save_service_account_file():
     return file_path
 
 SERVICE_ACCOUNT_FILE = save_service_account_file()
-
-# Convert MongoDB collection data to CSV
-# async def fetch_data_and_convert_to_csv(googleAuthCollection,waitListCollecton):
-#     cursor = googleAuthCollection.find({}, {'_id': 0, 'name': 1, 'email': 1, 'createdAt': 1})
-#     data = await cursor.to_list(length=None)
-
-#     for doc in data:
-#         if 'createdAt' in doc and isinstance(doc['createdAt'], datetime):
-#             doc['createdAt'] = doc['createdAt'].strftime('%d %b, %Y %H:%M:%S')
-#         elif 'createdAt' in doc:
-#             try:
-#                 doc['createdAt'] = datetime.fromisoformat(
-#                     str(doc['createdAt']).replace('Z', '+00:00')
-#                 ).strftime('%d %b, %Y %H:%M:%S')
-#             except Exception:
-#                 doc['createdAt'] = ''
-
-#     df = pd.DataFrame(data)
-#     csv_path = "data.csv"
-#     df.to_csv(csv_path, index=False)
-#     return csv_path
 
 async def fetch_data_and_convert_to_csv(googleAuthCollection, waitListCollection,blogPostWaitList,pricingWaitList):
     # Fetch data from googleAuthCollection

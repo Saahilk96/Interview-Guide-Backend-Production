@@ -579,19 +579,23 @@ Card 1: Core Role & Responsibilities
 
     Summary: Analysis of the main purpose of the role and key tasks specified in the JD, interpreted for their significance.
 
-    Points:
+    htmlContent:
 
-        mainPoint: Primary Mission / Underlying Need
+        - Wrap the entire content in a `<div>` with proper padding and spacing.
+- Use modern UI practices inspired by Clerk UI: soft shadows, rounded corners, spacing between sections, clean typography, and logical layout grouping.
+- Use Tailwind utility classes only for layout, text, cards, dividers, tables, etc.
+- Include:
+  - Headings for each main point (e.g., “Primary Mission / Underlying Need”)
+  - Sub-points as bullet lists or brief paragraphs depending on their content
+  - Tables if grouping helps clarity
+  - Dividers (`<hr>`) between sections
+- Ensure good use of whitespace and spacing to avoid clutter
+- All points must be converted into attractive, modern, readable HTML
+- Do not add any asterisk symbols anywhere
+- Begin the HTML directly with a `<div>` tag (do not include `<html>`, `<head>`, etc.)
+- Do not include title "Core Role & Responsibilities" and description just start with points
+- Include proper spacing classes between list,etc.
 
-            subPoints: Based on the responsibilities and objectives listed, articulate the fundamental problem this role is hired to solve for the company or product team. Explain the significance of this mission and why it's likely a priority now, drawing inferences from the JD text and **Do not add any Asterisk symbol anywhere**.
-
-        mainPoint: Key Responsibility Areas & PM Activities
-
-            subPoints: Break down the main tasks mentioned in the JD into logical groupings (e.g., Product Strategy, Execution, GTM, Analysis). For each, explain what the JD says is required and why it's important for this specific role. Connect responsibilities to typical PM functions and translate jargon into actionable terms (e.g., "owning the roadmap" likely means defining priorities and communicating trade-offs) and **Do not add any Asterisk symbol anywhere**.
-
-        mainPoint: Areas of Specific Emphasis or Complexity
-
-            subPoints: Identify any responsibility or task mentioned multiple times, listed first, or given particular detail/weight in the JD. Analyze why this area is likely a key focus for the hiring manager and what inherent complexities or challenges it might involve based on the JD's description **Do not add any Asterisk symbol anywhere**.
 
 Card 2: Required Skills & Experience
 
@@ -599,23 +603,19 @@ Card 2: Required Skills & Experience
 
     Summary: Interpretation of the essential and preferred qualifications sought, explaining their relevance to the role's demands.
 
-    Points:
+    htmlContent:
+    - Begin directly with a `<div>` tag (do not include `<html>`, `<head>`, etc.)
+- Wrap the entire content in a properly padded and spaced `<div>`
+- Use a card-style layout with rounded corners, subtle shadows, and good spacing
+- Use headings for the card title and section titles (e.g., “Essential Hard Skills / Technical Requirements”)
+- Use readable font sizes, consistent spacing, and neutral color palette like Clerk UI
+- Use bullet points or paragraphs for sub-points
+- Use dividers (`<hr>`) between each main section
+- Include explanation text for each sub-point where applicable
+- Do not add any asterisk symbol anywhere in the entire HTML
+- Do not include title "Required Skills & Experience" and description just start with points
+- Include proper spacing classes between list,etc.
 
-        mainPoint: Essential Hard Skills / Technical Requirements
-
-            subPoints: List specific technical skills, tools, methodologies, or domain knowledge explicitly required. If none are specific, state this clearly ("Specific required technical skills not listed"). For each required skill, explain how it directly applies to fulfilling the responsibilities listed in Card 1 and why it's critical for success in this specific role based on the JD and *Do not add any Asterisk symbol anywhere*.
-
-        mainPoint: Critical Soft Skills & Attributes
-
-            subPoints: List essential communication, collaboration, leadership, or other behavioral attributes mentioned. Analyze why these specific soft skills are crucial for success, connecting them to the team structure (Card 4), stakeholder interactions, or challenges implied by the JD and *Do not add any Asterisk symbol anywhere*.
-
-        mainPoint: Required Experience Level & Domain
-
-            subPoints: Specify the minimum years of experience, industry domain, or functional experience requested. Analyze what this requirement suggests about the expected level of autonomy, complexity, or specific challenges the candidate will need to handle.
-
-        mainPoint: Preferred / Standout Qualifications
-
-            subPoints: List any 'nice-to-have' qualifications. Analyze what these preferred items reveal about the ideal candidate profile, potential future needs of the team/role, or areas where a candidate could truly differentiate themselves.
 
 Card 3: Defining Success & Measuring Impact
 
@@ -623,23 +623,20 @@ Card 3: Defining Success & Measuring Impact
 
     Summary: Analysis of how performance will be measured and the expected tangible outcomes of the role, based on explicit and inferred JD points.
 
-    Points:
+    htmlContent:
 
-        mainPoint: Explicitly Stated Success Metrics / KPIs
+        - Begin the content directly with a <div> (no <html>, <head>, etc.)
+- Wrap the card in a max-width container with padding, rounded corners, and soft shadows
+- Use section headers (e.g., “Explicitly Stated Success Metrics / KPIs”) as bold, readable titles
+- Render summary as a short paragraph below the card title
+- Format sub-points as bullet lists or concise paragraphs, styled with good spacing and readability
+- Insert horizontal dividers (`<hr>`) between sections
+- Maintain a minimal, neutral color scheme with Tailwind classes for text, background, spacing, and layout
+- Use whitespace, padding, and font-weight to create a clear hierarchy
+- Do not add any asterisk symbols anywhere
+- Do not include title "Defining Success & Measuring Impact" and description just start with points
+- Include proper spacing classes between list,etc.
 
-            subPoints: List any specific metrics, goals, or KPIs mentioned in the JD (e.g., "increase user engagement," "achieve revenue target," "deliver on time"). Clearly state if "Specific metrics/KPIs not explicitly listed." For any metrics found, explain how successful execution of the responsibilities listed in Card 1 would directly influence these metrics.
-
-        mainPoint: Implied Success Indicators
-
-            subPoints: Based on the responsibilities, objectives, and desired outcomes described, infer other ways performance will likely be judged, even without explicit metrics (e.g., quality of strategic input, effectiveness of collaboration, user satisfaction outcomes, successful feature adoption). Explain the reasoning for each inference drawn from the JD text.
-
-        mainPoint: Expected Business / Product Impact
-
-            subPoints: Synthesize the desired tangible outcomes of the role's success for the product, team, or the business as a whole, based on statements in the JD (e.g., market share growth, operational efficiency, user base expansion). Explain the significance of this impact from a strategic perspective.
-
-        mainPoint: Connecting Success to Interview Examples
-
-            subPoints: Based on the metrics, implied indicators, and expected impact, suggest the types of interview examples (using STAR method or similar) the candidate should prepare to demonstrate their ability to achieve these specific outcomes or deliver this kind of impact.
 
 Card 4: Team, Collaboration & Reporting Structure
 
@@ -647,23 +644,19 @@ Card 4: Team, Collaboration & Reporting Structure
 
     Summary: Analysis of the organizational context, including reporting lines, key partners, and the expected style and challenges of collaboration.
 
-    Points:
+    htmlContent:
+    - Start directly with a <div> tag (do not include <html>, <head>, etc.)
+- Wrap everything inside a container with padding, rounded corners, and soft shadows
+- Use well-structured headings for card title and section titles
+- Display the summary as a short paragraph under the card title
+- Present sub-points as clearly formatted text or bullet points
+- Insert <hr> elements between main sections for separation
+- Use neutral, readable typography with good spacing and layout
+- Follow a professional style similar to Clerk UI (spaced layout, minimalist design, soft shadows)
+- Avoid any use of asterisk symbols
+- Do not include title "Team, Collaboration & Reporting Structure" and description just start with points
+- Include proper spacing classes between list,etc.
 
-        mainPoint: Reporting Structure
-
-            subPoints: State who the role reports to, if specified. Clearly state if "Reporting structure not specified in JD." Analyze what this reporting line might mean for the role's level of autonomy, strategic alignment, and typical interactions (e.g., reporting to a Director might mean less day-to-day guidance, reporting to a Senior PM might imply mentorship) and *Do not add any Asterisk symbol anywhere*.
-
-        mainPoint: Key Internal Collaborators / Stakeholders
-
-            subPoints: List specific internal teams or roles mentioned as partners (e.g., Engineering, Design, Marketing, Sales). For each, explain the nature of the collaboration implied by the JD's description of tasks (e.g., "collaborate closely with Engineering on technical feasibility and execution," "work with Marketing on GTM strategy and messaging") and *Do not add any Asterisk symbol anywhere*.
-
-        mainPoint: Key External Collaborators / Relationships
-
-            subPoints: List any external groups mentioned (e.g., customers, partners, suppliers). Explain the purpose and type of interaction with these external parties based on the JD. State if "Key external collaborators not specified in JD." and and *Do not add any Asterisk symbol anywhere*.
-
-        mainPoint: Implied Collaboration Style & Potential Challenges
-
-            subPoints: Analyze the JD text for clues about the required collaboration style (e.g., highly cross-functional, consensus-driven, requiring significant influence without direct authority, global/distributed). Based on the number and type of collaborators, point out any potential challenges in managing dependencies, competing priorities, or communication that are suggested by the structure and *Do not add any Asterisk symbol anywhere*.
 
 Card 5: Strategic Context & Role Significance
 
@@ -671,23 +664,22 @@ Card 5: Strategic Context & Role Significance
 
     Summary: Places the role within the broader company and product strategy, interpreting why this position is important now and its potential impact.
 
-    Points:
+    htmlContent:
 
-        mainPoint: The Company's Need for this Role
+        - Begin the HTML directly with a <div> tag (no <html>, <head>, etc.)
+- Use a card-style container with padding, rounded corners, shadows, and max width
+- The title should be prominent with large, bold font
+- Display the summary (if any) or introductory sentence using muted text under the title
+- For each main point:
+  - Use a clear subheading (e.g., “The Company's Need for this Role”)
+  - Present sub-points as paragraphs or bullet points with soft text color
+- Use <hr> to separate main points
+- Follow professional UI/UX principles like good whitespace, text hierarchy, and spacing
+- Make everything visually clean, responsive, and styled like Clerk UI
+- Do not include any asterisk symbols anywhere in the HTML
+- Do not include title "Strategic Context & Role Significance" and description just start with points
+- Include proper spacing classes between list,etc.
 
-            subPoints: Synthesize why the company is hiring for this position specifically at this time, based on the problems the role is intended to solve or the initiatives it supports (Card 1 analysis). Explain what strategic gap or opportunity the role is designed to address according to the JD. and *Do not add any Asterisk symbol anywhere*
-
-        mainPoint: Contribution to Broader Product / Company Strategy
-
-            subPoints: Explain how successful execution of this role's responsibilities directly contributes to the company's overall product vision, business objectives, or strategic priorities mentioned or implied in the JD. Connect the specific tasks to the bigger picture. and *Do not add any Asterisk symbol anywhere*
-
-        mainPoint: Potential Strategic Challenges or Opportunities
-
-            subPoints: Identify any strategic challenges (e.g., competitive intensity, market maturity, technological shifts) or significant opportunities (e.g., untapped market segment, new platform adoption) that the role is intended to navigate, address, or capitalize on, as suggested by the JD. and *Do not add any Asterisk symbol anywhere*
-
-        mainPoint: Role Autonomy and Influence Level
-
-            subPoints: Based on the responsibilities (Card 1), required experience level (Card 2), reporting structure (Card 4), and strategic context, infer the expected level of autonomy the person in this role will have and their potential for influencing product decisions and cross-functional teams and *Do not add any Asterisk symbol anywhere*.
 
 Card 6: Key Themes & Interview Angles
 
@@ -695,23 +687,20 @@ Card 6: Key Themes & Interview Angles
 
     Summary: Synthesizes overarching themes from the JD and suggests areas to focus on during interview preparation and discussion.
 
-    Points:
+    htmlContent:
+    - Start the content directly with a <div> (no <html> or <head>)
+- Use a card-style layout with appropriate padding, spacing, and rounded corners
+- Include a bold, clear card title and a paragraph summary at the top
+- For each main point:
+  - Use a subheading with distinct font size and color
+  - Display sub-points as readable paragraphs or lists
+- Insert horizontal <hr> elements to visually separate each main section
+- Maintain a soft color palette, readable font, good whitespace, and balanced spacing — like Clerk UI
+- The layout should be fully responsive and clean without visual clutter
+- Do not use any asterisk symbol anywhere
+- Do not include title "Key Themes & Interview Angles" and description just start with points
+- Include proper spacing classes between list,etc.
 
-        mainPoint: Overarching Themes & Priorities
-
-            subPoints: Identify 2-3 major themes that appear repeatedly or are given significant weight throughout the JD (e.g., "Execution Focus," "Customer Obsession," "Data-Driven Decision Making," "Cross-functional Leadership," "Innovation"). Explain how these themes are reflected across the responsibilities and requirements and *Do not add any Asterisk symbol anywhere*.
-
-        mainPoint: Areas Likely to be Deeply Probed
-
-            subPoints: Based on the required skills, areas of emphasis, and potential challenges identified in the previous cards, highlight specific topics or experiences the candidate should be prepared to discuss in detail. This is where the interviewer will likely probe for depth and *Do not add any Asterisk symbol anywhere*.
-
-        mainPoint: How to Align Your Experience
-
-            subPoints: Provide actionable guidance on how the candidate should frame their past experiences to align directly with the core requirements, skills, and strategic context identified in this analysis. Suggest focusing examples (e.g., using STAR) on the most emphasized responsibilities and demonstrating the required skills and impact and *Do not add any Asterisk symbol anywhere*.
-
-        mainPoint: Insightful Questions to Ask
-
-            subPoints: Generate 3-5 potential questions the candidate could ask their interviewers, derived directly from ambiguities, strategic points, potential challenges, or missing information identified during this JD analysis. Frame these as questions that show thoughtful engagement with the role and its context and *Do not add any Asterisk symbol anywhere*.
 ----
 in each sub module the completed must be false only
 
@@ -726,164 +715,591 @@ in each sub module the completed must be false only
 "completed":false,
         "summary": "a full summary text of some long length that summarizes all these modules",
         "content": "some full long information text",
-        "points": [
-            {
-            "main": "Primary Mission / Underlying Need",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            {
-            "main": "Key Responsibility Areas & PM Activities",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            {
-            "main": "Areas of Specific Emphasis or Complexity",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            {
-            "main": "some main title",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            {
-            "main": "some main title",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            {
-            "main": "some main title",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            "..."
-        ]
+        "htmlContent":"
+        Primary Mission / Underlying Need
+
+information description 1
+
+information description 2
+
+...
+
+Key Responsibility Areas & PM Activities
+
+information description 1
+
+information description 2
+
+...
+
+Areas of Specific Emphasis or Complexity
+
+information description 1
+
+information description 2
+
+...
+
+some main title
+
+information description 1
+
+information description 2
+
+...
+
+some main title
+
+information description 1
+
+information description 2
+
+...
+
+some main title
+
+information description 1
+
+information description 2
+
+...
+        "
         },
         {
         "title": "Required Skills & Experience",
 "completed":false,
         "summary": "a full summary text of some long length that summarizes all these modules",
         "content": "some full long information text",
-        "points": [
-            {
-            "main": "Essential Hard Skills / Technical Requirements",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            {
-            "main": "Critical Soft Skills & Attributes",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            {
-            "main": "Required Experience Level & Domain",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-             {
-            "main": "Preferred / Standout Qualifications",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            "..."
-        ]
+        "htmlContent":"
+        Essential Hard Skills / Technical Requirements
+
+information description 1
+
+information description 2
+
+...
+
+Critical Soft Skills & Attributes
+
+information description 1
+
+information description 2
+
+...
+
+Required Experience Level & Domain
+
+information description 1
+
+information description 2
+
+...
+
+Preferred / Standout Qualifications
+
+information description 1
+
+information description 2
+
+...
+
+
+        "
         },
         {
         "title": "Defining Success & Measuring Impact",
 "completed":false,
         "summary": "a full summary text of some long length that summarizes all these modules",
         "content": "some full long information text",
-        "points": [
-            {
-            "main": "Explicitly Stated Success Metrics / KPIs",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            {
-            "main": "Implied Success Indicators",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            {
-            "main": "Expected Business / Product Impact",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            {
-            "main": "Connecting Success to Interview Examples",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            "..."
-        ]
+        "htmlContent":"
+        Explicitly Stated Success Metrics / KPIs
+
+information description 1
+
+information description 2
+
+...
+
+Implied Success Indicators
+
+information description 1
+
+information description 2
+
+...
+
+Expected Business / Product Impact
+
+information description 1
+
+information description 2
+
+...
+
+Connecting Success to Interview Examples
+
+information description 1
+
+information description 2
+
+...
+        "
         },
         {
         "title": "Team, Collaboration & Reporting Structure",
 "completed":false,
         "summary": "a full summary text of some long length that summarizes all these modules",
         "content": "some full long information text",
-        "points": [
-            {
-            "main": "Reporting Structure",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            {
-            "main": "Key Internal Collaborators / Stakeholders",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            {
-            "main": "Key External Collaborators / Relationships",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            {
-            "main": "Implied Collaboration Style & Potential Challenges",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            "..."
-        ]
+        "htmlContent":"
+        Reporting Structure
+
+information description 1
+
+information description 2
+
+...
+
+Key Internal Collaborators / Stakeholders
+
+information description 1
+
+information description 2
+
+...
+
+Key External Collaborators / Relationships
+
+information description 1
+
+information description 2
+
+...
+
+Implied Collaboration Style & Potential Challenges
+
+information description 1
+
+information description 2
+
+...
+        "
         },
         {
         "title": "Strategic Context & Role Significance",
 "completed":false,
         "summary": "a full summary text of some long length that summarizes all these modules",
         "content": "some full long information text",
-        "points": [
-            {
-            "main": "The Company's Need for this Role",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            {
-            "main": "Contribution to Broader Product / Company Strategy",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            {
-            "main": "Potential Strategic Challenges or Opportunities",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            {
-            "main": "Role Autonomy and Influence Level",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            "..."
-        ]
+        "htmlContent":"
+        The Company's Need for this Role
+
+information description 1
+
+information description 2
+
+...
+
+Contribution to Broader Product / Company Strategy
+
+information description 1
+
+information description 2
+
+...
+
+Potential Strategic Challenges or Opportunities
+
+information description 1
+
+information description 2
+
+...
+
+Role Autonomy and Influence Level
+
+information description 1
+
+information description 2
+
+...
+        "
         },
          {
         "title": "Key Themes & Interview Angles",
 "completed":false,
         "summary": "a full summary text of some long length that summarizes all these modules",
         "content": "some full long information text",
-        "points": [
-            {
-            "main": "Overarching Themes & Priorities",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            {
-            "main": "Areas Likely to be Deeply Probed",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            {
-            "main": "How to Align Your Experience",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            {
-            "main": "Insightful Questions to Ask",
-            "subPoints": ["information description 1", "information description 2", "..."]
-            },
-            "..."
-        ]
+        "htmlContent":"
+        Overarching Themes & Priorities
+
+information description 1
+
+information description 2
+
+...
+
+Areas Likely to be Deeply Probed
+
+information description 1
+
+information description 2
+
+...
+
+How to Align Your Experience
+
+information description 1
+
+information description 2
+
+...
+
+Insightful Questions to Ask
+
+information description 1
+
+information description 2
+
+...
+        "
         }
     ]
     }
 
     ''')
     return job_description_analysis
+
+# def job_description_analysis_fun(data):
+#     job_description_analysis = (f'''Analyse this entire {data}'''
+                                
+#                                 '''
+#     ----
+#    # Job Description Analysis —> Decode The Role (JD Analysis)
+
+# **Updated Plain Text Breakdown (Module 3: Decode the Role - 4 Cards):**
+
+# **Module Title:** Decode the Role
+
+# Quick Summary Instructions:
+
+#     Generate a concise (3-4 sentence) overview.
+
+#     Explicitly state that this analysis is based only on the provided JD text.
+
+#     Synthesize the role's core purpose, the most critical skill/experience emphasized, the primary way success appears to be measured, and the main organizational context (reporting line or key collaborators).
+
+# ---
+
+# Card 1: Core Role & Responsibilities
+
+#     Title: Core Role & Responsibilities
+
+#     Summary: Analysis of the main purpose of the role and key tasks specified in the JD, interpreted for their significance.
+
+#     Points:
+
+#         mainPoint: Primary Mission / Underlying Need
+
+#             subPoints: Based on the responsibilities and objectives listed, articulate the fundamental problem this role is hired to solve for the company or product team. Explain the significance of this mission and why it's likely a priority now, drawing inferences from the JD text and **Do not add any Asterisk symbol anywhere**.
+
+#         mainPoint: Key Responsibility Areas & PM Activities
+
+#             subPoints: Break down the main tasks mentioned in the JD into logical groupings (e.g., Product Strategy, Execution, GTM, Analysis). For each, explain what the JD says is required and why it's important for this specific role. Connect responsibilities to typical PM functions and translate jargon into actionable terms (e.g., "owning the roadmap" likely means defining priorities and communicating trade-offs) and **Do not add any Asterisk symbol anywhere**.
+
+#         mainPoint: Areas of Specific Emphasis or Complexity
+
+#             subPoints: Identify any responsibility or task mentioned multiple times, listed first, or given particular detail/weight in the JD. Analyze why this area is likely a key focus for the hiring manager and what inherent complexities or challenges it might involve based on the JD's description **Do not add any Asterisk symbol anywhere**.
+
+# Card 2: Required Skills & Experience
+
+#     Title: Required Skills & Experience
+
+#     Summary: Interpretation of the essential and preferred qualifications sought, explaining their relevance to the role's demands.
+
+#     Points:
+
+#         mainPoint: Essential Hard Skills / Technical Requirements
+
+#             subPoints: List specific technical skills, tools, methodologies, or domain knowledge explicitly required. If none are specific, state this clearly ("Specific required technical skills not listed"). For each required skill, explain how it directly applies to fulfilling the responsibilities listed in Card 1 and why it's critical for success in this specific role based on the JD and *Do not add any Asterisk symbol anywhere*.
+
+#         mainPoint: Critical Soft Skills & Attributes
+
+#             subPoints: List essential communication, collaboration, leadership, or other behavioral attributes mentioned. Analyze why these specific soft skills are crucial for success, connecting them to the team structure (Card 4), stakeholder interactions, or challenges implied by the JD and *Do not add any Asterisk symbol anywhere*.
+
+#         mainPoint: Required Experience Level & Domain
+
+#             subPoints: Specify the minimum years of experience, industry domain, or functional experience requested. Analyze what this requirement suggests about the expected level of autonomy, complexity, or specific challenges the candidate will need to handle.
+
+#         mainPoint: Preferred / Standout Qualifications
+
+#             subPoints: List any 'nice-to-have' qualifications. Analyze what these preferred items reveal about the ideal candidate profile, potential future needs of the team/role, or areas where a candidate could truly differentiate themselves.
+
+# Card 3: Defining Success & Measuring Impact
+
+#     Title: Defining Success & Measuring Impact
+
+#     Summary: Analysis of how performance will be measured and the expected tangible outcomes of the role, based on explicit and inferred JD points.
+
+#     Points:
+
+#         mainPoint: Explicitly Stated Success Metrics / KPIs
+
+#             subPoints: List any specific metrics, goals, or KPIs mentioned in the JD (e.g., "increase user engagement," "achieve revenue target," "deliver on time"). Clearly state if "Specific metrics/KPIs not explicitly listed." For any metrics found, explain how successful execution of the responsibilities listed in Card 1 would directly influence these metrics.
+
+#         mainPoint: Implied Success Indicators
+
+#             subPoints: Based on the responsibilities, objectives, and desired outcomes described, infer other ways performance will likely be judged, even without explicit metrics (e.g., quality of strategic input, effectiveness of collaboration, user satisfaction outcomes, successful feature adoption). Explain the reasoning for each inference drawn from the JD text.
+
+#         mainPoint: Expected Business / Product Impact
+
+#             subPoints: Synthesize the desired tangible outcomes of the role's success for the product, team, or the business as a whole, based on statements in the JD (e.g., market share growth, operational efficiency, user base expansion). Explain the significance of this impact from a strategic perspective.
+
+#         mainPoint: Connecting Success to Interview Examples
+
+#             subPoints: Based on the metrics, implied indicators, and expected impact, suggest the types of interview examples (using STAR method or similar) the candidate should prepare to demonstrate their ability to achieve these specific outcomes or deliver this kind of impact.
+
+# Card 4: Team, Collaboration & Reporting Structure
+
+#     Title: Team, Collaboration & Reporting Structure
+
+#     Summary: Analysis of the organizational context, including reporting lines, key partners, and the expected style and challenges of collaboration.
+
+#     Points:
+
+#         mainPoint: Reporting Structure
+
+#             subPoints: State who the role reports to, if specified. Clearly state if "Reporting structure not specified in JD." Analyze what this reporting line might mean for the role's level of autonomy, strategic alignment, and typical interactions (e.g., reporting to a Director might mean less day-to-day guidance, reporting to a Senior PM might imply mentorship) and *Do not add any Asterisk symbol anywhere*.
+
+#         mainPoint: Key Internal Collaborators / Stakeholders
+
+#             subPoints: List specific internal teams or roles mentioned as partners (e.g., Engineering, Design, Marketing, Sales). For each, explain the nature of the collaboration implied by the JD's description of tasks (e.g., "collaborate closely with Engineering on technical feasibility and execution," "work with Marketing on GTM strategy and messaging") and *Do not add any Asterisk symbol anywhere*.
+
+#         mainPoint: Key External Collaborators / Relationships
+
+#             subPoints: List any external groups mentioned (e.g., customers, partners, suppliers). Explain the purpose and type of interaction with these external parties based on the JD. State if "Key external collaborators not specified in JD." and and *Do not add any Asterisk symbol anywhere*.
+
+#         mainPoint: Implied Collaboration Style & Potential Challenges
+
+#             subPoints: Analyze the JD text for clues about the required collaboration style (e.g., highly cross-functional, consensus-driven, requiring significant influence without direct authority, global/distributed). Based on the number and type of collaborators, point out any potential challenges in managing dependencies, competing priorities, or communication that are suggested by the structure and *Do not add any Asterisk symbol anywhere*.
+
+# Card 5: Strategic Context & Role Significance
+
+#     Title: Strategic Context & Role Significance
+
+#     Summary: Places the role within the broader company and product strategy, interpreting why this position is important now and its potential impact.
+
+#     Points:
+
+#         mainPoint: The Company's Need for this Role
+
+#             subPoints: Synthesize why the company is hiring for this position specifically at this time, based on the problems the role is intended to solve or the initiatives it supports (Card 1 analysis). Explain what strategic gap or opportunity the role is designed to address according to the JD. and *Do not add any Asterisk symbol anywhere*
+
+#         mainPoint: Contribution to Broader Product / Company Strategy
+
+#             subPoints: Explain how successful execution of this role's responsibilities directly contributes to the company's overall product vision, business objectives, or strategic priorities mentioned or implied in the JD. Connect the specific tasks to the bigger picture. and *Do not add any Asterisk symbol anywhere*
+
+#         mainPoint: Potential Strategic Challenges or Opportunities
+
+#             subPoints: Identify any strategic challenges (e.g., competitive intensity, market maturity, technological shifts) or significant opportunities (e.g., untapped market segment, new platform adoption) that the role is intended to navigate, address, or capitalize on, as suggested by the JD. and *Do not add any Asterisk symbol anywhere*
+
+#         mainPoint: Role Autonomy and Influence Level
+
+#             subPoints: Based on the responsibilities (Card 1), required experience level (Card 2), reporting structure (Card 4), and strategic context, infer the expected level of autonomy the person in this role will have and their potential for influencing product decisions and cross-functional teams and *Do not add any Asterisk symbol anywhere*.
+
+# Card 6: Key Themes & Interview Angles
+
+#     Title: Key Themes & Interview Angles
+
+#     Summary: Synthesizes overarching themes from the JD and suggests areas to focus on during interview preparation and discussion.
+
+#     Points:
+
+#         mainPoint: Overarching Themes & Priorities
+
+#             subPoints: Identify 2-3 major themes that appear repeatedly or are given significant weight throughout the JD (e.g., "Execution Focus," "Customer Obsession," "Data-Driven Decision Making," "Cross-functional Leadership," "Innovation"). Explain how these themes are reflected across the responsibilities and requirements and *Do not add any Asterisk symbol anywhere*.
+
+#         mainPoint: Areas Likely to be Deeply Probed
+
+#             subPoints: Based on the required skills, areas of emphasis, and potential challenges identified in the previous cards, highlight specific topics or experiences the candidate should be prepared to discuss in detail. This is where the interviewer will likely probe for depth and *Do not add any Asterisk symbol anywhere*.
+
+#         mainPoint: How to Align Your Experience
+
+#             subPoints: Provide actionable guidance on how the candidate should frame their past experiences to align directly with the core requirements, skills, and strategic context identified in this analysis. Suggest focusing examples (e.g., using STAR) on the most emphasized responsibilities and demonstrating the required skills and impact and *Do not add any Asterisk symbol anywhere*.
+
+#         mainPoint: Insightful Questions to Ask
+
+#             subPoints: Generate 3-5 potential questions the candidate could ask their interviewers, derived directly from ambiguities, strategic points, potential challenges, or missing information identified during this JD analysis. Frame these as questions that show thoughtful engagement with the role and its context and *Do not add any Asterisk symbol anywhere*.
+# ----
+# in each sub module the completed must be false only
+
+# ---
+#     ----
+#     Give me response in this JSON format only and `do not add any asterisk symbol in subPoints`:
+#     {
+#     "quick_summary": "Very long information description that summarizes all of these cards or sub modules",
+#     "sub_modules": [
+#         {
+#         "title": "Core Role & Responsibilities",
+# "completed":false,
+#         "summary": "a full summary text of some long length that summarizes all these modules",
+#         "content": "some full long information text",
+#         "points": [
+#             {
+#             "main": "Primary Mission / Underlying Need",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             {
+#             "main": "Key Responsibility Areas & PM Activities",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             {
+#             "main": "Areas of Specific Emphasis or Complexity",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             {
+#             "main": "some main title",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             {
+#             "main": "some main title",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             {
+#             "main": "some main title",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             "..."
+#         ]
+#         },
+#         {
+#         "title": "Required Skills & Experience",
+# "completed":false,
+#         "summary": "a full summary text of some long length that summarizes all these modules",
+#         "content": "some full long information text",
+#         "points": [
+#             {
+#             "main": "Essential Hard Skills / Technical Requirements",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             {
+#             "main": "Critical Soft Skills & Attributes",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             {
+#             "main": "Required Experience Level & Domain",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#              {
+#             "main": "Preferred / Standout Qualifications",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             "..."
+#         ]
+#         },
+#         {
+#         "title": "Defining Success & Measuring Impact",
+# "completed":false,
+#         "summary": "a full summary text of some long length that summarizes all these modules",
+#         "content": "some full long information text",
+#         "points": [
+#             {
+#             "main": "Explicitly Stated Success Metrics / KPIs",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             {
+#             "main": "Implied Success Indicators",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             {
+#             "main": "Expected Business / Product Impact",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             {
+#             "main": "Connecting Success to Interview Examples",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             "..."
+#         ]
+#         },
+#         {
+#         "title": "Team, Collaboration & Reporting Structure",
+# "completed":false,
+#         "summary": "a full summary text of some long length that summarizes all these modules",
+#         "content": "some full long information text",
+#         "points": [
+#             {
+#             "main": "Reporting Structure",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             {
+#             "main": "Key Internal Collaborators / Stakeholders",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             {
+#             "main": "Key External Collaborators / Relationships",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             {
+#             "main": "Implied Collaboration Style & Potential Challenges",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             "..."
+#         ]
+#         },
+#         {
+#         "title": "Strategic Context & Role Significance",
+# "completed":false,
+#         "summary": "a full summary text of some long length that summarizes all these modules",
+#         "content": "some full long information text",
+#         "points": [
+#             {
+#             "main": "The Company's Need for this Role",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             {
+#             "main": "Contribution to Broader Product / Company Strategy",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             {
+#             "main": "Potential Strategic Challenges or Opportunities",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             {
+#             "main": "Role Autonomy and Influence Level",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             "..."
+#         ]
+#         },
+#          {
+#         "title": "Key Themes & Interview Angles",
+# "completed":false,
+#         "summary": "a full summary text of some long length that summarizes all these modules",
+#         "content": "some full long information text",
+#         "points": [
+#             {
+#             "main": "Overarching Themes & Priorities",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             {
+#             "main": "Areas Likely to be Deeply Probed",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             {
+#             "main": "How to Align Your Experience",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             {
+#             "main": "Insightful Questions to Ask",
+#             "subPoints": ["information description 1", "information description 2", "..."]
+#             },
+#             "..."
+#         ]
+#         }
+#     ]
+#     }
+
+#     ''')
+#     return job_description_analysis
 
 def resume_experience_to_highlight_to_stand_out_fun(data):
     resume_experience_to_highlight_to_stand_out =  (f'''Analyse this entire {data}'''

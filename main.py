@@ -16,6 +16,8 @@ from env import SECRET_KEY,ACCESS_KEY,UPDATE_CSV_KEY
 from database import googleAuth, userNotes,waitList,blogPostWaitList,pricingWaitList
 import utils
 import asyncio
+import aiohttp
+from env import API_KEY
 
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -605,6 +607,317 @@ async def join_waitlist_from_pricing(
 #             status_code=200,
 #             content={"message": "Deleted user"}
 #         )
+
+# @app.post("/test_module")
+# async def test_module(
+#     x_api_key: str = Header(..., alias="x-api-key"),
+#     company_name: str = Form(...),
+#     job_role: str = Form(...),
+#     job_description: str = Form(...),
+#     token: str = Form(...),
+#     resume: Optional[UploadFile] = File(None)
+# ):
+#     if x_api_key != ACCESS_KEY:
+#         raise HTTPException(status_code=400, detail="Missing or invalid access key")
+
+#     try:
+#         resume_text = ''
+        
+#         if resume and resume.filename != '':
+#             filename = secure_filename(resume.filename)
+#             file_path = os.path.join(UPLOAD_FOLDER, filename)
+#             with open(file_path, "wb") as f:
+#                 f.write(await resume.read())
+
+#             reader = PyPDF2.PdfReader(file_path)
+#             for page in reader.pages:
+#                 resume_text += page.extract_text() or ""
+
+#             os.remove(file_path)
+#         else:
+#             raise HTTPException(status_code=400, detail="Resume is required")
+
+#         data = {
+#             "company_name": company_name,
+#             "job_role": job_role,
+#             "job_description": job_description,
+#             "token": token,
+#             "resume": resume_text
+#         }
+
+#         company_research = (f'''
+# <role>
+# You are an expert research assistant specializing in company intelligence for job interview preparation.
+# You use web search (powered by Exa AI through OpenRouter) to gather and verify current information about companies.
+# Model: Gemini 2.5 Flash
+# </role>
+
+# <task>
+# Create a concise, visually rich company profile in **HTML using Tailwind CSS** for interview candidates.
+# Input data: {data}
+# </task>
+
+# <requirements>
+# ⚠️ REQUIREMENTS:
+# - Do **not** include `<!DOCTYPE html>`, `<html>`, `<head>`, or `<body>`
+# - Do **not** add any class or attributes to the topmost parent `<div>`
+# - Start directly with styled content blocks
+# - Wrap **all URLs** in `<a>` tags with Tailwind styling
+# - Include relevant **images** using `<img>` tags with proper sizing, alignment, shape, and alt text where it adds value
+# </requirements>
+
+# <writing_style>
+# Style: “Smart Brief” – like a sharp friend prepping you fast.
+# - Max 20 words per sentence
+# - Active voice
+# - Add context that matters
+# - Be concise, not robotic or flowery
+# </writing_style>
+
+# <output_format>
+# ✅ Begin output with HTML content only (no document structure)  
+# ✅ Use Tailwind CSS classes for all formatting  
+
+# ✅ Sections:
+# ```html
+# <div class="bg-white p-6 rounded-xl shadow border-l-4 border-blue-600 space-y-2">
+# ✅ Headings:
+
+# Title:
+
+# html
+# Copy
+# Edit
+# <h1 class="text-3xl font-extrabold text-center text-gray-900 mb-6">[Company Name] – Interview Brief</h1>
+# Section header:
+
+# html
+# Copy
+# Edit
+# <h2 class="text-2xl font-bold text-blue-800 mb-2">
+# ✅ Text:
+
+# Paragraph: <p class="text-gray-700 leading-relaxed">
+
+# Missing info: <p class="text-gray-500 italic">Information not available from current sources.</p>
+
+# Emphasize key terms with: <strong class="text-gray-900 font-semibold">
+
+# ✅ Lists:
+
+# html
+# Copy
+# Edit
+# <ul class="list-disc list-inside marker:text-green-600 text-gray-700 space-y-1">
+#   <li>Global team spread across 15 countries</li>
+# </ul>
+# ✅ Tables:
+
+# html
+# Copy
+# Edit
+# <table class="w-full border-collapse text-sm text-left">
+#   <thead class="bg-gray-100 text-gray-700">
+#     <tr>
+#       <th class="px-4 py-2 font-semibold">Fact</th>
+#       <th class="px-4 py-2">Details</th>
+#     </tr>
+#   </thead>
+#   <tbody class="divide-y divide-gray-200">
+#     <tr>
+#       <td class="px-4 py-2 font-medium text-gray-800">Founded</td>
+#       <td class="px-4 py-2">2014 by ex-Amazon engineers</td>
+#     </tr>
+#   </tbody>
+# </table>
+# ✅ URLs (always clickable):
+
+# html
+# Copy
+# Edit
+# <a href="https://example.com" class="text-blue-600 underline hover:text-blue-800" target="_blank" rel="noopener noreferrer">example.com</a>
+# ✅ Badges:
+
+# html
+# Copy
+# Edit
+# <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Private</span>
+# ✅ Separators:
+
+# html
+# Copy
+# Edit
+# <hr class="my-6 border-t border-gray-300">
+# ✅ Emojis:
+# Use to enhance clarity (📍 location, 💼 team, 🚀 product, 🧠 insight, 🔒 security)
+
+# ✅ ✅ Images:
+# Use only when relevant — e.g., product images, team photos, logos, UI screenshots, etc.
+# Use this pattern:
+
+# html
+# Copy
+# Edit
+# <img src="https://example.com/logo.png" alt="Company logo" class="w-32 h-32 object-contain mx-auto rounded-full shadow mb-4" />
+# w-32 h-32 for controlled size
+
+# mx-auto for center alignment
+
+# rounded, rounded-full, shadow, object-contain for clean UI look
+
+# ✅ Sections to Include:
+
+# Company Snapshot
+
+# Key Facts
+
+# What They Build
+
+# Business Model
+
+# Target Market
+
+# Market Position
+
+# Leadership
+
+# Recent Momentum
+
+# Sources (with all links in <a>)
+
+# ✅ Content limit: Under 500 words (excluding HTML)
+# </output_format>
+
+# <search_requirements>
+
+# Use search for every section
+
+# At least 2 sources per fact (1 if from company website or SEC)
+
+# Prioritize 2020–2025 events
+# </search_requirements>
+
+# <company_identification>
+
+# Match using COMPANY NAME and WEBSITE
+
+# Cross-check with job description and industry
+# </company_identification>
+
+# <search_strategy>
+# Use focused searches:
+
+# "[Company Name] company profile"
+
+# "[Company Name] founder and start year"
+
+# "[Company Name] headquarters employee count"
+
+# "[Company Name] product offerings"
+
+# "[Company Name] revenue model"
+
+# "[Company Name] customer base"
+
+# "[Company Name] main competitors"
+
+# "[Company Name] CEO 2024"
+
+# "[Company Name] recent funding, acquisition, layoffs 2020–2025"
+# </search_strategy>
+
+# <missing_information_handling>
+# If info is not found or verified:
+
+# Use: <p class="text-gray-500 italic">Information not available from current sources.</p>
+# </missing_information_handling>
+
+# <leadership_verification>
+
+# Find current CEO, Head of Product, and Head of Engineering (2024–2025)
+
+# Use company site, press, or LinkedIn
+
+# Use placeholder if not found:
+
+# html
+# Copy
+# Edit
+# <p class="text-gray-500 italic">Current [position] not available</p>
+# </leadership_verification>
+
+# <quality_requirements>
+
+# Prioritize clarity, usefulness, and strong visual layout
+
+# Every sentence must add new insight
+
+# Avoid repetition, vague phrases, or unnecessary detail
+
+# Use layout spacing, color, icons, and media for strong UI
+# </quality_requirements>
+# ''')
+        
+#         async with aiohttp.ClientSession() as session:
+#             async with session.post(
+#                 url="https://openrouter.ai/api/v1/chat/completions",
+#         headers={
+#             "Authorization": f"Bearer {API_KEY}",
+#             "Content-Type": "application/json"
+#         },
+#         data=json.dumps({
+#         "model": "google/gemini-2.5-flash-preview-05-20",
+#         "plugins": [{"id": "web", "max_results": 10}],
+#         "messages": [
+#             {"role": "user", "content": company_research}
+#         ],
+#         "tools":[
+#             {
+#   "name": "generateHtmlWithTailwind",
+#   "description": "Generates HTML content styled with Tailwind CSS based on a user query",
+#   "parameters": {
+#     "type": "object",
+#     "properties": {
+#       "topic": {
+#         "type": "string",
+#         "description": "The topic to generate HTML content for"
+#       }
+#     },
+#     "required": ["topic"]
+#   }
+# }
+#         ],
+#          "tool_choice": {
+#             "type": "function",
+#             "function": {
+#                 "name": "generateHtmlContent"
+#             }
+#         }
+#         })
+#         ) as response:
+#                 data = await response.json()
+
+#                 citations = []
+#                 annotations = data.get("choices", [])[0].get("message", {}).get("annotations", [])
+#                 for annotation in annotations:
+#                     url_citation = annotation.get("url_citation", {})
+#                     url_citation.pop("start_index", None)
+#                     url_citation.pop("end_index", None)
+#                     citations.append(url_citation)
+
+#                 # tool_args = data.get("choices", [])[0].get("message", {}).get("tool_calls", [])[0].get("function", {}).get("arguments", "{}")
+#                 # parsed_response = json.loads(tool_args)
+
+#                 # return parsed_response, citations, None
+#                 return {"data":data}
+
+#     except ExpiredSignatureError:
+#         raise HTTPException(status_code=401, detail="Token has expired")
+#     except JWTError:
+#         raise HTTPException(status_code=401, detail="Invalid token")
+#     except Exception as e:
+#         raise HTTPException(status_code=400, detail=str(e))
+
 
 if __name__ == "__main__":
     import uvicorn
