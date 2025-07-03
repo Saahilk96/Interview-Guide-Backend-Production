@@ -19,6 +19,7 @@ from googleapiclient.http import MediaFileUpload
 import aiohttp
 import asyncio
 import dResAns
+import summaryPrompts
 
 def generatePrompts(data):
     data1 = "{\\n company_name:'"+data['company_name']+(f",\n company_website:{data.get('company_website', '')}" if data.get("company_website") else "")+"',\\n job_role:'"+data['job_role']+"',\\n job_description:'"+data['job_description']+("',\\n resume:'"+data['resume']+"'\\n }" if data['resume'] else "")
@@ -203,6 +204,28 @@ async def get_response(question,index):
 
                     if index==0:
                         parsed_response["questions"]=questions
+
+                        async with aiohttp.ClientSession() as session:
+                            async with session.post(
+                    url="https://openrouter.ai/api/v1/chat/completions",
+                    headers={
+                        "Authorization": f"Bearer {API_KEY}",
+                        "Content-Type": "application/json"
+                    },
+                    data=json.dumps({
+        "model": "deepseek/deepseek-chat-v3-0324:free",
+        "plugins": [],
+        "messages": [
+            {"role": "user", "content": summaryPrompts.generate_executive_summary_prompt(parsed_response)}]})
+                ) as response:
+                                data = await response.json()
+
+                    # Extract the response content
+                                htmlSummary = data.get("choices", [])[0].get("message", {}).get("content", "")
+                                parsed_response["htmlSummary"] = htmlSummary
+
+                                return parsed_response, citations, None
+
                         return parsed_response, citations, None
 
                     return parsed_response, citations, None
@@ -399,7 +422,7 @@ def upload_csv_to_drive(file_path):
         print(f"Uploaded CSV File ID: {file.get('id')}")
 
 async def generate_answer(question):
-    model = "google/gemini-2.5-flash-preview-05-20"
+    model = "deepseek/deepseek-chat-v3-0324:free"
 
     request_payload = {
         "model": model,
@@ -408,7 +431,6 @@ async def generate_answer(question):
             {"role": "user", "content": f"Generate answer for this question in 1-2 sentences: '{question}'"}
         ]
     }
-
     while True:
         try:
             async with aiohttp.ClientSession() as session:
