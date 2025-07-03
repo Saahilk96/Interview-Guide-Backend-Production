@@ -20,6 +20,7 @@ import aiohttp
 import asyncio
 import dResAns
 import summaryPrompts
+import staticQuestions
 
 def generatePrompts(data):
     data1 = "{\\n company_name:'"+data['company_name']+(f",\n company_website:{data.get('company_website', '')}" if data.get("company_website") else "")+"',\\n job_role:'"+data['job_role']+"',\\n job_description:'"+data['job_description']+("',\\n resume:'"+data['resume']+"'\\n }" if data['resume'] else "")
@@ -179,31 +180,8 @@ async def get_response(question,index):
                     tool_args = data.get("choices", [])[0].get("message", {}).get("tool_calls", [])[0].get("function", {}).get("arguments", "{}")
                     parsed_response = json.loads(tool_args)
 
-                    questions = [
-                        {
-                            "question":"What do you know about Google's business model and how does the company make money?",
-                            "answer":""
-                        },
-                        {
-                            "question":"How would you describe Google's mission and how does it align with your career goals?",
-                            "answer":""
-                        },
-                        {
-                            "question":"What recent developments or initiatives at Google excite you the most?",
-                            "answer":""
-                        },
-                        {
-                            "question":"How do you see Google's role in the AI and machine learning landscape?",
-                            "answer":""
-                        },
-                        {
-                            "question":"What challenges do you think Google faces in maintaining its market position?",
-                            "answer":""
-                        }
-                    ]
-
                     if index==0:
-                        parsed_response["questions"]=questions
+                        parsed_response["questions"]=staticQuestions.companyResearchQuestions
 
                         async with aiohttp.ClientSession() as session:
                             async with session.post(
@@ -216,7 +194,7 @@ async def get_response(question,index):
         "model": "deepseek/deepseek-chat-v3-0324:free",
         "plugins": [],
         "messages": [
-            {"role": "user", "content": summaryPrompts.generate_executive_summary_prompt(parsed_response)}]})
+            {"role": "user", "content": summaryPrompts.generate_company_research_prompt(parsed_response)}]})
                 ) as response:
                                 data = await response.json()
 
@@ -226,7 +204,31 @@ async def get_response(question,index):
 
                                 return parsed_response, citations, None
 
-                        return parsed_response, citations, None
+
+                    if index==1:
+                        parsed_response["questions"]=staticQuestions.productResearchQuestions
+
+                        async with aiohttp.ClientSession() as session:
+                            async with session.post(
+                    url="https://openrouter.ai/api/v1/chat/completions",
+                    headers={
+                        "Authorization": f"Bearer {API_KEY}",
+                        "Content-Type": "application/json"
+                    },
+                    data=json.dumps({
+        "model": "deepseek/deepseek-chat-v3-0324:free",
+        "plugins": [],
+        "messages": [
+            {"role": "user", "content": summaryPrompts.generate_product_research_prompt(parsed_response)}]})
+                ) as response:
+                                data = await response.json()
+
+                    # Extract the response content
+                                htmlSummary = data.get("choices", [])[0].get("message", {}).get("content", "")
+                                parsed_response["htmlSummary"] = htmlSummary
+
+                                return parsed_response, citations, None
+
 
                     return parsed_response, citations, None
         except Exception as e:
