@@ -568,7 +568,8 @@ REQUIRED INFORMATION CATEGORIES (Map these to the JSON structure):
         </div>
       "
     }
-  ]
+  ],
+  "questions":"You are an expert interviewer. Your task is to generate relevant and insightful interview questions for a candidate applying for a [job_role] position at [company]. **IMPORTANT:** Do not generate any answers, only the questions. Please generate 5-7 distinct interview questions that cover a range of areas crucial for evaluating a candidate for this role. These should include: * **Company Knowledge & Alignment:** Questions that assess their understanding of [company]'s business model, mission, values, and how their aspirations align. * **Role-Specific Skills & Experience:** Questions tailored to the core responsibilities and technical or functional skills required for a [job_role]. * **Behavioral & Situational Scenarios:** Questions that uncover their problem-solving abilities, teamwork experience, leadership potential, and how they handle challenges or setbacks. * **Industry & Future Trends:** Questions about current trends, challenges, or the future direction of the industry relevant to [company] and the [job_role]'s field. Ensure all questions are open-ended, designed to encourage detailed and thoughtful responses. --- **Replace `[company]` with the actual company name** (e.g., "Google", "Microsoft", "Tata Consultancy Services") and **`[job_role]` with the specific job role** (e.g., "Software Engineer", "Marketing Manager", "Data Scientist")."
 }
     ''')
     return company_research
@@ -1024,7 +1025,8 @@ REQUIRED INFORMATION CATEGORIES (Map these to the JSON structure for the **Prima
         </div>
       "
     }
-    ]
+    ],
+    "questions":"You are an expert product analyst and interviewer. Your task is to generate a set of relevant and insightful product research questions for a thorough analysis of [product_name]. **IMPORTANT:** Do not generate any answers; provide only the questions. Please generate 5-7 distinct questions that cover the following areas of product research: * **Problem and User Value:** Questions about the core problem the product solves, its target users, and the value it delivers. * **Competitive Landscape:** Questions focused on how the product stands out from competitors. * **Feature Analysis & Prioritization:** Questions about existing features, their effectiveness, and potential future improvements. * **Risks and Challenges:** Questions that explore potential obstacles to the product's success. Ensure the questions are open-ended and designed to elicit detailed, analytical responses from a product expert. --- **Replace `[product_name]` with the actual name of the product you want to analyze** (e.g., "Google Maps", "Slack", "Netflix", "ChatGPT")."
     }
     ''')
     return product_research

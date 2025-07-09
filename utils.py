@@ -95,13 +95,14 @@ async def get_response(question,index):
                                     },
                                     "required": ["title", "completed", "summary", "content", "points"]
                                 }
-                            }
+                            },
+                            
                         },
                         "required": ["quick_summary", "sub_modules"]
                     }
                 }
             }
-        ] if index!=0 and index!=1 and index!=2 and index!=3 and index!=6 and index!=7 and index!=8 else [
+        ] if index not in [0,1,2,3,6,7,8] else [
             {
                 "type": "function",
                 "function": {
@@ -127,9 +128,14 @@ async def get_response(question,index):
                                     },
                                     "required": ["title", "completed", "summary", "content", "htmlContent"]
                                 }
-                            }
+                            },
+                            **({"questions": {"type":"array","items": {"type": "object","properties": {"question":{"type":"string","description":""}},"required":["question"]}}} if index in (0, 1) else {})
                         },
-                        "required": ["quick_summary", "sub_modules"]
+                        "required": (
+                    ["quick_summary", "sub_modules", "questions"]
+                    if index in (0, 1)
+                    else ["quick_summary", "sub_modules"]
+                )
                     }
                 }
             }
@@ -181,7 +187,12 @@ async def get_response(question,index):
                     parsed_response = json.loads(tool_args)
 
                     if index==0:
-                        parsed_response["questions"]=staticQuestions.companyResearchQuestions
+                        # parsed_response["questions"]=staticQuestions.companyResearchQuestions
+                        questions = parsed_response["questions"]
+                        for question in questions:
+                            question["answer"]=""
+                        parsed_response["questions"]=questions
+                        
 
                         async with aiohttp.ClientSession() as session:
                             async with session.post(
@@ -206,8 +217,12 @@ async def get_response(question,index):
 
 
                     if index==1:
-                        parsed_response["questions"]=staticQuestions.productResearchQuestions
-
+                        # parsed_response["questions"]=staticQuestions.productResearchQuestions
+                        questions = parsed_response["questions"]
+                        for question in questions:
+                            question["answer"]=""
+                        parsed_response["questions"]=questions
+                        
                         async with aiohttp.ClientSession() as session:
                             async with session.post(
                     url="https://openrouter.ai/api/v1/chat/completions",
