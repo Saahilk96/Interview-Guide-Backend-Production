@@ -101,7 +101,7 @@ async def get_response(question,index):
                     }
                 }
             }
-        ] if index!=2 else [
+        ] if index!=0 and index!=1 and index!=2 and index!=3 and index!=6 and index!=7 and index!=8 else [
             {
                 "type": "function",
                 "function": {
