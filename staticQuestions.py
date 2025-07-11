@@ -1,45 +1,46 @@
-companyResearchQuestions = [
+recruiterScreenPreparationsQuestions = [
                         {
-                            "question":"What do you know about Google's business model and how does the company make money?",
+                            "question":"Walk me through your resume",
                             "answer":""
                         },
                         {
-                            "question":"How would you describe Google's mission and how does it align with your career goals?",
+                            "question":"Tell me about your most relevant project",
                             "answer":""
                         },
                         {
-                            "question":"What recent developments or initiatives at Google excite you the most?",
+                            "question":"Have you worked in similar industries before?",
                             "answer":""
                         },
                         {
-                            "question":"How do you see Google's role in the AI and machine learning landscape?",
+                            "question":"What PM tools or frameworks have you used?",
                             "answer":""
                         },
                         {
-                            "question":"What challenges do you think Google faces in maintaining its market position?",
+                            "question":"How do you manage stakeholder expectations?",
                             "answer":""
-                        }
+                        },
+                        {
+                            "question":"How do you resolve team conflicts?",
+                            "answer":""
+                        },
+                        {
+                            "question":"Tell me about a time you worked cross-functionally",
+                            "answer":""
+                        },
+                        {
+                            "question":"Why are you interested in this role?",
+                            "answer":""
+                        },
+                        {
+                            "question":"What excites you about our company?",
+                            "answer":""
+                        },
+                        {
+                            "question":"Are you open to relocation?",
+                            "answer":""
+                        },
+                        {
+                            "question":"When are you available to start?",
+                            "answer":""
+                        },
                     ]
-
-productResearchQuestions=[
-    {
-        "question": "What is the core problem this product solves, and for whom?",
-        "answer": ""
-    },
-    {
-        "question": "Which features of the product do you think deliver the most value to users, and why?",
-        "answer": ""
-    },
-    {
-        "question": "What differentiates this product from its competitors in the market?",
-        "answer": ""
-    },
-    {
-        "question": "If you were the PM for this product, what improvement or feature would you prioritize next?",
-        "answer": ""
-    },
-    {
-        "question": "What potential risks or challenges could impact the success of this product?",
-        "answer": ""
-    }
-]

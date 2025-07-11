@@ -187,7 +187,6 @@ async def get_response(question,index):
                     parsed_response = json.loads(tool_args)
 
                     if index==0:
-                        # parsed_response["questions"]=staticQuestions.companyResearchQuestions
                         questions = parsed_response["questions"]
                         for question in questions:
                             question["answer"]=""
@@ -235,6 +234,34 @@ async def get_response(question,index):
         "plugins": [],
         "messages": [
             {"role": "user", "content": summaryPrompts.generate_product_research_prompt(parsed_response)}]})
+                ) as response:
+                                data = await response.json()
+
+                    # Extract the response content
+                                htmlSummary = data.get("choices", [])[0].get("message", {}).get("content", "")
+                                parsed_response["htmlSummary"] = htmlSummary
+
+                                return parsed_response, citations, None
+
+                    if index==6:
+                        parsed_response["questions"]=staticQuestions.recruiterScreenPreparationsQuestions
+                        # questions = parsed_response["questions"]
+                        # for question in questions:
+                        #     question["answer"]=""
+                        # parsed_response["questions"]=questions
+                        
+                        async with aiohttp.ClientSession() as session:
+                            async with session.post(
+                    url="https://openrouter.ai/api/v1/chat/completions",
+                    headers={
+                        "Authorization": f"Bearer {API_KEY}",
+                        "Content-Type": "application/json"
+                    },
+                    data=json.dumps({
+        "model": "deepseek/deepseek-chat-v3-0324:free",
+        "plugins": [],
+        "messages": [
+            {"role": "user", "content": summaryPrompts.generate_recruiter_screen_preparation_prompt(parsed_response)}]})
                 ) as response:
                                 data = await response.json()
 
