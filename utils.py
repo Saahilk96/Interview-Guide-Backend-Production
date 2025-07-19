@@ -43,7 +43,7 @@ def generatePrompts(data):
     return prompts
 
 async def get_response(question,index):
-    model = "google/gemini-2.5-flash-preview-05-20"
+    model = "google/gemini-2.5-flash"
     plugins = [{"id": "web", "max_results": 10}] if index in (0, 1) else []
 
     print(f"Index: {index}, Model: {model}, Plugins: {plugins}")
@@ -213,7 +213,6 @@ async def get_response(question,index):
                                 parsed_response["htmlSummary"] = htmlSummary
 
                                 return parsed_response, citations, None
-
 
                     if index==1:
                         # parsed_response["questions"]=staticQuestions.productResearchQuestions
