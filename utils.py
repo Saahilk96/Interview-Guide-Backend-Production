@@ -5,10 +5,10 @@ import json
 import time
 import requests
 from datetime import datetime
-from typing import List, Dict, Any,Optional,Union
+from typing import List, Dict, Any, Optional, Union
 from bson import ObjectId
 from typing import Any
-from env import API_KEY,FOLDER_ID,CSV_FILE_ID,GOOGLEAPIDRIVE
+from env import API_KEY, FOLDER_ID, CSV_FILE_ID, GOOGLEAPIDRIVE
 from pydantic import BaseModel
 import os
 import base64
@@ -21,28 +21,183 @@ import asyncio
 import dResAns
 import summaryPrompts
 import staticQuestions
+import sys
+import asyncio
+import traceback
+
+
+def check_nested_keys(data):
+    try:
+        # Step-by-step check
+        if not isinstance(data, dict):
+            return "data is not a dictionary"
+
+        choices = data.get("choices", [])
+        if not choices or not isinstance(choices, list):
+            return "choices key missing or not a list"
+
+        message = choices[0].get("message", {})
+        if not isinstance(message, dict):
+            return "message key missing or not a dictionary"
+
+        annotations = message.get("annotations", [])
+        if not isinstance(annotations, list):
+            return "annotations key missing or not a list"
+
+        return True  # ✅ All keys exist and structure is correct
+
+    except Exception as e:
+        return f"Error: {e}"
+
 
 def generatePrompts(data):
-    data1 = "{\\n company_name:'"+data['company_name']+(f",\n company_website:{data.get('company_website', '')}" if data.get("company_website") else "")+"',\\n job_role:'"+data['job_role']+"',\\n job_description:'"+data['job_description']+("',\\n resume:'"+data['resume']+"'\\n }" if data['resume'] else "")
+    data1 = (
+        "{\\n company_name:'"
+        + data["company_name"]
+        + (
+            f",\n company_website:{data.get('company_website', '')}"
+            if data.get("company_website")
+            else ""
+        )
+        + "',\\n job_role:'"
+        + data["job_role"]
+        + "',\\n job_description:'"
+        + data["job_description"]
+        + ("',\\n resume:'" + data["resume"] + "'\\n }" if data["resume"] else "")
+    )
     prompts = [
-         myPrompts.company_research_fun("{\\n company_name:'"+data['company_name']+(f",\n company_website:{data.get('company_website', '')}" if data.get("company_website") else "")+"',\\n job_role:'"+data['job_role']+"',\\n job_description:'"+data['job_description']),
-         myPrompts.product_research_fun("{\\n company_name:'"+data['company_name']+(f",\n company_website:{data.get('company_website', '')}" if data.get("company_website") else "")+"',\\n job_role:'"+data['job_role']+"',\\n job_description:'"+data['job_description']),
-         myPrompts.job_description_analysis_fun(data1),
-         myPrompts.resume_experience_to_highlight_to_stand_out_fun(data1),
-        "{\\n company_name:'"+data['company_name']+(f",\n company_website:{data.get('company_website', '')}" if data.get("company_website") else "")+"',\\n job_role:'"+data['job_role']+"',\\n job_description:'"+data['job_description']+("',\\n resume:'"+data['resume']+"'\\n }" if data['resume'] else "")+".Your goal is to just Generate entire Output of 'Hiring Manager Round' Array Data. Add more points,values, etc. as per your understanding and I want json data to be more so add accordingly. Result should contain all sub modules and it is fixed : 'Phase 1: Introduction & Background', 'Phase 2: Product Experience Deep Dives', 'Phase 3: Product Methodology Assessment', 'Phase 4: Cross-Functional Collaboration', 'Phase 5: Strategic Thinking', 'Phase 6: Technical Understanding', 'Phase 7: Role-Specific Challenges'. And give me JSON data of 'Hiring Manager Round' only and 'STRICTLY do not include any silly mistake in this JSON OUTPUT e.g. brackets, comas, quatations,'\\n'','\\t',etc.' and completed must be 'false' only so provide me entire full JSON Data in this exact JSON format only:{quick_summary:'',sub_modules:[{title:'Phase 1: Introduction & Background',completed:false,summary:'',content:'some text content only',points:[{main:'title of point can be short text or little long short text',subPoints:['value1 can be text only','value2',..]},{main:'',subPoints:['value1',..]},..]},{title:'Phase 2: Product Experience Deep Dives',completed:false,summary:'',content:'',points:[]}\\}...]}",
-        "{\\n company_name:'"+data['company_name']+(f",\n company_website:{data.get('company_website', '')}" if data.get("company_website") else "")+"',\\n job_role:'"+data['job_role']+"',\\n job_description:'"+data['job_description']+("',\\n resume:'"+data['resume']+"'\\n }" if data['resume'] else "")+".Generate 15 behavioral questions that focus on: leadership, conflict resolution, failure recovery, crossfunctional collaboration, Decision Making, Communication style, prioritization style for this job description. Mention all the questions"+". Add more points,values, etc. as per your understanding and I want json data to be more so add accordingly. Result should contain all sub modules and it is fixed : STAR Method for Behavioral Questions,Essential Behavioral Interview Questions Decision Making & Problem Solving, Taking Initiative, Customer/Client Focus, Teamwork & Collaboration, Leadership, Adaptability, Results & Accountability, Innovation & Creativity, Communication, Integrity & Ethics. And give me JSON data of 'Behavioral Interview' only and 'STRICTLY do not include any silly mistake in this JSON OUTPUT e.g. brackets, comas, quatations,'\\n'','\\t',etc.' and completed must be 'false' only so provide me entire full JSON Data in this  exact JSON format only:{quick_summary:'',sub_modules:[{title:'...',completed:false,summary:'',content:'some text content only',points:[{main:'title of point can be short text or little long short text',subPoints:['value1 can be text only','value2',..]},{main:'',subPoints:['value1',..]},..]},{title:'',completed:false,summary:'',content:'',points:[]}\\}...]}",
-        myPrompts.recruiter_screen_preparation_fun(data1),        
+        myPrompts.company_research_fun(
+            "{\\n company_name:'"
+            + data["company_name"]
+            + (
+                f",\n company_website:{data.get('company_website', '')}"
+                if data.get("company_website")
+                else ""
+            )
+            + "',\\n job_role:'"
+            + data["job_role"]
+            + "',\\n job_description:'"
+            + data["job_description"]
+        ),
+        myPrompts.product_research_fun(
+            "{\\n company_name:'"
+            + data["company_name"]
+            + (
+                f",\n company_website:{data.get('company_website', '')}"
+                if data.get("company_website")
+                else ""
+            )
+            + "',\\n job_role:'"
+            + data["job_role"]
+            + "',\\n job_description:'"
+            + data["job_description"]
+        ),
+        myPrompts.job_description_analysis_fun(data1),
+        myPrompts.resume_experience_to_highlight_to_stand_out_fun(data1),
+        "{\\n company_name:'"
+        + data["company_name"]
+        + (
+            f",\n company_website:{data.get('company_website', '')}"
+            if data.get("company_website")
+            else ""
+        )
+        + "',\\n job_role:'"
+        + data["job_role"]
+        + "',\\n job_description:'"
+        + data["job_description"]
+        + ("',\\n resume:'" + data["resume"] + "'\\n }" if data["resume"] else "")
+        + ".Your goal is to just Generate entire Output of 'Hiring Manager Round' Array Data. Add more points,values, etc. as per your understanding and I want json data to be more so add accordingly. Result should contain all sub modules and it is fixed : 'Phase 1: Introduction & Background', 'Phase 2: Product Experience Deep Dives', 'Phase 3: Product Methodology Assessment', 'Phase 4: Cross-Functional Collaboration', 'Phase 5: Strategic Thinking', 'Phase 6: Technical Understanding', 'Phase 7: Role-Specific Challenges'. And give me JSON data of 'Hiring Manager Round' only and 'STRICTLY do not include any silly mistake in this JSON OUTPUT e.g. brackets, comas, quatations,'\\n'','\\t',etc.' and completed must be 'false' only so provide me entire full JSON Data in this exact JSON format only:{quick_summary:'',sub_modules:[{title:'Phase 1: Introduction & Background',completed:false,summary:'',content:'some text content only',points:[{main:'title of point can be short text or little long short text',subPoints:['value1 can be text only','value2',..]},{main:'',subPoints:['value1',..]},..]},{title:'Phase 2: Product Experience Deep Dives',completed:false,summary:'',content:'',points:[]}\\}...]}",
+        "{\\n company_name:'"
+        + data["company_name"]
+        + (
+            f",\n company_website:{data.get('company_website', '')}"
+            if data.get("company_website")
+            else ""
+        )
+        + "',\\n job_role:'"
+        + data["job_role"]
+        + "',\\n job_description:'"
+        + data["job_description"]
+        + ("',\\n resume:'" + data["resume"] + "'\\n }" if data["resume"] else "")
+        + ".Generate 15 behavioral questions that focus on: leadership, conflict resolution, failure recovery, crossfunctional collaboration, Decision Making, Communication style, prioritization style for this job description. Mention all the questions"
+        + ". Add more points,values, etc. as per your understanding and I want json data to be more so add accordingly. Result should contain all sub modules and it is fixed : STAR Method for Behavioral Questions,Essential Behavioral Interview Questions Decision Making & Problem Solving, Taking Initiative, Customer/Client Focus, Teamwork & Collaboration, Leadership, Adaptability, Results & Accountability, Innovation & Creativity, Communication, Integrity & Ethics. And give me JSON data of 'Behavioral Interview' only and 'STRICTLY do not include any silly mistake in this JSON OUTPUT e.g. brackets, comas, quatations,'\\n'','\\t',etc.' and completed must be 'false' only so provide me entire full JSON Data in this  exact JSON format only:{quick_summary:'',sub_modules:[{title:'...',completed:false,summary:'',content:'some text content only',points:[{main:'title of point can be short text or little long short text',subPoints:['value1 can be text only','value2',..]},{main:'',subPoints:['value1',..]},..]},{title:'',completed:false,summary:'',content:'',points:[]}\\}...]}",
+        myPrompts.recruiter_screen_preparation_fun(data1),
         myPrompts.favorite_product_question_fun(data1),
         myPrompts.product_design_fun(data1),
-        "{\\n company_name:'"+data['company_name']+(f",\n company_website:{data.get('company_website', '')}" if data.get("company_website") else "")+"',\\n job_role:'"+data['job_role']+"',\\n job_description:'"+data['job_description']+("',\\n resume:'"+data['resume']+"'\\n }" if data['resume'] else "")+". The questions should be composed of: **2-3 Analytical Questions:**, **2-3 A/B Testing Scenarios:**"+" .  Your goal is to just Generate entire Output of 'Product Sense' Array Data. Add more points,values, etc. as per your understanding and I want json data to be more so add accordingly.And give me JSON data of 'Product Sense' only and 'STRICTLY do not include any silly mistake in this JSON OUTPUT e.g. brackets, comas, quatations,'\\n'','\\t',etc.' and *completed must be 'false' only so provide me entire full JSON Data in this exact JSON format only ensure atleast `2 subPoints` should,must be filled in each object of sub_modules*:{quick_summary:'',sub_modules:[{title:'Important title text',completed:false,summary:'',content:'some text content only',points:[{main:'title of point can be short text or little long short text',subPoints:['value1 can be text only','value2',..]},{main:'',subPoints:['value1',..]},..]},{title:'Important title text',completed:false,summary:'',content:'',points:[]}\\}...]}",
-        "{\\n company_name:'"+data['company_name']+(f",\n company_website:{data.get('company_website', '')}" if data.get("company_website") else "")+"',\\n job_role:'"+data['job_role']+"',\\n job_description:'"+data['job_description']+("',\\n resume:'"+data['resume']+"'\\n }" if data['resume'] else "")+".Generate 7 strategic product questions for a this role at this company. Company:... Product: ... Industry: ... Competitors: ... Mix of question types: - Product investment: 'Why should this company continue investing in product?' - Competitive strategy: 'How would you respond to competitor's new features?' - Market expansion: 'Should this company enter new market?' - Metrics & goals: 'What metrics would you track for product?' - Industry trends: 'How should this company adapt to industry trend ?' Make questions specific to real products, competitors, and industry challenges. '+' . Add more points,values, etc. as per your understanding and I want json data to be more so add accordingly.  'STRICTLY do not include any silly mistake in this JSON OUTPUT e.g. brackets, comas, quatations,'\\n'','\\t',etc.' and completed must be 'false' only so provide me entire full JSON Data in this  exact JSON format only:{quick_summary:'',sub_modules:[{title:'some important title..',completed:false,summary:'',content:'some text content only',points:[{main:'title of point can be short text or little long short text',subPoints:['value1 can be text only','value2',..]},{main:'',subPoints:['value1',..]},..]},{title:'some important title...',completed:false,summary:'',content:'',points:[]}\\}...]}",
-        "{\\n company_name:'"+data['company_name']+(f",\n company_website:{data.get('company_website', '')}" if data.get("company_website") else "")+"',\\n job_role:'"+data['job_role']+"',\\n job_description:'"+data['job_description']+("',\\n resume:'"+data['resume']+"'\\n }" if data['resume'] else "")+".Generate a list of market sizing interview questions that test a candidate's estimation and analytical skills. 'Guidelines • Focus on strategic understanding and market potential, • Cover diverse industries and technologies', 'Question Types 1. Total Addressable Market (TAM) estimates, 2. Revenue potential calculations, 3. User base or adoption rate projections,4. Infrastructure and operational cost estimations'"+" . Add more points,values, etc. as per your understanding and I want json data to be more so add accordingly. And give me JSON data of 'Analytical Estimation' only and 'STRICTLY do not include any silly mistake in this JSON OUTPUT e.g. brackets, comas, quatations,'\\n'','\\t',etc.' and completed must be 'false' only so provide me entire full JSON Data in this  exact JSON format only:{quick_summary:'',sub_modules:[{title:'some important title..',completed:false,summary:'',content:'some text content only',points:[{main:'title of point can be short text or little long short text',subPoints:['value1 can be text only','value2',..]},{main:'',subPoints:['value1',..]},..]},{title:'some important title...',completed:false,summary:'',content:'',points:[]}\\}...]}",
-        "{\\n company_name:'"+data['company_name']+(f",\n company_website:{data.get('company_website', '')}" if data.get("company_website") else "")+"',\\n job_role:'"+data['job_role']+"',\\n job_description:'"+data['job_description']+("',\\n resume:'"+data['resume']+"'\\n }" if data['resume'] else "")+".Generate a comprehensive list of technical interview questions that probe the candidate's expertise in key areas mentioned in the job description. Question types: high level understanding based questions on key technical concepts mentioned in JD Experience-based scenario questions based on resume, The candidate’s experience collaborating with engineers, Their understanding of technical trade-offs, implementation complexity, or API design Probing questions about past projects that demonstrate proficiency"+" . Add more points,values, etc. as per your understanding and I want entire json data to be more so add accordingly. And give me JSON data of 'Technical' only and 'STRICTLY do not include any silly mistake in this JSON OUTPUT e.g. brackets, comas, quatations,'\\n'','\\t',etc.' and completed must be 'false' only so provide me entire full JSON Data in this  exact JSON format only:{quick_summary:'',sub_modules:[{title:'some important title..',completed:false,summary:'...',content:'some text content only',points:[{main:'title of point can be short text or little long short text',subPoints:['value1 can be text only','value2',..]},{main:'',subPoints:['value1',..]},..]},{title:'some important title...',completed:false,summary:'',content:'',points:[]}\\}...]}",
-        "{\\n company_name:'"+data['company_name']+(f",\n company_website:{data.get('company_website', '')}" if data.get("company_website") else "")+"',\\n job_role:'"+data['job_role']+"',\\n job_description:'"+data['job_description']+("',\\n resume:'"+data['resume']+"'\\n }" if data['resume'] else "")+".Generate a list of 15 leadership interview questions that assess the candidate's ability to lead and influence. Question types: Strategic vision and alignment with company goals Experience managing crossfunctional stakeholders Decision-making and prioritization approaches Team leadership and development capabilities Communication and influence strategies Handling organizational challenges and change"+" . Add more points,values, etc. as per your understanding and I want json data to be more so add accordingly.'STRICTLY do not include any silly mistake in this JSON OUTPUT e.g. brackets, comas, quatations,'\\n'','\\t',etc.' and completed must be 'false' only so provide me entire full JSON Data in this  exact JSON format only:{quick_summary:'',sub_modules:[{title:'some important title..',completed:false,summary:'',content:'some text content only',points:[{main:'title of point can be short text or little long short text',subPoints:['value1 can be text only','value2',..]},{main:'',subPoints:['value1',..]},..]},{title:'some important title...',completed:false,summary:'',content:'',points:[]}\\}...]}"
-        ]
+        "{\\n company_name:'"
+        + data["company_name"]
+        + (
+            f",\n company_website:{data.get('company_website', '')}"
+            if data.get("company_website")
+            else ""
+        )
+        + "',\\n job_role:'"
+        + data["job_role"]
+        + "',\\n job_description:'"
+        + data["job_description"]
+        + ("',\\n resume:'" + data["resume"] + "'\\n }" if data["resume"] else "")
+        + ". The questions should be composed of: **2-3 Analytical Questions:**, **2-3 A/B Testing Scenarios:**"
+        + " .  Your goal is to just Generate entire Output of 'Product Sense' Array Data. Add more points,values, etc. as per your understanding and I want json data to be more so add accordingly.And give me JSON data of 'Product Sense' only and 'STRICTLY do not include any silly mistake in this JSON OUTPUT e.g. brackets, comas, quatations,'\\n'','\\t',etc.' and *completed must be 'false' only so provide me entire full JSON Data in this exact JSON format only ensure atleast `2 subPoints` should,must be filled in each object of sub_modules*:{quick_summary:'',sub_modules:[{title:'Important title text',completed:false,summary:'',content:'some text content only',points:[{main:'title of point can be short text or little long short text',subPoints:['value1 can be text only','value2',..]},{main:'',subPoints:['value1',..]},..]},{title:'Important title text',completed:false,summary:'',content:'',points:[]}\\}...]}",
+        "{\\n company_name:'"
+        + data["company_name"]
+        + (
+            f",\n company_website:{data.get('company_website', '')}"
+            if data.get("company_website")
+            else ""
+        )
+        + "',\\n job_role:'"
+        + data["job_role"]
+        + "',\\n job_description:'"
+        + data["job_description"]
+        + ("',\\n resume:'" + data["resume"] + "'\\n }" if data["resume"] else "")
+        + ".Generate 7 strategic product questions for a this role at this company. Company:... Product: ... Industry: ... Competitors: ... Mix of question types: - Product investment: 'Why should this company continue investing in product?' - Competitive strategy: 'How would you respond to competitor's new features?' - Market expansion: 'Should this company enter new market?' - Metrics & goals: 'What metrics would you track for product?' - Industry trends: 'How should this company adapt to industry trend ?' Make questions specific to real products, competitors, and industry challenges. '+' . Add more points,values, etc. as per your understanding and I want json data to be more so add accordingly.  'STRICTLY do not include any silly mistake in this JSON OUTPUT e.g. brackets, comas, quatations,'\\n'','\\t',etc.' and completed must be 'false' only so provide me entire full JSON Data in this  exact JSON format only:{quick_summary:'',sub_modules:[{title:'some important title..',completed:false,summary:'',content:'some text content only',points:[{main:'title of point can be short text or little long short text',subPoints:['value1 can be text only','value2',..]},{main:'',subPoints:['value1',..]},..]},{title:'some important title...',completed:false,summary:'',content:'',points:[]}\\}...]}",
+        "{\\n company_name:'"
+        + data["company_name"]
+        + (
+            f",\n company_website:{data.get('company_website', '')}"
+            if data.get("company_website")
+            else ""
+        )
+        + "',\\n job_role:'"
+        + data["job_role"]
+        + "',\\n job_description:'"
+        + data["job_description"]
+        + ("',\\n resume:'" + data["resume"] + "'\\n }" if data["resume"] else "")
+        + ".Generate a list of market sizing interview questions that test a candidate's estimation and analytical skills. 'Guidelines • Focus on strategic understanding and market potential, • Cover diverse industries and technologies', 'Question Types 1. Total Addressable Market (TAM) estimates, 2. Revenue potential calculations, 3. User base or adoption rate projections,4. Infrastructure and operational cost estimations'"
+        + " . Add more points,values, etc. as per your understanding and I want json data to be more so add accordingly. And give me JSON data of 'Analytical Estimation' only and 'STRICTLY do not include any silly mistake in this JSON OUTPUT e.g. brackets, comas, quatations,'\\n'','\\t',etc.' and completed must be 'false' only so provide me entire full JSON Data in this  exact JSON format only:{quick_summary:'',sub_modules:[{title:'some important title..',completed:false,summary:'',content:'some text content only',points:[{main:'title of point can be short text or little long short text',subPoints:['value1 can be text only','value2',..]},{main:'',subPoints:['value1',..]},..]},{title:'some important title...',completed:false,summary:'',content:'',points:[]}\\}...]}",
+        "{\\n company_name:'"
+        + data["company_name"]
+        + (
+            f",\n company_website:{data.get('company_website', '')}"
+            if data.get("company_website")
+            else ""
+        )
+        + "',\\n job_role:'"
+        + data["job_role"]
+        + "',\\n job_description:'"
+        + data["job_description"]
+        + ("',\\n resume:'" + data["resume"] + "'\\n }" if data["resume"] else "")
+        + ".Generate a comprehensive list of technical interview questions that probe the candidate's expertise in key areas mentioned in the job description. Question types: high level understanding based questions on key technical concepts mentioned in JD Experience-based scenario questions based on resume, The candidate’s experience collaborating with engineers, Their understanding of technical trade-offs, implementation complexity, or API design Probing questions about past projects that demonstrate proficiency"
+        + " . Add more points,values, etc. as per your understanding and I want entire json data to be more so add accordingly. And give me JSON data of 'Technical' only and 'STRICTLY do not include any silly mistake in this JSON OUTPUT e.g. brackets, comas, quatations,'\\n'','\\t',etc.' and completed must be 'false' only so provide me entire full JSON Data in this  exact JSON format only:{quick_summary:'',sub_modules:[{title:'some important title..',completed:false,summary:'...',content:'some text content only',points:[{main:'title of point can be short text or little long short text',subPoints:['value1 can be text only','value2',..]},{main:'',subPoints:['value1',..]},..]},{title:'some important title...',completed:false,summary:'',content:'',points:[]}\\}...]}",
+        "{\\n company_name:'"
+        + data["company_name"]
+        + (
+            f",\n company_website:{data.get('company_website', '')}"
+            if data.get("company_website")
+            else ""
+        )
+        + "',\\n job_role:'"
+        + data["job_role"]
+        + "',\\n job_description:'"
+        + data["job_description"]
+        + ("',\\n resume:'" + data["resume"] + "'\\n }" if data["resume"] else "")
+        + ".Generate a list of 15 leadership interview questions that assess the candidate's ability to lead and influence. Question types: Strategic vision and alignment with company goals Experience managing crossfunctional stakeholders Decision-making and prioritization approaches Team leadership and development capabilities Communication and influence strategies Handling organizational challenges and change"
+        + " . Add more points,values, etc. as per your understanding and I want json data to be more so add accordingly.'STRICTLY do not include any silly mistake in this JSON OUTPUT e.g. brackets, comas, quatations,'\\n'','\\t',etc.' and completed must be 'false' only so provide me entire full JSON Data in this  exact JSON format only:{quick_summary:'',sub_modules:[{title:'some important title..',completed:false,summary:'',content:'some text content only',points:[{main:'title of point can be short text or little long short text',subPoints:['value1 can be text only','value2',..]},{main:'',subPoints:['value1',..]},..]},{title:'some important title...',completed:false,summary:'',content:'',points:[]}\\}...]}",
+    ]
     return prompts
 
-async def get_response(question,index):
+
+async def get_response(question, index):
     model = "google/gemini-2.5-flash"
     plugins = [{"id": "web", "max_results": 10}] if index in (0, 1) else []
 
@@ -52,9 +207,7 @@ async def get_response(question,index):
     request_payload = {
         "model": model,
         "plugins": plugins,
-        "messages": [
-            {"role": "user", "content": question}
-        ],
+        "messages": [{"role": "user", "content": question}],
         "tools": [
             {
                 "type": "function",
@@ -64,45 +217,61 @@ async def get_response(question,index):
                     "parameters": {
                         "type": "object",
                         "properties": {
-                            "quick_summary": {
-                                "type": "string",
-                                "description": ""
-                            },
+                            "quick_summary": {"type": "string", "description": ""},
                             "sub_modules": {
                                 "type": "array",
                                 "items": {
                                     "type": "object",
                                     "properties": {
                                         "title": {"type": "string", "description": ""},
-                                        "completed": {"type": "boolean", "description": ""},
-                                        "summary": {"type": "string", "description": ""},
-                                        "content": {"type": "string", "description": ""},
+                                        "completed": {
+                                            "type": "boolean",
+                                            "description": "",
+                                        },
+                                        "summary": {
+                                            "type": "string",
+                                            "description": "",
+                                        },
+                                        "content": {
+                                            "type": "string",
+                                            "description": "",
+                                        },
                                         "points": {
                                             "type": "array",
                                             "items": {
                                                 "type": "object",
                                                 "properties": {
-                                                    "main": {"type": "string", "description": ""},
+                                                    "main": {
+                                                        "type": "string",
+                                                        "description": "",
+                                                    },
                                                     "subPoints": {
                                                         "type": "array",
                                                         "items": {"type": "string"},
-                                                        "description": ""
-                                                    }
+                                                        "description": "",
+                                                    },
                                                 },
-                                                "required": ["main", "subPoints"]
-                                            }
-                                        }
+                                                "required": ["main", "subPoints"],
+                                            },
+                                        },
                                     },
-                                    "required": ["title", "completed", "summary", "content", "points"]
-                                }
+                                    "required": [
+                                        "title",
+                                        "completed",
+                                        "summary",
+                                        "content",
+                                        "points",
+                                    ],
+                                },
                             },
-                            
                         },
-                        "required": ["quick_summary", "sub_modules"]
-                    }
-                }
+                        "required": ["quick_summary", "sub_modules"],
+                    },
+                },
             }
-        ] if index not in [0,1,2,3,6,7,8] else [
+        ]
+        if index not in [0, 1, 2, 3, 6, 7, 8]
+        else [
             {
                 "type": "function",
                 "function": {
@@ -111,172 +280,255 @@ async def get_response(question,index):
                     "parameters": {
                         "type": "object",
                         "properties": {
-                            "quick_summary": {
-                                "type": "string",
-                                "description": ""
-                            },
+                            "quick_summary": {"type": "string", "description": ""},
                             "sub_modules": {
                                 "type": "array",
                                 "items": {
                                     "type": "object",
                                     "properties": {
                                         "title": {"type": "string", "description": ""},
-                                        "completed": {"type": "boolean", "description": ""},
-                                        "summary": {"type": "string", "description": ""},
-                                        "content": {"type": "string", "description": ""},
-                                        "htmlContent": {"type":"string","description":""}
+                                        "completed": {
+                                            "type": "boolean",
+                                            "description": "",
+                                        },
+                                        "summary": {
+                                            "type": "string",
+                                            "description": "",
+                                        },
+                                        "content": {
+                                            "type": "string",
+                                            "description": "",
+                                        },
+                                        "htmlContent": {
+                                            "type": "string",
+                                            "description": "",
+                                        },
                                     },
-                                    "required": ["title", "completed", "summary", "content", "htmlContent"]
-                                }
+                                    "required": [
+                                        "title",
+                                        "completed",
+                                        "summary",
+                                        "content",
+                                        "htmlContent",
+                                    ],
+                                },
                             },
-                            **({"questions": {"type":"array","items": {"type": "object","properties": {"question":{"type":"string","description":""}},"required":["question"]}}} if index in (0, 1) else {})
+                            **(
+                                {
+                                    "questions": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "question": {
+                                                    "type": "string",
+                                                    "description": "",
+                                                }
+                                            },
+                                            "required": ["question"],
+                                        },
+                                    }
+                                }
+                                if index in (0, 1)
+                                else {}
+                            ),
                         },
                         "required": (
-                    ["quick_summary", "sub_modules", "questions"]
-                    if index in (0, 1)
-                    else ["quick_summary", "sub_modules"]
-                )
-                    }
-                }
+                            ["quick_summary", "sub_modules", "questions"]
+                            if index in (0, 1)
+                            else ["quick_summary", "sub_modules"]
+                        ),
+                    },
+                },
             }
         ],
         "tool_choice": {
             "type": "function",
-            "function": {
-                "name": "structured_module_output"
-            }
-        }
+            "function": {"name": "structured_module_output"},
+        },
     }
 
     # Retry loop
     while True:
         try:
-            if index==9:
+            if index == 9:
                 return dResAns.product_sense, [], None
-            if index==10:
+            if index == 10:
                 return dResAns.product_strategy, [], None
-            if index==11:
+            if index == 11:
                 return dResAns.analytical_estimation, [], None
-            if index==12:
+            if index == 12:
                 return dResAns.technical, [], None
-            if index==5:
+            if index == 5:
                 return dResAns.behavioral_leadership, [], None
 
             async with aiohttp.ClientSession() as session:
                 async with session.post(
                     url="https://openrouter.ai/api/v1/chat/completions",
                     headers={
-        "Authorization": f"Bearer {API_KEY}",
-        "Content-Type": "application/json"
-    }
-,
-                    data=json.dumps(request_payload)
+                        "Authorization": f"Bearer {API_KEY}",
+                        "Content-Type": "application/json",
+                    },
+                    data=json.dumps(request_payload),
                 ) as response:
                     data = await response.json()
-
                     citations = []
                     if index in (0, 1):
-                        annotations = data.get("choices", [])[0].get("message", {}).get("annotations", [])
+                        annotations = (
+                            data.get("choices", [])[0]
+                            .get("message", {})
+                            .get("annotations", [])
+                        )
                         for annotation in annotations:
                             url_citation = annotation.get("url_citation", {})
                             url_citation.pop("start_index", None)
                             url_citation.pop("end_index", None)
                             citations.append(url_citation)
 
-                    tool_args = data.get("choices", [])[0].get("message", {}).get("tool_calls", [])[0].get("function", {}).get("arguments", "{}")
+                    tool_args = (
+                        data.get("choices", [])[0]
+                        .get("message", {})
+                        .get("tool_calls", [])[0]
+                        .get("function", {})
+                        .get("arguments", "{}")
+                    )
                     parsed_response = json.loads(tool_args)
 
-                    if index==0:
+                    if index == 0:
                         questions = parsed_response["questions"]
                         for question in questions:
-                            question["answer"]=""
-                        parsed_response["questions"]=questions
-                        
+                            question["answer"] = ""
+                        parsed_response["questions"] = questions
 
                         async with aiohttp.ClientSession() as session:
                             async with session.post(
-                    url="https://openrouter.ai/api/v1/chat/completions",
-                    headers={
-                        "Authorization": f"Bearer {API_KEY}",
-                        "Content-Type": "application/json"
-                    },
-                    data=json.dumps({
-        "model": "deepseek/deepseek-chat-v3-0324:free",
-        "plugins": [],
-        "messages": [
-            {"role": "user", "content": summaryPrompts.generate_company_research_prompt(parsed_response)}]})
-                ) as response:
+                                url="https://openrouter.ai/api/v1/chat/completions",
+                                headers={
+                                    "Authorization": f"Bearer {API_KEY}",
+                                    "Content-Type": "application/json",
+                                },
+                                data=json.dumps(
+                                    {
+                                        "model": model,
+                                        "plugins": [],
+                                        "messages": [
+                                            {
+                                                "role": "user",
+                                                "content": summaryPrompts.generate_company_research_prompt(
+                                                    parsed_response
+                                                ),
+                                            }
+                                        ],
+                                    }
+                                ),
+                            ) as response:
                                 data = await response.json()
-
-                    # Extract the response content
-                                htmlSummary = data.get("choices", [])[0].get("message", {}).get("content", "")
+                                # Extract the response content
+                                htmlSummary = (
+                                    data.get("choices", [])[0]
+                                    .get("message", {})
+                                    .get("content", "")
+                                )
                                 parsed_response["htmlSummary"] = htmlSummary
 
                                 return parsed_response, citations, None
 
-                    if index==1:
+                    if index == 1:
                         # parsed_response["questions"]=staticQuestions.productResearchQuestions
                         questions = parsed_response["questions"]
                         for question in questions:
-                            question["answer"]=""
-                        parsed_response["questions"]=questions
-                        
+                            question["answer"] = ""
+                        parsed_response["questions"] = questions
+
                         async with aiohttp.ClientSession() as session:
                             async with session.post(
-                    url="https://openrouter.ai/api/v1/chat/completions",
-                    headers={
-                        "Authorization": f"Bearer {API_KEY}",
-                        "Content-Type": "application/json"
-                    },
-                    data=json.dumps({
-        "model": "deepseek/deepseek-chat-v3-0324:free",
-        "plugins": [],
-        "messages": [
-            {"role": "user", "content": summaryPrompts.generate_product_research_prompt(parsed_response)}]})
-                ) as response:
+                                url="https://openrouter.ai/api/v1/chat/completions",
+                                headers={
+                                    "Authorization": f"Bearer {API_KEY}",
+                                    "Content-Type": "application/json",
+                                },
+                                data=json.dumps(
+                                    {
+                                        "model": model,
+                                        "plugins": [],
+                                        "messages": [
+                                            {
+                                                "role": "user",
+                                                "content": summaryPrompts.generate_product_research_prompt(
+                                                    parsed_response
+                                                ),
+                                            }
+                                        ],
+                                    }
+                                ),
+                            ) as response:
                                 data = await response.json()
-
-                    # Extract the response content
-                                htmlSummary = data.get("choices", [])[0].get("message", {}).get("content", "")
+                                # Extract the response content
+                                htmlSummary = (
+                                    data.get("choices", [])[0]
+                                    .get("message", {})
+                                    .get("content", "")
+                                )
                                 parsed_response["htmlSummary"] = htmlSummary
 
                                 return parsed_response, citations, None
 
-                    if index==6:
-                        parsed_response["questions"]=staticQuestions.recruiterScreenPreparationsQuestions
+                    if index == 6:
+                        parsed_response[
+                            "questions"
+                        ] = staticQuestions.recruiterScreenPreparationsQuestions
                         # questions = parsed_response["questions"]
                         # for question in questions:
                         #     question["answer"]=""
                         # parsed_response["questions"]=questions
-                        
+
                         async with aiohttp.ClientSession() as session:
                             async with session.post(
-                    url="https://openrouter.ai/api/v1/chat/completions",
-                    headers={
-                        "Authorization": f"Bearer {API_KEY}",
-                        "Content-Type": "application/json"
-                    },
-                    data=json.dumps({
-        "model": "deepseek/deepseek-chat-v3-0324:free",
-        "plugins": [],
-        "messages": [
-            {"role": "user", "content": summaryPrompts.generate_recruiter_screen_preparation_prompt(parsed_response)}]})
-                ) as response:
+                                url="https://openrouter.ai/api/v1/chat/completions",
+                                headers={
+                                    "Authorization": f"Bearer {API_KEY}",
+                                    "Content-Type": "application/json",
+                                },
+                                data=json.dumps(
+                                    {
+                                        "model": model,
+                                        "plugins": [],
+                                        "messages": [
+                                            {
+                                                "role": "user",
+                                                "content": summaryPrompts.generate_recruiter_screen_preparation_prompt(
+                                                    parsed_response
+                                                ),
+                                            }
+                                        ],
+                                    }
+                                ),
+                            ) as response:
                                 data = await response.json()
-
-                    # Extract the response content
-                                htmlSummary = data.get("choices", [])[0].get("message", {}).get("content", "")
+                                # Extract the response content
+                                htmlSummary = (
+                                    data.get("choices", [])[0]
+                                    .get("message", {})
+                                    .get("content", "")
+                                )
                                 parsed_response["htmlSummary"] = htmlSummary
 
                                 return parsed_response, citations, None
 
-
                     return parsed_response, citations, None
         except Exception as e:
-            print(f"[ASYNC] Error: {e}, retrying in 2 seconds...")
+            exc_type, exc_obj, tb = sys.exc_info()
+            line_number = tb.tb_lineno
+            print(f"[ASYNC] Error: {e},{line_number} retrying in 2 seconds...", index)
             await asyncio.sleep(2)
 
-def structureGuide(results: List[Dict[str, Any]], citations: List[List[Dict[str, str]]], companyData: Dict[str, Any], id: str) -> Dict[str, Any]:
+
+def structureGuide(
+    results: List[Dict[str, Any]],
+    citations: List[List[Dict[str, str]]],
+    companyData: Dict[str, Any],
+    id: str,
+) -> Dict[str, Any]:
 
     sections = [
         "company_research",
@@ -292,7 +544,7 @@ def structureGuide(results: List[Dict[str, Any]], citations: List[List[Dict[str,
         "product_strategy",
         "analytical_estimation",
         "technical",
-        "leadership"
+        "leadership",
     ]
 
     return {
@@ -306,8 +558,9 @@ def structureGuide(results: List[Dict[str, Any]], citations: List[List[Dict[str,
         "result": {
             section: results[idx] if idx < len(results) else {}
             for idx, section in enumerate(sections)
-        }
+        },
     }
+
 
 def convert_objectid(obj: Any) -> Any:
     if isinstance(obj, dict):
@@ -320,21 +573,30 @@ def convert_objectid(obj: Any) -> Any:
     else:
         return obj
 
+
 def verify_access_key(x_api_key: str = Header(...)):
     if x_api_key != ACCESS_KEY:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Missing or invalid access key")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Missing or invalid access key",
+        )
+
 
 class TokenPayload(BaseModel):
     token: str
+
 
 class NoteItem(BaseModel):
     type: str
     content: List[Any]
 
+
 class NoteData(BaseModel):
     note: Optional[List[NoteItem]] = None
 
+
 SCOPES = [GOOGLEAPIDRIVE]
+
 
 def save_service_account_file():
     b64_creds = os.environ.get("GOOGLE_CREDENTIALS_BASE64")
@@ -349,40 +611,56 @@ def save_service_account_file():
 
     return file_path
 
+
 SERVICE_ACCOUNT_FILE = save_service_account_file()
 
-async def fetch_data_and_convert_to_csv(googleAuthCollection, waitListCollection,blogPostWaitList,pricingWaitList):
+
+async def fetch_data_and_convert_to_csv(
+    googleAuthCollection, waitListCollection, blogPostWaitList, pricingWaitList
+):
     # Fetch data from googleAuthCollection
-    google_cursor = googleAuthCollection.aggregate([
-  {
-    "$project": {
-      "_id": 0,
-      "name": 1,
-      "email": 1,
-      "createdAt": 1,
-      "generatedGuides": { "$size": "$history" }
-    }
-  }
-])
+    google_cursor = googleAuthCollection.aggregate(
+        [
+            {
+                "$project": {
+                    "_id": 0,
+                    "name": 1,
+                    "email": 1,
+                    "createdAt": 1,
+                    "generatedGuides": {"$size": "$history"},
+                }
+            }
+        ]
+    )
     google_data = await google_cursor.to_list(length=None)
 
     # Format createdAt field in google_data
     for doc in google_data:
-        if 'createdAt' in doc and isinstance(doc['createdAt'], datetime):
-            doc['createdAt'] = doc['createdAt'].strftime('%d %b, %Y %H:%M:%S')
-        elif 'createdAt' in doc:
+        if "createdAt" in doc and isinstance(doc["createdAt"], datetime):
+            doc["createdAt"] = doc["createdAt"].strftime("%d %b, %Y %H:%M:%S")
+        elif "createdAt" in doc:
             try:
-                doc['createdAt'] = datetime.fromisoformat(
-                    str(doc['createdAt']).replace('Z', '+00:00')
-                ).strftime('%d %b, %Y %H:%M:%S')
+                doc["createdAt"] = datetime.fromisoformat(
+                    str(doc["createdAt"]).replace("Z", "+00:00")
+                ).strftime("%d %b, %Y %H:%M:%S")
             except Exception:
-                doc['createdAt'] = ''
+                doc["createdAt"] = ""
 
     # Convert to DataFrame
     df_google = pd.DataFrame(google_data)
 
     # Fetch data from waitListCollection
-    waitlist_cursor = waitListCollection.find({}, {'_id': 0, 'user_email': 1,'user_name':1,"formData.feature":1,"formData.email":1,"formData.pay_range":1})
+    waitlist_cursor = waitListCollection.find(
+        {},
+        {
+            "_id": 0,
+            "user_email": 1,
+            "user_name": 1,
+            "formData.feature": 1,
+            "formData.email": 1,
+            "formData.pay_range": 1,
+        },
+    )
     waitlist_data = await waitlist_cursor.to_list(length=None)
 
     # Format createdAt field in waitlist_data
@@ -393,7 +671,7 @@ async def fetch_data_and_convert_to_csv(googleAuthCollection, waitListCollection
             "User Name": doc.get("user_name", ""),
             "Feature": doc.get("formData", {}).get("feature", ""),
             "Waiting List Email": doc.get("formData", {}).get("email", ""),
-            "Price": doc.get("formData", {}).get("pay_range", "")
+            "Price": doc.get("formData", {}).get("pay_range", ""),
         }
         modified_data.append(modified_doc)
 
@@ -401,21 +679,31 @@ async def fetch_data_and_convert_to_csv(googleAuthCollection, waitListCollection
     df_waitlist = pd.DataFrame(modified_data)
 
     # Fetch data from waitListCollection
-    blogPostwaitlist_cursor = blogPostWaitList.find({}, {'_id': 0, 'user_email': 1,'user_name':1,"formData.feature":1,"formData.email":1,"formData.pay_range":1})
+    blogPostwaitlist_cursor = blogPostWaitList.find(
+        {},
+        {
+            "_id": 0,
+            "user_email": 1,
+            "user_name": 1,
+            "formData.feature": 1,
+            "formData.email": 1,
+            "formData.pay_range": 1,
+        },
+    )
     blogPostwaitlist_data = await blogPostwaitlist_cursor.to_list(length=None)
 
     # Format createdAt field in waitlist_data
     blogPostmodified_data = []
     for doc in blogPostwaitlist_data:
-        modified_doc = {
-            "User Email": doc.get("user_email", "")
-        }
+        modified_doc = {"User Email": doc.get("user_email", "")}
         blogPostmodified_data.append(modified_doc)
 
     # Convert to DataFrame
     df_waitlist_blogPost = pd.DataFrame(blogPostmodified_data)
 
-    pricingWaitList_cursor = pricingWaitList.find({}, {'_id': 0, 'user_email': 1,"pay_range":1,"feature":1})
+    pricingWaitList_cursor = pricingWaitList.find(
+        {}, {"_id": 0, "user_email": 1, "pay_range": 1, "feature": 1}
+    )
     pricingWaitList_data = await pricingWaitList_cursor.to_list(length=None)
 
     # Format createdAt field in waitlist_data
@@ -423,8 +711,8 @@ async def fetch_data_and_convert_to_csv(googleAuthCollection, waitListCollection
     for doc in pricingWaitList_data:
         modified_doc = {
             "User Email": doc.get("user_email", ""),
-            "Pay Range":doc.get("pay_range", ""),
-            "Feature":doc.get("feature", "")
+            "Pay Range": doc.get("pay_range", ""),
+            "Feature": doc.get("feature", ""),
         }
         pricingWaitListmodified_data.append(modified_doc)
 
@@ -433,46 +721,55 @@ async def fetch_data_and_convert_to_csv(googleAuthCollection, waitListCollection
 
     # Save both DataFrames to different sheets in one Excel file
     excel_path = "data.xlsx"
-    with pd.ExcelWriter(excel_path, engine='xlsxwriter') as writer:
-        df_google.to_excel(writer, sheet_name='interview Guide', index=False)
-        df_waitlist.to_excel(writer, sheet_name='wait List', index=False)
-        df_waitlist_blogPost.to_excel(writer, sheet_name='blogPost wait List', index=False)
-        df_pricingWaitList.to_excel(writer, sheet_name='pricing wait List', index=False)
-
+    with pd.ExcelWriter(excel_path, engine="xlsxwriter") as writer:
+        df_google.to_excel(writer, sheet_name="interview Guide", index=False)
+        df_waitlist.to_excel(writer, sheet_name="wait List", index=False)
+        df_waitlist_blogPost.to_excel(
+            writer, sheet_name="blogPost wait List", index=False
+        )
+        df_pricingWaitList.to_excel(writer, sheet_name="pricing wait List", index=False)
 
     return excel_path
+
 
 # Upload or update CSV to Google Drive
 def upload_csv_to_drive(file_path):
     creds = service_account.Credentials.from_service_account_file(
         SERVICE_ACCOUNT_FILE, scopes=SCOPES
     )
-    service = build('drive', 'v3', credentials=creds)
+    service = build("drive", "v3", credentials=creds)
 
     file_metadata = {
-        'name': 'data.xlsx',
-        'mimeType': 'application/vnd.google-apps.spreadsheet',
-        'parents': [FOLDER_ID],
+        "name": "data.xlsx",
+        "mimeType": "application/vnd.google-apps.spreadsheet",
+        "parents": [FOLDER_ID],
     }
-    media = MediaFileUpload(file_path, mimetype='text/xlsx')
+    media = MediaFileUpload(file_path, mimetype="text/xlsx")
 
     if CSV_FILE_ID:
         service.files().update(fileId=CSV_FILE_ID, media_body=media).execute()
     else:
-        file = service.files().create(
-            body=file_metadata, media_body=media, fields='id'
-        ).execute()
+        file = (
+            service.files()
+            .create(body=file_metadata, media_body=media, fields="id")
+            .execute()
+        )
         print(f"Uploaded CSV File ID: {file.get('id')}")
 
+
 async def generate_answer(question):
-    model = "deepseek/deepseek-chat-v3-0324:free"
+    # model = "deepseek/deepseek-chat-v3-0324:free"
+    model = "minimax/minimax-m2:free"
 
     request_payload = {
         "model": model,
         "plugins": [],
         "messages": [
-            {"role": "user", "content": f"Generate answer for this question in 1-2 sentences: '{question}'"}
-        ]
+            {
+                "role": "user",
+                "content": f"Generate answer for this question in 1-2 sentences: '{question}'",
+            }
+        ],
     }
     while True:
         try:
@@ -481,14 +778,16 @@ async def generate_answer(question):
                     url="https://openrouter.ai/api/v1/chat/completions",
                     headers={
                         "Authorization": f"Bearer {API_KEY}",
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
                     },
-                    data=json.dumps(request_payload)
+                    data=json.dumps(request_payload),
                 ) as response:
                     data = await response.json()
 
                     # Extract the response content
-                    content = data.get("choices", [])[0].get("message", {}).get("content", "")
+                    content = (
+                        data.get("choices", [])[0].get("message", {}).get("content", "")
+                    )
 
                     # If the content is already a plain string (not a JSON string), just return it
                     return content
