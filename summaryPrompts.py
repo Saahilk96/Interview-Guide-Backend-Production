@@ -181,73 +181,73 @@ IMPORTANT: Do NOT include <!DOCTYPE html>, <html>, <head>, or <body> tags.
 Start directly with the content elements below.
 Use only Tailwind CSS utility classes for styling.
 
-<div class="px-6 py-4 space-y-6 text-sm bg-[#08090A] text-gray-200">
+<div class="px-6 py-4 space-y-6 text-sm bg-white text-gray-800">
 
-  <h1 class="text-3xl font-bold text-gray-50 border-b-4 border-gray-600 pb-2">
+  <h1 class="text-3xl font-bold text-gray-900 border-b-4 border-gray-300 pb-2">
     [Company Name] – PM Interview Brief
   </h1>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div class="bg-gray-800 p-4 rounded-lg">
-      <strong class="text-gray-400 block mb-1">Founded</strong>
+    <div class="bg-gray-100 p-4 rounded-lg">
+      <strong class="text-gray-600 block mb-1">Founded</strong>
       [Year, founders if notable]
     </div>
-    <div class="bg-gray-800 p-4 rounded-lg">
-      <strong class="text-gray-400 block mb-1">Size & Status</strong>
+    <div class="bg-gray-100 p-4 rounded-lg">
+      <strong class="text-gray-600 block mb-1">Size & Status</strong>
       [Employees, Public/Private]
     </div>
-    <div class="bg-gray-800 p-4 rounded-lg">
-      <strong class="text-gray-400 block mb-1">Business Model</strong>
+    <div class="bg-gray-100 p-4 rounded-lg">
+      <strong class="text-gray-600 block mb-1">Business Model</strong>
       [How they make money in one sentence]
     </div>
-    <div class="bg-gray-800 p-4 rounded-lg">
-      <strong class="text-gray-400 block mb-1">Target Market</strong>
+    <div class="bg-gray-100 p-4 rounded-lg">
+      <strong class="text-gray-600 block mb-1">Target Market</strong>
       [Who they serve]
     </div>
   </div>
 
   <div>
-    <h2 class="text-xl font-semibold text-gray-100 mt-8 uppercase tracking-wider">
+    <h2 class="text-xl font-semibold text-gray-900 mt-8 uppercase tracking-wider">
       What They Build
     </h2>
-    <div class="bg-gray-700 p-4 mt-2 rounded-md text-gray-200">
+    <div class="bg-gray-100 p-4 mt-2 rounded-md text-gray-800">
       [Top 3–5 products only, one line each, focused on user value]
     </div>
   </div>
 
   <div>
-    <h2 class="text-xl font-semibold text-gray-100 mt-8 uppercase tracking-wider">
+    <h2 class="text-xl font-semibold text-gray-900 mt-8 uppercase tracking-wider">
       Why They Win
     </h2>
-    <p class="mt-2 text-gray-300 leading-relaxed">
+    <p class="mt-2 text-gray-700 leading-relaxed">
       [2–3 sentences on their key differentiator and competitive advantage]
     </p>
   </div>
 
   <div>
-    <h2 class="text-xl font-semibold text-gray-100 mt-8 uppercase tracking-wider">
+    <h2 class="text-xl font-semibold text-gray-900 mt-8 uppercase tracking-wider">
       Recent Momentum
     </h2>
-    <div class="border-l-4 border-gray-500 pl-4 mt-2 text-gray-300">
+    <div class="border-l-4 border-gray-500 pl-4 mt-2 text-gray-700">
       [2–3 most significant recent developments that affect product strategy]
     </div>
   </div>
 
   <div>
-    <h2 class="text-xl font-semibold text-gray-100 mt-8 uppercase tracking-wider">
+    <h2 class="text-xl font-semibold text-gray-900 mt-8 uppercase tracking-wider">
       Leadership to Know
     </h2>
-    <ul class="list-disc list-inside mt-2 space-y-1 text-gray-300">
+    <ul class="list-disc list-inside mt-2 space-y-1 text-gray-700">
       <li><strong>CEO:</strong> [Name and relevant background if notable]</li>
       <li><strong>Head of Product:</strong> [Name if available]</li>
     </ul>
   </div>
 
   <div>
-    <h2 class="text-xl font-semibold text-gray-100 mt-8 uppercase tracking-wider">
+    <h2 class="text-xl font-semibold text-gray-900 mt-8 uppercase tracking-wider">
       Your Interview Angle
     </h2>
-    <p class="mt-2 text-gray-300 leading-relaxed">
+    <p class="mt-2 text-gray-700 leading-relaxed">
       [2–3 sentences on what aspect of their business/product would be most interesting to discuss as a PM candidate]
     </p>
   </div>
@@ -264,7 +264,6 @@ Use only Tailwind CSS utility classes for styling.
 </constraints>'''
 
     return summary_prompt
-
 # def generate_product_research_prompt(product_data):
 #     product_prompt = f'''<role>
 # You are an expert interview preparation coach specializing in product manager interviews.
@@ -446,72 +445,72 @@ IMPORTANT: Do NOT include <!DOCTYPE html>, <html>, <head>, or <body> tags.
 Start directly with the content elements below.
 Use only Tailwind CSS utility classes for styling.
 
-<div class="px-6 py-4 space-y-6 text-sm bg-[#08090A] text-gray-200">
+<div class="px-6 py-4 space-y-6 text-sm bg-white text-gray-800">
 
-  <h1 class="text-3xl font-bold text-gray-50 border-b-4 border-gray-600 pb-2">
+  <h1 class="text-3xl font-bold text-gray-900 border-b-4 border-gray-300 pb-2">
     [Product Name] – PM Product Brief
   </h1>
 
-  <div class="bg-gray-800 border-l-4 border-gray-500 p-4 rounded-md">
-    <strong class="block font-semibold text-gray-400">Deep Insight:</strong>
-    <span class="text-gray-200">[One key insight that reveals product strategy or tradeoff]</span>
+  <div class="bg-gray-100 border-l-4 border-gray-500 p-4 rounded-md">
+    <strong class="block font-semibold text-gray-600">Deep Insight:</strong>
+    <span class="text-gray-800">[One key insight that reveals product strategy or tradeoff]</span>
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div class="bg-gray-800 p-4 rounded-lg">
-      <strong class="text-gray-400 block mb-1">Target Users</strong>
-      <span class="text-gray-200">[Primary user personas and their pain points]</span>
+    <div class="bg-gray-100 p-4 rounded-lg">
+      <strong class="text-gray-600 block mb-1">Target Users</strong>
+      <span class="text-gray-800">[Primary user personas and their pain points]</span>
     </div>
-    <div class="bg-gray-800 p-4 rounded-lg">
-      <strong class="text-gray-400 block mb-1">Core Problem Solved</strong>
-      <span class="text-gray-200">[Main problem the product addresses]</span>
+    <div class="bg-gray-100 p-4 rounded-lg">
+      <strong class="text-gray-600 block mb-1">Core Problem Solved</strong>
+      <span class="text-gray-800">[Main problem the product addresses]</span>
     </div>
-    <div class="bg-gray-800 p-4 rounded-lg">
-      <strong class="text-gray-400 block mb-1">Key Features</strong>
-      <ul class="list-disc list-inside text-gray-300 mt-1 space-y-1">
+    <div class="bg-gray-100 p-4 rounded-lg">
+      <strong class="text-gray-600 block mb-1">Key Features</strong>
+      <ul class="list-disc list-inside text-gray-700 mt-1 space-y-1">
         <li>[Feature 1 – user value]</li>
         <li>[Feature 2 – user value]</li>
         <li>[Feature 3 – user value]</li>
       </ul>
     </div>
-    <div class="bg-gray-800 p-4 rounded-lg">
-      <strong class="text-gray-400 block mb-1">Tech / Integrations</strong>
-      <span class="text-gray-200">[Mention if the product leverages specific tech or ecosystems]</span>
+    <div class="bg-gray-100 p-4 rounded-lg">
+      <strong class="text-gray-600 block mb-1">Tech / Integrations</strong>
+      <span class="text-gray-800">[Mention if the product leverages specific tech or ecosystems]</span>
     </div>
   </div>
 
   <div>
-    <h2 class="text-xl font-semibold text-gray-100 mt-8 uppercase tracking-wider">
+    <h2 class="text-xl font-semibold text-gray-900 mt-8 uppercase tracking-wider">
       Why It Wins
     </h2>
-    <p class="mt-2 text-gray-300 leading-relaxed">
+    <p class="mt-2 text-gray-700 leading-relaxed">
       [2–3 sentences on its unique value prop or strategic differentiators]
     </p>
   </div>
 
   <div>
-    <h2 class="text-xl font-semibold text-gray-100 mt-8 uppercase tracking-wider">
+    <h2 class="text-xl font-semibold text-gray-900 mt-8 uppercase tracking-wider">
       Business Model
     </h2>
-    <p class="mt-2 text-gray-300 leading-relaxed">
+    <p class="mt-2 text-gray-700 leading-relaxed">
       [Monetization strategy in one or two lines]
     </p>
   </div>
 
   <div>
-    <h2 class="text-xl font-semibold text-gray-100 mt-8 uppercase tracking-wider">
+    <h2 class="text-xl font-semibold text-gray-900 mt-8 uppercase tracking-wider">
       Strategy Watchpoint
     </h2>
-    <div class="bg-gray-800 border-l-4 border-gray-500 p-4 mt-2 rounded-md">
-      <span class="text-gray-200">[One strategic risk or opportunity for the product]</span>
+    <div class="bg-gray-100 border-l-4 border-gray-500 p-4 mt-2 rounded-md">
+      <span class="text-gray-800">[One strategic risk or opportunity for the product]</span>
     </div>
   </div>
 
   <div>
-    <h2 class="text-xl font-semibold text-gray-100 mt-8 uppercase tracking-wider">
+    <h2 class="text-xl font-semibold text-gray-900 mt-8 uppercase tracking-wider">
       Interview Angle
     </h2>
-    <p class="mt-2 text-gray-300 leading-relaxed">
+    <p class="mt-2 text-gray-700 leading-relaxed">
       [1–2 lines suggesting what an insightful PM candidate could ask or explore during the interview]
     </p>
   </div>
@@ -528,7 +527,6 @@ Use only Tailwind CSS utility classes for styling.
 </constraints>'''
 
     return product_prompt
-
 # def generate_recruiter_screen_preparation_prompt(recruiter_data):
 #     prompt = f'''<role>
 # You are an expert career coach specializing in helping candidates ace recruiter screening calls.
@@ -693,66 +691,66 @@ IMPORTANT: Do NOT include <!DOCTYPE html>, <html>, <head>, or <body> tags.
 Start directly with the content elements below.
 Use only Tailwind CSS utility classes for styling.
 
-<div class="px-6 py-4 space-y-6 text-sm bg-[#08090A] text-gray-200">
+<div class="px-6 py-4 space-y-6 text-sm bg-white text-gray-800">
 
-  <h1 class="text-3xl font-bold text-gray-50 border-b-4 border-gray-600 pb-2">
+  <h1 class="text-3xl font-bold text-gray-900 border-b-4 border-gray-300 pb-2">
     Recruiter Screen Prep: Your Go-To Guide
   </h1>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div class="bg-gray-800 p-4 rounded-lg">
-      <strong class="text-gray-400 block mb-1">Screen Purpose</strong>
-      <span class="text-gray-200">[Purpose of the recruiter screen in one concise sentence, e.g., "Assess fit based on qualifications, communication, and logistics."]</span>
+    <div class="bg-gray-100 p-4 rounded-lg">
+      <strong class="text-gray-600 block mb-1">Screen Purpose</strong>
+      <span class="text-gray-800">[Purpose of the recruiter screen in one concise sentence, e.g., "Assess fit based on qualifications, communication, and logistics."]</span>
     </div>
-    <div class="bg-gray-800 p-4 rounded-lg">
-      <strong class="text-gray-400 block mb-1">Key Evaluation Areas</strong>
-      <ul class="list-disc list-inside text-gray-300 mt-1 space-y-1">
+    <div class="bg-gray-100 p-4 rounded-lg">
+      <strong class="text-gray-600 block mb-1">Key Evaluation Areas</strong>
+      <ul class="list-disc list-inside text-gray-700 mt-1 space-y-1">
         <li>[Bulleted list of 2-3 key areas recruiters evaluate, e.g., "Skill/experience articulation, role interest, logistical alignment."]</li>
       </ul>
     </div>
-    <div class="bg-gray-800 p-4 rounded-lg">
-      <strong class="text-gray-400 block mb-1">JD Salary Info</strong>
-      <span class="text-gray-200">[Salary information from JD, or "Not provided in JD."]</span>
+    <div class="bg-gray-100 p-4 rounded-lg">
+      <strong class="text-gray-600 block mb-1">JD Salary Info</strong>
+      <span class="text-gray-800">[Salary information from JD, or "Not provided in JD."]</span>
     </div>
-    <div class="bg-gray-800 p-4 rounded-lg">
-      <strong class="text-gray-400 block mb-1">JD Location/Remote</strong>
-      <span class="text-gray-200">[Location and remote status from JD, or "Unclear from JD."]</span>
+    <div class="bg-gray-100 p-4 rounded-lg">
+      <strong class="text-gray-600 block mb-1">JD Location/Remote</strong>
+      <span class="text-gray-800">[Location and remote status from JD, or "Unclear from JD."]</span>
     </div>
   </div>
 
   <div>
-    <h2 class="text-xl font-semibold text-gray-100 mt-8 uppercase tracking-wider">
+    <h2 class="text-xl font-semibold text-gray-900 mt-8 uppercase tracking-wider">
       Craft Your Introduction
     </h2>
-    <div class="bg-gray-800 p-4 mt-2 rounded-md">
-      <strong class="block mb-1 text-gray-400">Strategy:</strong>
-      <span class="text-gray-200">[Brief strategy for introduction, e.g., "Use Past-Present-Future, align with JD themes."]</span>
-      <strong class="block mt-2 mb-1 text-gray-400">Highlight:</strong>
-      <ul class="list-disc list-inside text-gray-300 mt-1 space-y-1">
+    <div class="bg-gray-100 p-4 mt-2 rounded-md">
+      <strong class="block mb-1 text-gray-600">Strategy:</strong>
+      <span class="text-gray-800">[Brief strategy for introduction, e.g., "Use Past-Present-Future, align with JD themes."]</span>
+      <strong class="block mt-2 mb-1 text-gray-600">Highlight:</strong>
+      <ul class="list-disc list-inside text-gray-700 mt-1 space-y-1">
         <li>[Bulleted list of 2-3 key elements to highlight based on JD, e.g., "Relevant project management, team collaboration."]</li>
       </ul>
-      <strong class="block mt-2 mb-1 text-gray-400">Tip:</strong>
-      <span class="text-gray-200">[One concise tip, e.g., "Keep it 2-3 minutes, use JD keywords."]</span>
+      <strong class="block mt-2 mb-1 text-gray-600">Tip:</strong>
+      <span class="text-gray-800">[One concise tip, e.g., "Keep it 2-3 minutes, use JD keywords."]</span>
     </div>
   </div>
 
   <div>
-    <h2 class="text-xl font-semibold text-gray-100 mt-8 uppercase tracking-wider">
+    <h2 class="text-xl font-semibold text-gray-900 mt-8 uppercase tracking-wider">
       Questions to Ask the Recruiter
     </h2>
-    <ul class="list-disc list-inside mt-2 space-y-1 text-gray-300">
-      <li><strong>Role & Team:</strong> <span class="text-gray-200">[1-2 example questions, e.g., "Immediate priorities for the role?", "Team structure?"]</span></li>
-      <li><strong>Interview Process:</strong> <span class="text-gray-200">[1-2 example questions, e.g., "Next steps?", "Hiring timeline?"]</span></li>
-      <li><strong>Culture & Environment:</strong> <span class="text-gray-200">[1-2 example questions, e.g., "Team culture?", "Traits of successful members?"]</span></li>
-      <li><strong>JD Clarification:</strong> <span class="text-gray-200">[1 example question if applicable, e.g., "Clarify 'strategic impact' in JD?"]</span></li>
+    <ul class="list-disc list-inside mt-2 space-y-1 text-gray-700">
+      <li><strong>Role & Team:</strong> <span class="text-gray-800">[1-2 example questions, e.g., "Immediate priorities for the role?", "Team structure?"]</span></li>
+      <li><strong>Interview Process:</strong> <span class="text-gray-800">[1-2 example questions, e.g., "Next steps?", "Hiring timeline?"]</span></li>
+      <li><strong>Culture & Environment:</strong> <span class="text-gray-800">[1-2 example questions, e.g., "Team culture?", "Traits of successful members?"]</span></li>
+      <li><strong>JD Clarification:</strong> <span class="text-gray-800">[1 example question if applicable, e.g., "Clarify 'strategic impact' in JD?"]</span></li>
     </ul>
   </div>
 
   <div>
-    <h2 class="text-xl font-semibold text-gray-100 mt-8 uppercase tracking-wider">
+    <h2 class="text-xl font-semibold text-gray-900 mt-8 uppercase tracking-wider">
       Confidence Boosters
     </h2>
-    <p class="mt-2 text-gray-300 leading-relaxed">
+    <p class="mt-2 text-gray-700 leading-relaxed">
       Remember: Your goal is to clearly articulate your fit, show enthusiasm, and confirm logistical alignment. Be yourself, be clear, and be confident!
     </p>
   </div>
