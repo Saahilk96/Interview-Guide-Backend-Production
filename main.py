@@ -151,36 +151,54 @@ async def check_resume(
         user_email = payload.get("idinfo", {}).get("email")
 
         if not user_email:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token structure")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid token structure"
+            )
 
         user = await googleAuth.find_one({"email": user_email})
-        if user is None:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found"
+            )
 
-        # If no resume is uploaded
-        if resume is None or resume.filename == "":
-            userHistory = user.get("history", [])
-            existsResumes = [
-                history["companyData"]["resume"]
-                for history in userHistory
-                if history.get("companyData", {}).get("resume")
+        # If no resume uploaded, check user's existing resume
+        if not resume or resume.filename == "":
+            user_history = user.get("history", [])
+            existing_resumes = [
+                h["companyData"]["resume"]
+                for h in user_history
+                if h.get("companyData", {}).get("resume")
             ]
 
-            if not existsResumes:
+            if not existing_resumes:
                 return JSONResponse(
                     status_code=200,
                     content={"status": "Not Ok", "message": "Existing resume not found"}
                 )
 
-        return JSONResponse(status_code=200, content={"status": "Ok", "message": "Resume exists"})
+        return JSONResponse(
+            status_code=200,
+            content={"status": "Ok", "message": "Resume exists"}
+        )
 
     except jwt.ExpiredSignatureError:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token has expired")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token has expired"
+        )
     except JWTError:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token"
+        )
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
-
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+    
 @app.post("/google-login")
 async def google_login(payload: utils.TokenPayload, x_api_key: str = Depends(utils.verify_access_key)):
     try:
@@ -226,7 +244,8 @@ async def google_login(payload: utils.TokenPayload, x_api_key: str = Depends(uti
             "status": "Ok",
             "message": "Login Successful",
             "user": utils.convert_objectid(user),
-            "uNotes": haveNotes
+            "uNotes": haveNotes,
+            "resume":True if user["history"] else False
         }))
 
     except ExpiredSignatureError:
