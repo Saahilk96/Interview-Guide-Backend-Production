@@ -523,6 +523,44 @@ async def get_response(question, index):
             await asyncio.sleep(2)
 
 
+async def get_quick_guide_response(data):
+    prompt = myPrompts.quick_guide_fun(data)
+    model = "google/gemini-2.5-flash-lite"
+
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.post(
+                url="https://openrouter.ai/api/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {API_KEY}",
+                    "Content-Type": "application/json",
+                },
+                data=json.dumps({
+                    "model": model,
+                    "plugins": [],
+                    "messages": [
+                        {
+                            "role": "user",
+                            "content": prompt,
+                        }
+                    ],
+                }),
+            ) as response:
+                data = await response.json()
+
+                return (
+                    data.get("choices", [])[0]
+                    .get("message", {})
+                    .get("content", "")
+                )
+
+    except Exception as e:
+        _, _, tb = sys.exc_info()
+        line_number = tb.tb_lineno
+        print(f"[ASYNC] Error: {e}, line: {line_number}. Retrying in 2 seconds...")
+        await asyncio.sleep(2)
+        return "Not generated due to some error"
+
 def structureGuide(
     results: List[Dict[str, Any]],
     citations: List[List[Dict[str, str]]],
@@ -561,7 +599,6 @@ def structureGuide(
         },
     }
 
-
 def convert_objectid(obj: Any) -> Any:
     if isinstance(obj, dict):
         return {
@@ -572,7 +609,6 @@ def convert_objectid(obj: Any) -> Any:
         return [convert_objectid(item) for item in obj]
     else:
         return obj
-
 
 def verify_access_key(x_api_key: str = Header(...)):
     if x_api_key != ACCESS_KEY:
@@ -759,7 +795,7 @@ def upload_csv_to_drive(file_path):
 
 async def generate_answer(question):
     # model = "deepseek/deepseek-chat-v3-0324:free"
-    model = "minimax/minimax-m2:free"
+    model = "meta-llama/llama-4-maverick:free"
 
     request_payload = {
         "model": model,

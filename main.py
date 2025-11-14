@@ -139,6 +139,89 @@ async def generate_guide(
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+@app.post("/generate_quick_guide")
+async def generate_quick_guide(
+    x_api_key: str = Header(..., alias="x-api-key"),
+    company_name: str = Form(...),
+    job_role: str = Form(...),
+    job_description: str = Form(...),
+    token: str = Form(...),
+    resume: Optional[UploadFile] = File(None),
+):
+    if x_api_key != ACCESS_KEY:
+        raise HTTPException(status_code=400, detail="Missing or invalid access key")
+
+    try:
+        resume_text = ''
+        
+        if resume and resume.filename != '':
+            filename = secure_filename(resume.filename)
+            file_path = os.path.join(UPLOAD_FOLDER, filename)
+            with open(file_path, "wb") as f:
+                f.write(await resume.read())
+
+            reader = PyPDF2.PdfReader(file_path)
+            for page in reader.pages:
+                resume_text += page.extract_text() or ""
+
+            os.remove(file_path)
+
+        idinfo = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])["idinfo"]
+        user_email = idinfo['email']
+
+        user = await googleAuth.find_one({"email": user_email})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        if user_email!="karkerasaahil@gmail.com" and user_email!="shahreenhossain22@gmail.com" and user_email!="aletishiva218@gmail.com":
+            if user["limit"]==2:
+                raise HTTPException(status_code=405, detail="Reached limit, upgrade to pro")
+
+        if not resume or resume.filename == '':
+            user_history = json.loads(dumps(user)).get("history", [])
+            resumes = [h["companyData"]["resume"] for h in user_history if "companyData" in h and h["companyData"].get("resume")]
+            if not resumes:
+                return JSONResponse(status_code=200, content={"status": "Not Ok", "error": "Existing resume not found"})
+            resume_text = resumes[-1]
+
+        updated_data = {
+            "company_name": company_name,
+            "job_role": job_role,
+            "job_description": job_description,
+            "token": token,
+            "resume": resume_text
+        }
+
+        result = await utils.get_quick_guide_response(updated_data);
+        guide_id = str(uuid4())
+
+        newQuickGuide = {"id":guide_id,"datetime": datetime.now().isoformat(),"job_role":updated_data["job_role"],"company_name":updated_data["company_name"],"html":result}
+
+        user_quick_history = user.get("quick_history", [])
+        user_quick_history.append(newQuickGuide)
+
+        updatedLimit = user["limit"]+1 if (user_email!="karkerasaahil@gmail.com" and user_email!="shahreenhossain22@gmail.com" and user_email!="aletishiva218@gmail.com") else user["limit"]
+    
+        result = await googleAuth.update_one({"email": user_email}, {"$set": {"quick_history": user_quick_history,"limit":updatedLimit}})
+        
+
+        if result.matched_count:
+            return {
+                "status": "Ok",
+                "message": "User updated",
+                "quick_history": user_quick_history,
+                "quickGuide": newQuickGuide
+            }
+        else:
+            raise HTTPException(status_code=500, detail="Failed to update quick history")
+
+    except ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token has expired")
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 @app.post("/check_resume")
 async def check_resume(
     token: str = Form(...),
@@ -240,11 +323,15 @@ async def google_login(payload: utils.TokenPayload, x_api_key: str = Depends(uti
         filteredNotes = [entry["id"] for entry in user.get("history", [])]
         haveNotes = [note for note in uNotes if note["note"]["guideId"] in filteredNotes]
 
+        user_quick_history = user.get("quick_history", [])
+        print(user_quick_history)
+
         return JSONResponse(content=jsonable_encoder({
             "status": "Ok",
             "message": "Login Successful",
             "user": utils.convert_objectid(user),
             "uNotes": haveNotes,
+            "quick_history":user_quick_history, 
             "resume":True if user["history"] else False
         }))
 
@@ -334,6 +421,47 @@ async def get_guide(
         guide = utils.convert_objectid(guide)
 
         return JSONResponse(content=jsonable_encoder({"status": "Ok", "guide": guide, "notes": notes}))
+
+    except ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token has expired")
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Error: {str(e)}")
+
+@app.get("/quick_guide/{id}")
+async def get_guide(
+    id: str = Path(..., description="Guide ID"),
+    x_api_key: str = Header(..., alias="x-api-key"),
+    credentials: HTTPAuthorizationCredentials = Depends(HTTPBearer())
+):
+    # Validate access key
+    if x_api_key != ACCESS_KEY:
+        raise HTTPException(status_code=400, detail="Missing or invalid access key")
+
+    token = credentials.credentials
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        idinfo = payload.get("idinfo", {})
+        user_email = idinfo.get("email")
+        if not user_email:
+            raise HTTPException(status_code=401, detail="Invalid token payload: missing email")
+
+        # Find user in DB
+        user = await googleAuth.find_one({"email": user_email})
+        if user is None:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        quick_history = user.get("quick_history", [])
+        # Find guide in user's history
+        quick_guide = next((g for g in quick_history if g.get("id") == id), None)
+        if quick_guide is None:
+            raise HTTPException(status_code=404, detail="Guide not found with this id")
+
+
+        quick_guide = utils.convert_objectid(quick_guide)
+
+        return JSONResponse(content=jsonable_encoder({"status": "Ok", "quick_guide": quick_guide}))
 
     except ExpiredSignatureError:
         raise HTTPException(status_code=401, detail="Token has expired")
@@ -432,7 +560,61 @@ async def delete_guide(
 
         return JSONResponse(status_code=200, content={
             "status": "Ok",
-            "message": "Guide deleted successfully"
+            "message": "Guide deleted successfully",
+            "resume":True if len(history) else False
+        })
+
+    except ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token has expired")
+
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    except Exception as e:
+        return JSONResponse(status_code=400, content={
+            "status": "Not Ok",
+            "error": str(e)
+        })
+
+@app.delete("/quick_guide/{id}")
+async def delete_guide(
+    id: str,
+    x_api_key: str = Header(...),
+    Authorization: str = Header(None)
+):
+    # Check access key
+    if x_api_key != ACCESS_KEY:
+        raise HTTPException(status_code=400, detail="Missing or invalid access key")
+
+    # Check token
+    if not Authorization:
+        raise HTTPException(status_code=401, detail="Authorization header missing")
+
+    try:
+        token = Authorization.split(" ")[1]
+        idinfo = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+        user_email = idinfo["idinfo"]["email"]
+
+        user = await googleAuth.find_one({"email": user_email})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        quick_history = user.get("quick_history", [])
+        guide_index = next((index for index, g in enumerate(quick_history) if g.get("id") == id), None)
+
+        if guide_index is None:
+            raise HTTPException(status_code=401, detail="Guide not found with this id")
+
+        # Remove the guide from user's history
+        quick_history.pop(guide_index)
+        googleAuth.update_one(
+            {"email": user_email},
+            {"$set": {"quick_history": quick_history}}
+        )
+        
+        return JSONResponse(status_code=200, content={
+            "status": "Ok",
+            "message": "Quick Guide deleted successfully",
         })
 
     except ExpiredSignatureError:
@@ -638,329 +820,6 @@ async def generate_answer(
         raise HTTPException(status_code=401, detail="Invalid token")
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-
-# @app.post("/delete_user")
-# async def delete_user(
-#     email: str = Form(...)
-# ):
-   
-#     await googleAuth.delete_many({"email":email,"history":[]})
-
-#     return JSONResponse(
-#             status_code=200,
-#             content={"message": "Deleted user"}
-#         )
-
-# @app.post("/test_module")
-# async def test_module(
-#     x_api_key: str = Header(..., alias="x-api-key"),
-#     company_name: str = Form(...),
-#     job_role: str = Form(...),
-#     job_description: str = Form(...),
-#     token: str = Form(...),
-#     resume: Optional[UploadFile] = File(None)
-# ):
-#     if x_api_key != ACCESS_KEY:
-#         raise HTTPException(status_code=400, detail="Missing or invalid access key")
-
-#     try:
-#         resume_text = ''
-        
-#         if resume and resume.filename != '':
-#             filename = secure_filename(resume.filename)
-#             file_path = os.path.join(UPLOAD_FOLDER, filename)
-#             with open(file_path, "wb") as f:
-#                 f.write(await resume.read())
-
-#             reader = PyPDF2.PdfReader(file_path)
-#             for page in reader.pages:
-#                 resume_text += page.extract_text() or ""
-
-#             os.remove(file_path)
-#         else:
-#             raise HTTPException(status_code=400, detail="Resume is required")
-
-#         data = {
-#             "company_name": company_name,
-#             "job_role": job_role,
-#             "job_description": job_description,
-#             "token": token,
-#             "resume": resume_text
-#         }
-
-#         company_research = (f'''
-# <role>
-# You are an expert research assistant specializing in company intelligence for job interview preparation.
-# You use web search (powered by Exa AI through OpenRouter) to gather and verify current information about companies.
-# Model: Gemini 2.5 Flash
-# </role>
-
-# <task>
-# Create a concise, visually rich company profile in **HTML using Tailwind CSS** for interview candidates.
-# Input data: {data}
-# </task>
-
-# <requirements>
-# ⚠️ REQUIREMENTS:
-# - Do **not** include `<!DOCTYPE html>`, `<html>`, `<head>`, or `<body>`
-# - Do **not** add any class or attributes to the topmost parent `<div>`
-# - Start directly with styled content blocks
-# - Wrap **all URLs** in `<a>` tags with Tailwind styling
-# - Include relevant **images** using `<img>` tags with proper sizing, alignment, shape, and alt text where it adds value
-# </requirements>
-
-# <writing_style>
-# Style: “Smart Brief” – like a sharp friend prepping you fast.
-# - Max 20 words per sentence
-# - Active voice
-# - Add context that matters
-# - Be concise, not robotic or flowery
-# </writing_style>
-
-# <output_format>
-# ✅ Begin output with HTML content only (no document structure)  
-# ✅ Use Tailwind CSS classes for all formatting  
-
-# ✅ Sections:
-# ```html
-# <div class="bg-white p-6 rounded-xl shadow border-l-4 border-blue-600 space-y-2">
-# ✅ Headings:
-
-# Title:
-
-# html
-# Copy
-# Edit
-# <h1 class="text-3xl font-extrabold text-center text-gray-900 mb-6">[Company Name] – Interview Brief</h1>
-# Section header:
-
-# html
-# Copy
-# Edit
-# <h2 class="text-2xl font-bold text-blue-800 mb-2">
-# ✅ Text:
-
-# Paragraph: <p class="text-gray-700 leading-relaxed">
-
-# Missing info: <p class="text-gray-500 italic">Information not available from current sources.</p>
-
-# Emphasize key terms with: <strong class="text-gray-900 font-semibold">
-
-# ✅ Lists:
-
-# html
-# Copy
-# Edit
-# <ul class="list-disc list-inside marker:text-green-600 text-gray-700 space-y-1">
-#   <li>Global team spread across 15 countries</li>
-# </ul>
-# ✅ Tables:
-
-# html
-# Copy
-# Edit
-# <table class="w-full border-collapse text-sm text-left">
-#   <thead class="bg-gray-100 text-gray-700">
-#     <tr>
-#       <th class="px-4 py-2 font-semibold">Fact</th>
-#       <th class="px-4 py-2">Details</th>
-#     </tr>
-#   </thead>
-#   <tbody class="divide-y divide-gray-200">
-#     <tr>
-#       <td class="px-4 py-2 font-medium text-gray-800">Founded</td>
-#       <td class="px-4 py-2">2014 by ex-Amazon engineers</td>
-#     </tr>
-#   </tbody>
-# </table>
-# ✅ URLs (always clickable):
-
-# html
-# Copy
-# Edit
-# <a href="https://example.com" class="text-blue-600 underline hover:text-blue-800" target="_blank" rel="noopener noreferrer">example.com</a>
-# ✅ Badges:
-
-# html
-# Copy
-# Edit
-# <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Private</span>
-# ✅ Separators:
-
-# html
-# Copy
-# Edit
-# <hr class="my-6 border-t border-gray-300">
-# ✅ Emojis:
-# Use to enhance clarity (📍 location, 💼 team, 🚀 product, 🧠 insight, 🔒 security)
-
-# ✅ ✅ Images:
-# Use only when relevant — e.g., product images, team photos, logos, UI screenshots, etc.
-# Use this pattern:
-
-# html
-# Copy
-# Edit
-# <img src="https://example.com/logo.png" alt="Company logo" class="w-32 h-32 object-contain mx-auto rounded-full shadow mb-4" />
-# w-32 h-32 for controlled size
-
-# mx-auto for center alignment
-
-# rounded, rounded-full, shadow, object-contain for clean UI look
-
-# ✅ Sections to Include:
-
-# Company Snapshot
-
-# Key Facts
-
-# What They Build
-
-# Business Model
-
-# Target Market
-
-# Market Position
-
-# Leadership
-
-# Recent Momentum
-
-# Sources (with all links in <a>)
-
-# ✅ Content limit: Under 500 words (excluding HTML)
-# </output_format>
-
-# <search_requirements>
-
-# Use search for every section
-
-# At least 2 sources per fact (1 if from company website or SEC)
-
-# Prioritize 2020–2025 events
-# </search_requirements>
-
-# <company_identification>
-
-# Match using COMPANY NAME and WEBSITE
-
-# Cross-check with job description and industry
-# </company_identification>
-
-# <search_strategy>
-# Use focused searches:
-
-# "[Company Name] company profile"
-
-# "[Company Name] founder and start year"
-
-# "[Company Name] headquarters employee count"
-
-# "[Company Name] product offerings"
-
-# "[Company Name] revenue model"
-
-# "[Company Name] customer base"
-
-# "[Company Name] main competitors"
-
-# "[Company Name] CEO 2024"
-
-# "[Company Name] recent funding, acquisition, layoffs 2020–2025"
-# </search_strategy>
-
-# <missing_information_handling>
-# If info is not found or verified:
-
-# Use: <p class="text-gray-500 italic">Information not available from current sources.</p>
-# </missing_information_handling>
-
-# <leadership_verification>
-
-# Find current CEO, Head of Product, and Head of Engineering (2024–2025)
-
-# Use company site, press, or LinkedIn
-
-# Use placeholder if not found:
-
-# html
-# Copy
-# Edit
-# <p class="text-gray-500 italic">Current [position] not available</p>
-# </leadership_verification>
-
-# <quality_requirements>
-
-# Prioritize clarity, usefulness, and strong visual layout
-
-# Every sentence must add new insight
-
-# Avoid repetition, vague phrases, or unnecessary detail
-
-# Use layout spacing, color, icons, and media for strong UI
-# </quality_requirements>
-# ''')
-        
-#         async with aiohttp.ClientSession() as session:
-#             async with session.post(
-#                 url="https://openrouter.ai/api/v1/chat/completions",
-#         headers={
-#             "Authorization": f"Bearer {API_KEY}",
-#             "Content-Type": "application/json"
-#         },
-#         data=json.dumps({
-#         "model": "google/gemini-2.5-flash-preview-05-20",
-#         "plugins": [{"id": "web", "max_results": 10}],
-#         "messages": [
-#             {"role": "user", "content": company_research}
-#         ],
-#         "tools":[
-#             {
-#   "name": "generateHtmlWithTailwind",
-#   "description": "Generates HTML content styled with Tailwind CSS based on a user query",
-#   "parameters": {
-#     "type": "object",
-#     "properties": {
-#       "topic": {
-#         "type": "string",
-#         "description": "The topic to generate HTML content for"
-#       }
-#     },
-#     "required": ["topic"]
-#   }
-# }
-#         ],
-#          "tool_choice": {
-#             "type": "function",
-#             "function": {
-#                 "name": "generateHtmlContent"
-#             }
-#         }
-#         })
-#         ) as response:
-#                 data = await response.json()
-
-#                 citations = []
-#                 annotations = data.get("choices", [])[0].get("message", {}).get("annotations", [])
-#                 for annotation in annotations:
-#                     url_citation = annotation.get("url_citation", {})
-#                     url_citation.pop("start_index", None)
-#                     url_citation.pop("end_index", None)
-#                     citations.append(url_citation)
-
-#                 # tool_args = data.get("choices", [])[0].get("message", {}).get("tool_calls", [])[0].get("function", {}).get("arguments", "{}")
-#                 # parsed_response = json.loads(tool_args)
-
-#                 # return parsed_response, citations, None
-#                 return {"data":data}
-
-#     except ExpiredSignatureError:
-#         raise HTTPException(status_code=401, detail="Token has expired")
-#     except JWTError:
-#         raise HTTPException(status_code=401, detail="Invalid token")
-#     except Exception as e:
-#         raise HTTPException(status_code=400, detail=str(e))
-
 
 if __name__ == "__main__":
     import uvicorn
