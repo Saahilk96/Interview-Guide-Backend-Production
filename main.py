@@ -868,8 +868,8 @@ async def create_checkout_session(data: utils.CheckoutRequest):
     "quantity": 1,
   }],
             mode="payment",
-            success_url="http://localhost:3000/payment-success?userId=" + data.userId,
-            cancel_url="http://localhost:3000/payment-cancel",
+            success_url="https://www.eukaai.com/payment-success?userId=" + data.userId,
+            cancel_url="https://www.eukaai.com/payment-cancel",
             customer_email=user["email"],
             metadata={
                 "user_id": data.userId  # ✓ SECURE
