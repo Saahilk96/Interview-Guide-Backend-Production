@@ -9,7 +9,7 @@ from typing import List, Dict, Any, Optional, Union
 from bson import ObjectId
 from typing import Any
 from env import API_KEY, FOLDER_ID, CSV_FILE_ID, GOOGLEAPIDRIVE
-from pydantic import BaseModel
+from pydantic import BaseModel,Field
 import os
 import base64
 import pandas as pd
@@ -622,7 +622,7 @@ class TokenPayload(BaseModel):
     token: str
 
 class CheckoutRequest(BaseModel):
-    email: str
+    userId: str = Field(..., min_length=10, description="MongoDB ObjectId of the user")
 
 class NoteItem(BaseModel):
     type: str

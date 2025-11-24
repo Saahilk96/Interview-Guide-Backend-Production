@@ -833,40 +833,45 @@ async def generate_answer(
 @app.post("/create-checkout-session")
 async def create_checkout_session(data: utils.CheckoutRequest):
     try:
-        user = await googleAuth.find_one({"email": data.email})
+        from bson import ObjectId
+
+        # Validate userId
+        try:
+            obj_id = ObjectId(data.userId)
+        except:
+            return JSONResponse(status_code=400, content={"error": "Invalid userId"})
+
+        # Find user by userId
+        user = await googleAuth.find_one({"_id": obj_id})
 
         if user is None:
             return JSONResponse(status_code=400, content={
                 "status": "Not Ok",
-                "error": "You are not an authorized user"
+                "error": "User not found"
             })
 
         if user.get("paymentDone") is True:
             return JSONResponse(status_code=400, content={
                 "status": "Not Ok",
-                "error": "You already have the pro version"
+                "error": "You already have the Pro version"
             })
 
-        # IMPORTANT: include _id in metadata for webhook
-        user_id = str(user["_id"])
-
+        # Create checkout session
         session = stripe.checkout.Session.create(
             payment_method_types=["card"],
             line_items=[{
                 "price_data": {
                     "currency": "inr",
                     "product_data": {"name": "Premium Plan"},
-                    "unit_amount": 5100  # ₹1 test payment
+                    "unit_amount": 5100
                 },
                 "quantity": 1,
             }],
             mode="payment",
-            success_url="http://localhost:3000/payment-success",
+            success_url="http://localhost:3000/payment-success?userId=" + data.userId,
             cancel_url="http://localhost:3000/payment-cancel",
-            customer_email=data.email,
             metadata={
-                "user_id": user_id,     # 🔥 REQUIRED
-                "email": data.email
+                "user_id": data.userId  # ✓ SECURE
             }
         )
 
@@ -882,47 +887,49 @@ async def stripe_webhook(request: Request):
 
     try:
         event = stripe.Webhook.construct_event(
-            payload, sig_header, WEBHOOK_SECRET  # MUST be your test webhook secret
+            payload, sig_header, WEBHOOK_SECRET
         )
     except Exception as e:
         return JSONResponse(status_code=400, content={"error": str(e)})
 
-    # ---- PAYMENT SUCCESS EVENT ----
     if event["type"] == "checkout.session.completed":
         session = event["data"]["object"]
 
-        # Retrieve metadata
-        user_email = session.get("customer_email")
         user_id = session["metadata"].get("user_id")
 
         if not user_id:
-            print("❌ No user_id in metadata. Cannot update user.")
-            return {"status": "no-user-metadata"}
+            print("❌ user_id missing in metadata")
+            return {"status": "failed"}
 
-        # Convert to ObjectId (IMPORTANT)
         from bson import ObjectId
 
         try:
             obj_id = ObjectId(user_id)
         except:
-            print("❌ Invalid MongoDB ObjectId in metadata.")
+            print("❌ Invalid ObjectId")
             return {"status": "invalid-object-id"}
 
-        # Update user in MongoDB
+        # Update user payment status
         await googleAuth.update_one(
             {"_id": obj_id},
             {"$set": {"paymentDone": True}}
         )
 
-        print("✅ User payment updated:", user_email)
+        print("✅ User payment updated:", user_id)
 
     return {"status": "success"}
 
-
 # ---- VERIFY PAYMENT API ----
 @app.get("/verify-payment")
-async def verify_payment(email: str):
-    user = await googleAuth.find_one({"email": email})
+async def verify_payment(userId: str):
+    from bson import ObjectId
+
+    try:
+        obj_id = ObjectId(userId)
+    except:
+        raise HTTPException(status_code=400, detail="Invalid userId")
+
+    user = await googleAuth.find_one({"_id": obj_id})
 
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
