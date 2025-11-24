@@ -309,11 +309,15 @@ async def google_login(payload: utils.TokenPayload, x_api_key: str = Depends(uti
                 "createdAt": datetime.now(),
                 "paymentDone":False
             }
-            googleAuth.insert_one(user)
+            await googleAuth.insert_one(user)
         else:
             if "paymentDone" not in user:
                 await googleAuth.update_one({"email":user_email},{"$set":{"paymentDone":False}})
                 user["paymentDone"]=False
+            if user.get("name", "") == "":
+                await googleAuth.update_one({"email":user_email},{"$set":{"name":user_name}})
+                user["name"]=user_name
+            
         
         # Prepare uNotes
         uNotes = []
@@ -880,6 +884,65 @@ async def create_checkout_session(data: utils.CheckoutRequest):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/create-checkout-session-pricing")
+async def create_checkout_session(data: utils.CheckoutRequest1):
+    try:
+        # Generate a fresh ObjectId
+        obj_id = ObjectId()
+
+        # Find user by email
+        user = await googleAuth.find_one({"email": data.email})
+
+        # Create new user if not exists
+        if user is None:
+            user = {
+                "_id": obj_id,
+                "name": "",
+                "email": data.email,
+                "limit": 0,
+                "history": [],
+                "createdAt": datetime.now(),
+                "paymentDone": False
+            }
+            await googleAuth.insert_one(user)
+
+        # If already pro, block checkout
+        elif user.get("paymentDone") is True:
+            return JSONResponse(
+                status_code=400,
+                content={
+                    "status": "Not Ok",
+                    "error": "You already have the Pro version"
+                }
+            )
+
+        # Create checkout session
+        session = stripe.checkout.Session.create(
+            payment_method_types=["card"],
+            line_items=[{
+                "price_data": {
+                    "currency": "usd",
+                    "product_data": {"name": "Premium Plan"},
+                    "unit_amount": 2000,  # $20
+                    "recurring": {"interval": "month"},
+                },
+                "quantity": 1,
+            }],
+            mode="subscription",
+            customer_email=user["email"],
+            success_url="https://www.eukaai.com/payment-success?userId=" + str(user["_id"]),
+            cancel_url="https://www.eukaai.com/payment-cancel",
+            metadata={
+                "user_id": str(user["_id"])  # <-- FIXED
+            }
+        )
+
+        return {"url": session.url,"userId":str(user["_id"])}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.post("/stripe-webhook")
 async def stripe_webhook(request: Request):
