@@ -5,6 +5,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import Optional
 from jose import jwt, ExpiredSignatureError, JWTError
+from bson import ObjectId
 import os
 from uuid import uuid4
 from datetime import datetime, timedelta, timezone
@@ -833,8 +834,6 @@ async def generate_answer(
 @app.post("/create-checkout-session")
 async def create_checkout_session(data: utils.CheckoutRequest):
     try:
-        from bson import ObjectId
-
         # Validate userId
         try:
             obj_id = ObjectId(data.userId)
@@ -863,11 +862,12 @@ async def create_checkout_session(data: utils.CheckoutRequest):
     "price_data": {
       "currency": "usd",
       "product_data": { "name": "Premium Plan" },
-      "unit_amount": 2000  
+      "unit_amount": 2000,
+      "recurring": { "interval": "month" },
     },
     "quantity": 1,
   }],
-            mode="payment",
+            mode="subscription",
             success_url="https://www.eukaai.com/payment-success?userId=" + data.userId,
             cancel_url="https://www.eukaai.com/payment-cancel",
             customer_email=user["email"],
@@ -887,44 +887,63 @@ async def stripe_webhook(request: Request):
     sig_header = request.headers.get("stripe-signature")
 
     try:
-        event = stripe.Webhook.construct_event(
-            payload, sig_header, WEBHOOK_SECRET
-        )
+        event = stripe.Webhook.construct_event(payload, sig_header, WEBHOOK_SECRET)
     except Exception as e:
         return JSONResponse(status_code=400, content={"error": str(e)})
 
-    if event["type"] == "checkout.session.completed":
-        session = event["data"]["object"]
+    # 🔥 1. First payment + monthly autopay
+    if event["type"] == "invoice.payment_succeeded":
+        invoice = event["data"]["object"]
+        subscription_id = invoice.get("subscription")
 
-        user_id = session["metadata"].get("user_id")
+        subscription = stripe.Subscription.retrieve(subscription_id)
+        metadata = subscription.get("metadata", {})
+        user_id = metadata.get("user_id")
 
-        if not user_id:
-            print("❌ user_id missing in metadata")
-            return {"status": "failed"}
+        if user_id:
+            try:
+                await googleAuth.update_one(
+                    {"_id": ObjectId(user_id)},
+                    {"$set": {"paymentDone": True}}
+                )
+                print("✅ Payment succeeded for:", user_id)
+            except:
+                print("❌ Invalid ObjectId")
 
-        from bson import ObjectId
+    # ❌ 2. User disabled auto payment (canceled subscription)
+    if event["type"] == "customer.subscription.deleted":
+        subscription = event["data"]["object"]
+        metadata = subscription.get("metadata", {})
+        user_id = metadata.get("user_id")
 
-        try:
-            obj_id = ObjectId(user_id)
-        except:
-            print("❌ Invalid ObjectId")
-            return {"status": "invalid-object-id"}
+        if user_id:
+            await googleAuth.update_one(
+                {"_id": ObjectId(user_id)},
+                {"$set": {"paymentDone": False}}
+            )
+            print("❌ Subscription cancelled:", user_id)
 
-        # Update user payment status
-        await googleAuth.update_one(
-            {"_id": obj_id},
-            {"$set": {"paymentDone": True}}
-        )
+    # ❌ 3. Stripe tried to auto-charge but failed (card expired)
+    if event["type"] == "invoice.payment_failed":
+        invoice = event["data"]["object"]
+        subscription_id = invoice.get("subscription")
 
-        print("✅ User payment updated:", user_id)
+        subscription = stripe.Subscription.retrieve(subscription_id)
+        metadata = subscription.get("metadata", {})
+        user_id = metadata.get("user_id")
+
+        if user_id:
+            await googleAuth.update_one(
+                {"_id": ObjectId(user_id)},
+                {"$set": {"paymentDone": False}}
+            )
+            print("❌ Payment failed for:", user_id)
 
     return {"status": "success"}
 
 # ---- VERIFY PAYMENT API ----
 @app.get("/verify-payment")
 async def verify_payment(userId: str):
-    from bson import ObjectId
-
     try:
         obj_id = ObjectId(userId)
     except:
