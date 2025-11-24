@@ -894,6 +894,7 @@ async def stripe_webhook(request: Request):
         return JSONResponse(status_code=400, content={"error": str(e)})
 
     # if event["type"] == "checkout.session.completed":
+    print("🔔 Webhook received:", event)
     session = event["data"]["object"]
 
     user_id = session["metadata"].get("user_id")
