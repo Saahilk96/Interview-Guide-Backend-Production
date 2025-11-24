@@ -16,8 +16,11 @@ from env import SECRET_KEY,ACCESS_KEY,UPDATE_CSV_KEY
 from database import googleAuth, userNotes,waitList,blogPostWaitList,pricingWaitList
 import utils
 import asyncio
+import stripe
 import aiohttp
-from env import API_KEY
+from env import API_KEY,STRIPE_SECRET_KEY,WEBHOOK_SECRET
+
+stripe.api_key = STRIPE_SECRET_KEY
 
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -71,9 +74,10 @@ async def generate_guide(
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
         
-        if user_email!="karkerasaahil@gmail.com" and user_email!="shahreenhossain22@gmail.com" and user_email!="aletishiva218@gmail.com":
-            if user["limit"]==2:
-                raise HTTPException(status_code=405, detail="Reached limit, upgrade to pro")
+        if user_email!="karkerasaahil@gmail.com" and user_email!="shahreenhossain22@gmail.com":
+            if user["limit"]>=1:
+                if user["paymentDone"]!=True:
+                    return JSONResponse(status_code=400, content={"status": "Not Ok", "error": "Reached limit, upgrade to pro"})
 
         if not resume or resume.filename == '':
             user_history = json.loads(dumps(user)).get("history", [])
@@ -107,7 +111,7 @@ async def generate_guide(
         user_history = user.get("history", [])
         user_history.append(newGuide)
 
-        updatedLimit = user["limit"]+1 if (user_email!="karkerasaahil@gmail.com" and user_email!="shahreenhossain22@gmail.com" and user_email!="aletishiva218@gmail.com") else user["limit"]
+        updatedLimit = user["limit"]+1 if (user_email!="karkerasaahil@gmail.com" and user_email!="shahreenhossain22@gmail.com") else user["limit"]
     
         result = await googleAuth.update_one({"email": user_email}, {"$set": {"history": user_history,"limit":updatedLimit}})
         
@@ -301,9 +305,14 @@ async def google_login(payload: utils.TokenPayload, x_api_key: str = Depends(uti
                 "email": user_email,
                 "limit": 0,
                 "history": [],
-                "createdAt": datetime.now()
+                "createdAt": datetime.now(),
+                "paymentDone":False
             }
             googleAuth.insert_one(user)
+        else:
+            if "paymentDone" not in user:
+                await googleAuth.update_one({"email":user_email},{"$set":{"paymentDone":False}})
+                user["paymentDone"]=False
         
         # Prepare uNotes
         uNotes = []
@@ -820,6 +829,106 @@ async def generate_answer(
         raise HTTPException(status_code=401, detail="Invalid token")
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+@app.post("/create-checkout-session")
+async def create_checkout_session(data: utils.CheckoutRequest):
+    try:
+        user = await googleAuth.find_one({"email": data.email})
+
+        if user is None:
+            return JSONResponse(status_code=400, content={
+                "status": "Not Ok",
+                "error": "You are not an authorized user"
+            })
+
+        if user.get("paymentDone") is True:
+            return JSONResponse(status_code=400, content={
+                "status": "Not Ok",
+                "error": "You already have the pro version"
+            })
+
+        # IMPORTANT: include _id in metadata for webhook
+        user_id = str(user["_id"])
+
+        session = stripe.checkout.Session.create(
+            payment_method_types=["card"],
+            line_items=[{
+                "price_data": {
+                    "currency": "inr",
+                    "product_data": {"name": "Premium Plan"},
+                    "unit_amount": 5100  # ₹1 test payment
+                },
+                "quantity": 1,
+            }],
+            mode="payment",
+            success_url="http://localhost:3000/payment-success",
+            cancel_url="http://localhost:3000/payment-cancel",
+            customer_email=data.email,
+            metadata={
+                "user_id": user_id,     # 🔥 REQUIRED
+                "email": data.email
+            }
+        )
+
+        return {"url": session.url}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/stripe-webhook")
+async def stripe_webhook(request: Request):
+    payload = await request.body()
+    sig_header = request.headers.get("stripe-signature")
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, WEBHOOK_SECRET  # MUST be your test webhook secret
+        )
+    except Exception as e:
+        return JSONResponse(status_code=400, content={"error": str(e)})
+
+    # ---- PAYMENT SUCCESS EVENT ----
+    if event["type"] == "checkout.session.completed":
+        session = event["data"]["object"]
+
+        # Retrieve metadata
+        user_email = session.get("customer_email")
+        user_id = session["metadata"].get("user_id")
+
+        if not user_id:
+            print("❌ No user_id in metadata. Cannot update user.")
+            return {"status": "no-user-metadata"}
+
+        # Convert to ObjectId (IMPORTANT)
+        from bson import ObjectId
+
+        try:
+            obj_id = ObjectId(user_id)
+        except:
+            print("❌ Invalid MongoDB ObjectId in metadata.")
+            return {"status": "invalid-object-id"}
+
+        # Update user in MongoDB
+        await googleAuth.update_one(
+            {"_id": obj_id},
+            {"$set": {"paymentDone": True}}
+        )
+
+        print("✅ User payment updated:", user_email)
+
+    return {"status": "success"}
+
+
+# ---- VERIFY PAYMENT API ----
+@app.get("/verify-payment")
+async def verify_payment(email: str):
+    user = await googleAuth.find_one({"email": email})
+
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    return {"paymentDone": user.get("paymentDone", False)}
+
 
 if __name__ == "__main__":
     import uvicorn

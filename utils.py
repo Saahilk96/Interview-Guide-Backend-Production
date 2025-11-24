@@ -621,6 +621,8 @@ def verify_access_key(x_api_key: str = Header(...)):
 class TokenPayload(BaseModel):
     token: str
 
+class CheckoutRequest(BaseModel):
+    email: str
 
 class NoteItem(BaseModel):
     type: str
