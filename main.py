@@ -860,13 +860,13 @@ async def create_checkout_session(data: utils.CheckoutRequest):
         session = stripe.checkout.Session.create(
             payment_method_types=["card"],
             line_items=[{
-                "price_data": {
-                    "currency": "inr",
-                    "product_data": {"name": "Premium Plan"},
-                    "unit_amount": 5100
-                },
-                "quantity": 1,
-            }],
+    "price_data": {
+      "currency": "usd",
+      "product_data": { "name": "Premium Plan" },
+      "unit_amount": 2000  
+    },
+    "quantity": 1,
+  }],
             mode="payment",
             success_url="http://localhost:3000/payment-success?userId=" + data.userId,
             cancel_url="http://localhost:3000/payment-cancel",
