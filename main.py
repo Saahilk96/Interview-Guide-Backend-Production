@@ -893,31 +893,30 @@ async def stripe_webhook(request: Request):
     except Exception as e:
         return JSONResponse(status_code=400, content={"error": str(e)})
 
-    # if event["type"] == "checkout.session.completed":
-    print("🔔 Webhook received:", event)
-    session = event["data"]["object"]
+    if event["type"] == "checkout.session.completed":
+        session = event["data"]["object"]
 
-    user_id = session["metadata"].get("user_id")
+        user_id = session["metadata"].get("user_id")
 
-    if not user_id:
+        if not user_id:
             print("❌ user_id missing in metadata")
             return {"status": "failed"}
 
-    from bson import ObjectId
+        from bson import ObjectId
 
-    try:
-        obj_id = ObjectId(user_id)
-    except:
-        print("❌ Invalid ObjectId")
-        return {"status": "invalid-object-id"}
+        try:
+            obj_id = ObjectId(user_id)
+        except:
+            print("❌ Invalid ObjectId")
+            return {"status": "invalid-object-id"}
 
         # Update user payment status
-    await googleAuth.update_one(
-        {"_id": obj_id},
-        {"$set": {"paymentDone": True}}
-    )
+        await googleAuth.update_one(
+            {"_id": obj_id},
+            {"$set": {"paymentDone": True}}
+        )
 
-    print("✅ User payment updated:", user_id)
+        print("✅ User payment updated:", user_id)
 
     return {"status": "success"}
 
