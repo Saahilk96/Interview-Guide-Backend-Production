@@ -864,30 +864,33 @@ async def create_checkout_session(data: utils.CheckoutRequest):
         # CREATE CHECKOUT SESSION
         # ---------------------------
         session = stripe.checkout.Session.create(
-            mode="subscription",
-            payment_method_types=["card"],
-            customer_email=user["email"],
+    mode="subscription",
+    customer_email=user["email"],
 
-            line_items=[{
-                "price_data": {
-                    "currency": "usd",
-                    "product_data": {"name": "Premium Plan"},
-                    "unit_amount": 2000,
-                    "recurring": {"interval": "month"},
-                },
-                "quantity": 1,
-            }],
+    metadata={
+        "user_id": data.userId   # <-- add this also
+    },
 
-            # ❗ MUST put metadata into subscription_data (NOT session)
-            subscription_data={
-                "metadata": {
-                    "user_id": data.userId   # <-- Correct
-                }
-            },
+    subscription_data={
+        "metadata": {
+            "user_id": data.userId
+        }
+    },
 
-            success_url=f"https://www.eukaai.com/payment-success?userId={data.userId}",
-            cancel_url="https://www.eukaai.com/payment-cancel",
-        )
+    payment_method_types=["card"],
+    line_items=[{
+        "price_data": {
+            "currency": "usd",
+            "product_data": {"name": "Premium Plan"},
+            "unit_amount": 2000,
+            "recurring": {"interval": "month"},
+        },
+        "quantity": 1,
+    }],
+    success_url=f"https://www.eukaai.com/payment-success?userId={user_id}",
+    cancel_url="https://www.eukaai.com/payment-cancel",
+)
+
 
         return {"url": session.url}
 
@@ -921,26 +924,33 @@ async def create_checkout_session(data: utils.CheckoutRequest1):
         )
 
     session = stripe.checkout.Session.create(
-        mode="subscription",
-        customer_email=user["email"],
-        payment_method_types=["card"],
-        line_items=[{
-            "price_data": {
-                "currency": "usd",
-                "product_data": {"name": "Premium Plan"},
-                "unit_amount": 2000,
-                "recurring": {"interval": "month"},
-            },
-            "quantity": 1,
-        }],
-        subscription_data={
-            "metadata": {
-                "user_id": str(user_id)   # <-- correct metadata location
-            }
+    mode="subscription",
+    customer_email=user["email"],
+
+    metadata={
+        "user_id": str(user_id)   # <-- add this also
+    },
+
+    subscription_data={
+        "metadata": {
+            "user_id": str(user_id)
+        }
+    },
+
+    payment_method_types=["card"],
+    line_items=[{
+        "price_data": {
+            "currency": "usd",
+            "product_data": {"name": "Premium Plan"},
+            "unit_amount": 2000,
+            "recurring": {"interval": "month"},
         },
-        success_url=f"https://www.eukaai.com/payment-success?userId={user_id}",
-        cancel_url="https://www.eukaai.com/payment-cancel",
-    )
+        "quantity": 1,
+    }],
+    success_url=f"https://www.eukaai.com/payment-success?userId={user_id}",
+    cancel_url="https://www.eukaai.com/payment-cancel",
+)
+
 
     return {"url": session.url, "userId": str(user_id)}
 
@@ -969,6 +979,7 @@ async def stripe_webhook(request: Request):
             return {"status": "ignored"}
 
         subscription = stripe.Subscription.retrieve(subscription_id)
+        print(subscription)
         user_id = subscription.get("metadata", {}).get("user_id")
 
         if user_id:
