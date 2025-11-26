@@ -848,36 +848,45 @@ async def create_checkout_session(data: utils.CheckoutRequest):
         user = await googleAuth.find_one({"_id": obj_id})
 
         if user is None:
-            return JSONResponse(status_code=400, content={
-                "status": "Not Ok",
-                "error": "User not found"
-            })
+            return JSONResponse(
+                status_code=400,
+                content={"status": "Not Ok", "error": "User not found"}
+            )
 
+        # Already subscribed
         if user.get("paymentDone") is True:
-            return JSONResponse(status_code=400, content={
-                "status": "Not Ok",
-                "error": "You already have the Pro version"
-            })
+            return JSONResponse(
+                status_code=400,
+                content={"status": "Not Ok", "error": "You already have the Pro version"}
+            )
 
-        # Create checkout session
+        # ---------------------------
+        # CREATE CHECKOUT SESSION
+        # ---------------------------
         session = stripe.checkout.Session.create(
-            payment_method_types=["card"],
-            line_items=[{
-    "price_data": {
-      "currency": "usd",
-      "product_data": { "name": "Premium Plan" },
-      "unit_amount": 2000,
-      "recurring": { "interval": "month" },
-    },
-    "quantity": 1,
-  }],
             mode="subscription",
-            success_url="https://www.eukaai.com/payment-success?userId=" + data.userId,
-            cancel_url="https://www.eukaai.com/payment-cancel",
+            payment_method_types=["card"],
             customer_email=user["email"],
-            metadata={
-                "user_id": data.userId  # ✓ SECURE
-            }
+
+            line_items=[{
+                "price_data": {
+                    "currency": "usd",
+                    "product_data": {"name": "Premium Plan"},
+                    "unit_amount": 2000,
+                    "recurring": {"interval": "month"},
+                },
+                "quantity": 1,
+            }],
+
+            # ❗ MUST put metadata into subscription_data (NOT session)
+            subscription_data={
+                "metadata": {
+                    "user_id": data.userId   # <-- Correct
+                }
+            },
+
+            success_url=f"https://www.eukaai.com/payment-success?userId={data.userId}",
+            cancel_url="https://www.eukaai.com/payment-cancel",
         )
 
         return {"url": session.url}
@@ -887,61 +896,53 @@ async def create_checkout_session(data: utils.CheckoutRequest):
 
 @app.post("/create-checkout-session-pricing")
 async def create_checkout_session(data: utils.CheckoutRequest1):
-    try:
-        # Generate a fresh ObjectId
-        obj_id = ObjectId()
 
-        # Find user by email
-        user = await googleAuth.find_one({"email": data.email})
+    user = await googleAuth.find_one({"email": data.email})
 
-        # Create new user if not exists
-        if user is None:
-            user = {
-                "_id": obj_id,
-                "name": "",
-                "email": data.email,
-                "limit": 0,
-                "history": [],
-                "createdAt": datetime.now(),
-                "paymentDone": False
-            }
-            await googleAuth.insert_one(user)
+    if user is None:
+        user_id = ObjectId()
+        user = {
+            "_id": user_id,
+            "name": "",
+            "email": data.email,
+            "limit": 0,
+            "history": [],
+            "createdAt": datetime.now(),
+            "paymentDone": False
+        }
+        await googleAuth.insert_one(user)
+    else:
+        user_id = user["_id"]
 
-        # If already pro, block checkout
-        elif user.get("paymentDone") is True:
-            return JSONResponse(
-                status_code=400,
-                content={
-                    "status": "Not Ok",
-                    "error": "You already have the Pro version"
-                }
-            )
-
-        # Create checkout session
-        session = stripe.checkout.Session.create(
-            payment_method_types=["card"],
-            line_items=[{
-                "price_data": {
-                    "currency": "usd",
-                    "product_data": {"name": "Premium Plan"},
-                    "unit_amount": 2000,  # $20
-                    "recurring": {"interval": "month"},
-                },
-                "quantity": 1,
-            }],
-            mode="subscription",
-            customer_email=user["email"],
-            success_url="https://www.eukaai.com/payment-success?userId=" + str(user["_id"]),
-            cancel_url="https://www.eukaai.com/payment-cancel",
-            metadata={
-                "user_id": str(user["_id"])  # <-- FIXED
-            }
+    if user.get("paymentDone") is True:
+        return JSONResponse(
+            status_code=400,
+            content={"status": "Not Ok", "error": "You already have the Pro version"}
         )
 
-        return {"url": session.url,"userId":str(user["_id"])}
+    session = stripe.checkout.Session.create(
+        mode="subscription",
+        customer_email=user["email"],
+        payment_method_types=["card"],
+        line_items=[{
+            "price_data": {
+                "currency": "usd",
+                "product_data": {"name": "Premium Plan"},
+                "unit_amount": 2000,
+                "recurring": {"interval": "month"},
+            },
+            "quantity": 1,
+        }],
+        subscription_data={
+            "metadata": {
+                "user_id": str(user_id)   # <-- correct metadata location
+            }
+        },
+        success_url=f"https://www.eukaai.com/payment-success?userId={user_id}",
+        cancel_url="https://www.eukaai.com/payment-cancel",
+    )
 
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    return {"url": session.url, "userId": str(user_id)}
 
 
 @app.post("/stripe-webhook")
@@ -954,30 +955,34 @@ async def stripe_webhook(request: Request):
     except Exception as e:
         return JSONResponse(status_code=400, content={"error": str(e)})
 
-    # 🔥 1. First payment + monthly autopay
-    if event["type"] == "invoice.payment_succeeded":
-        invoice = event["data"]["object"]
-        subscription_id = invoice.get("subscription")
+    event_type = event["type"]
+    data = event["data"]["object"]
+
+    # -----------------------------
+    # 1. Payment succeeded
+    # -----------------------------
+    if event_type == "invoice.payment_succeeded":
+        subscription_id = data.get("subscription")
+
+        if not subscription_id:
+            print("⚠ No subscription ID")
+            return {"status": "ignored"}
 
         subscription = stripe.Subscription.retrieve(subscription_id)
-        metadata = subscription.get("metadata", {})
-        user_id = metadata.get("user_id")
+        user_id = subscription.get("metadata", {}).get("user_id")
 
         if user_id:
-            try:
-                await googleAuth.update_one(
-                    {"_id": ObjectId(user_id)},
-                    {"$set": {"paymentDone": True}}
-                )
-                print("✅ Payment succeeded for:", user_id)
-            except:
-                print("❌ Invalid ObjectId")
+            await googleAuth.update_one(
+                {"_id": ObjectId(user_id)},
+                {"$set": {"paymentDone": True}}
+            )
+            print("✅ Payment succeeded for:", user_id)
 
-    # ❌ 2. User disabled auto payment (canceled subscription)
-    if event["type"] == "customer.subscription.deleted":
-        subscription = event["data"]["object"]
-        metadata = subscription.get("metadata", {})
-        user_id = metadata.get("user_id")
+    # -----------------------------
+    # 2. Subscription canceled
+    # -----------------------------
+    if event_type == "customer.subscription.deleted":
+        user_id = data.get("metadata", {}).get("user_id")
 
         if user_id:
             await googleAuth.update_one(
@@ -986,21 +991,25 @@ async def stripe_webhook(request: Request):
             )
             print("❌ Subscription cancelled:", user_id)
 
-    # ❌ 3. Stripe tried to auto-charge but failed (card expired)
-    if event["type"] == "invoice.payment_failed":
-        invoice = event["data"]["object"]
-        subscription_id = invoice.get("subscription")
+    # -----------------------------
+    # 3. Payment failed
+    # -----------------------------
+    if event_type == "invoice.payment_failed":
+        subscription_id = data.get("subscription")
+
+        if not subscription_id:
+            print("⚠ No subscription on payment_failed")
+            return {"status": "ignored"}
 
         subscription = stripe.Subscription.retrieve(subscription_id)
-        metadata = subscription.get("metadata", {})
-        user_id = metadata.get("user_id")
+        user_id = subscription.get("metadata", {}).get("user_id")
 
         if user_id:
             await googleAuth.update_one(
                 {"_id": ObjectId(user_id)},
                 {"$set": {"paymentDone": False}}
             )
-            print("❌ Payment failed for:", user_id)
+            print("❌ Auto-payment failed:", user_id)
 
     return {"status": "success"}
 
