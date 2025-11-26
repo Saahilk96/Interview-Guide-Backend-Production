@@ -968,6 +968,9 @@ async def stripe_webhook(request: Request):
     event_type = event["type"]
     data = event["data"]["object"]
 
+    print(event_type)
+    print("eventdata:",data)
+
     # -----------------------------
     # 1. Payment succeeded
     # -----------------------------
@@ -979,7 +982,6 @@ async def stripe_webhook(request: Request):
             return {"status": "ignored"}
 
         subscription = stripe.Subscription.retrieve(subscription_id)
-        print(subscription)
         user_id = subscription.get("metadata", {}).get("user_id")
 
         if user_id:
