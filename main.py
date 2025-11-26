@@ -968,35 +968,43 @@ async def stripe_webhook(request: Request):
     event_type = event["type"]
     data = event["data"]["object"]
 
-    print(event_type)
-    print("eventdata:",data)
+    print("EVENT TYPE:", event_type)
+    print("DATA:", data)
 
-    # -----------------------------
-    # 1. Payment succeeded
-    # -----------------------------
-    if event_type == "invoice.payment_succeeded":
-        subscription_id = data.get("subscription")
+    # --- Get subscription ID ---
+    subscription_id = (
+        data.get("subscription")
+        or data.get("parent", {}).get("subscription_details", {}).get("subscription")
+    )
 
-        if not subscription_id:
-            print("⚠ No subscription ID")
-            return {"status": "ignored"}
+    # --- Get user ID from subscription or event metadata ---
+    user_id = None
 
+    if subscription_id:
         subscription = stripe.Subscription.retrieve(subscription_id)
         user_id = subscription.get("metadata", {}).get("user_id")
 
-        if user_id:
-            await googleAuth.update_one(
-                {"_id": ObjectId(user_id)},
-                {"$set": {"paymentDone": True}}
-            )
-            print("✅ Payment succeeded for:", user_id)
+    if not user_id:
+        user_id = data.get("parent", {}).get("subscription_details", {}).get("metadata", {}).get("user_id")
 
     # -----------------------------
-    # 2. Subscription canceled
+    # 1. invoice.payment_succeeded
+    # -----------------------------
+    if event_type == "invoice.payment_succeeded":
+        if not user_id:
+            print("⚠ No user_id found")
+            return {"status": "ignored"}
+
+        await googleAuth.update_one(
+            {"_id": ObjectId(user_id)},
+            {"$set": {"paymentDone": True}}
+        )
+        print("✅ Payment succeeded for:", user_id)
+
+    # -----------------------------
+    # 2. customer.subscription.deleted
     # -----------------------------
     if event_type == "customer.subscription.deleted":
-        user_id = data.get("metadata", {}).get("user_id")
-
         if user_id:
             await googleAuth.update_one(
                 {"_id": ObjectId(user_id)},
@@ -1005,18 +1013,9 @@ async def stripe_webhook(request: Request):
             print("❌ Subscription cancelled:", user_id)
 
     # -----------------------------
-    # 3. Payment failed
+    # 3. invoice.payment_failed
     # -----------------------------
     if event_type == "invoice.payment_failed":
-        subscription_id = data.get("subscription")
-
-        if not subscription_id:
-            print("⚠ No subscription on payment_failed")
-            return {"status": "ignored"}
-
-        subscription = stripe.Subscription.retrieve(subscription_id)
-        user_id = subscription.get("metadata", {}).get("user_id")
-
         if user_id:
             await googleAuth.update_one(
                 {"_id": ObjectId(user_id)},
