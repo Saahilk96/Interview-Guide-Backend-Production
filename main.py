@@ -887,7 +887,7 @@ async def create_checkout_session(data: utils.CheckoutRequest):
         },
         "quantity": 1,
     }],
-    success_url=f"https://www.eukaai.com/payment-success?userId={user_id}",
+    success_url=f"https://www.eukaai.com/payment-success?userId={data.userId}",
     cancel_url="https://www.eukaai.com/payment-cancel",
 )
 
