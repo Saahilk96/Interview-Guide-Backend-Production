@@ -1055,7 +1055,12 @@ async def stripe_webhook(request: Request):
 
 @app.post("/cancel-subscription")
 async def cancel_subscription(data: utils.CheckoutRequest):
-    user = await googleAuth.find_one({"_id": ObjectId(data.userId)})
+    try:
+        obj_id = ObjectId(data.userId)
+    except:
+        raise HTTPException(status_code=400, detail="Invalid userId")
+    
+    user = await googleAuth.find_one({"_id": obj_id})
 
     if not user:
         return JSONResponse(
@@ -1084,16 +1089,30 @@ async def cancel_subscription(data: utils.CheckoutRequest):
     )
 
     await googleAuth.update_one(
-        {"_id": ObjectId(data.userId)},
+        {"_id": obj_id},
         {"$set": {"paymentDone": False}}
     )
 
-    return {"status": "subscription_cancelled"}
+    return {"status": "Done"}
 
 
 # ---- VERIFY PAYMENT API ----
 @app.get("/verify-payment")
 async def verify_payment(userId: str):
+    try:
+        obj_id = ObjectId(userId)
+    except:
+        raise HTTPException(status_code=400, detail="Invalid userId")
+
+    user = await googleAuth.find_one({"_id": obj_id})
+
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    return {"paymentDone": user.get("paymentDone", False)}
+
+@app.get("/verify-cancel")
+async def verify_cancel(userId: str):
     try:
         obj_id = ObjectId(userId)
     except:
