@@ -1095,24 +1095,9 @@ async def cancel_subscription(data: utils.CheckoutRequest):
 
     return {"status": "Done"}
 
-
 # ---- VERIFY PAYMENT API ----
 @app.get("/verify-payment")
 async def verify_payment(userId: str):
-    try:
-        obj_id = ObjectId(userId)
-    except:
-        raise HTTPException(status_code=400, detail="Invalid userId")
-
-    user = await googleAuth.find_one({"_id": obj_id})
-
-    if user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-
-    return {"paymentDone": user.get("paymentDone", False)}
-
-@app.get("/verify-cancel")
-async def verify_cancel(userId: str):
     try:
         obj_id = ObjectId(userId)
     except:
