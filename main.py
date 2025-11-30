@@ -971,49 +971,77 @@ async def stripe_webhook(request: Request):
     print("EVENT TYPE:", event_type)
     print("DATA:", data)
 
-    # --- Get subscription ID ---
+    # -----------------------
+    # Get subscription ID
+    # -----------------------
     subscription_id = (
         data.get("subscription")
         or data.get("parent", {}).get("subscription_details", {}).get("subscription")
     )
 
-    # --- Get user ID from subscription or event metadata ---
+    # -----------------------
+    # Get user ID from metadata
+    # -----------------------
     user_id = None
 
+    # If subscription exists → get metadata from subscription
     if subscription_id:
         subscription = stripe.Subscription.retrieve(subscription_id)
         user_id = subscription.get("metadata", {}).get("user_id")
 
+    # Fallback: metadata on event object
     if not user_id:
-        user_id = data.get("parent", {}).get("subscription_details", {}).get("metadata", {}).get("user_id")
+        user_id = (
+            data.get("metadata", {}).get("user_id") or
+            data.get("parent", {}).get("subscription_details", {}).get("metadata", {}).get("user_id")
+        )
 
     # -----------------------------
     # 1. invoice.payment_succeeded
     # -----------------------------
     if event_type == "invoice.payment_succeeded":
-        if not user_id:
-            print("⚠ No user_id found")
+        if not user_id or not subscription_id:
+            print("⚠ No user_id or subscription_id found")
             return {"status": "ignored"}
 
         await googleAuth.update_one(
             {"_id": ObjectId(user_id)},
-            {"$set": {"paymentDone": True}}
+            {"$set": {
+                "paymentDone": True,
+                "subscriptionId": subscription_id
+            }}
         )
+
         print("✅ Payment succeeded for:", user_id)
 
     # -----------------------------
-    # 2. customer.subscription.deleted
+    # 2. customer.subscription.updated (cancel_at_period_end triggered)
+    # -----------------------------
+    if event_type == "customer.subscription.updated":
+        if data.get("cancel_at_period_end") is True:
+            if user_id:
+                await googleAuth.update_one(
+                    {"_id": ObjectId(user_id)},
+                    {"$set": {"paymentDone": False}}
+                )
+                print("⌛ Subscription will cancel at period end:", user_id)
+
+    # -----------------------------
+    # 3. customer.subscription.deleted
     # -----------------------------
     if event_type == "customer.subscription.deleted":
         if user_id:
             await googleAuth.update_one(
                 {"_id": ObjectId(user_id)},
-                {"$set": {"paymentDone": False}}
+                {"$set": {
+                    "paymentDone": False,
+                    "subscriptionId": None
+                }}
             )
             print("❌ Subscription cancelled:", user_id)
 
     # -----------------------------
-    # 3. invoice.payment_failed
+    # 4. invoice.payment_failed
     # -----------------------------
     if event_type == "invoice.payment_failed":
         if user_id:
@@ -1024,6 +1052,44 @@ async def stripe_webhook(request: Request):
             print("❌ Auto-payment failed:", user_id)
 
     return {"status": "success"}
+
+@app.post("/cancel-subscription")
+async def cancel_subscription(data: utils.CheckoutRequest):
+    user = await googleAuth.find_one({"_id": ObjectId(data.userId)})
+
+    if not user:
+        return JSONResponse(
+            status_code=400,
+            content={"status": "Not Ok", "error": "User not exists"}
+        )
+
+    if not user.get("paymentDone"):
+        return JSONResponse(
+            status_code=400,
+            content={"status": "Not Ok", "error": "No active subscription"}
+        )
+
+    subscription_id = user.get("subscriptionId")
+
+    if not subscription_id:
+        return JSONResponse(
+            status_code=400,
+            content={"status": "Not Ok", "error": "Subscription ID missing"}
+        )
+
+    # Cancel at the period end
+    stripe.Subscription.modify(
+        subscription_id,
+        cancel_at_period_end=True
+    )
+
+    await googleAuth.update_one(
+        {"_id": ObjectId(data.userId)},
+        {"$set": {"paymentDone": False}}
+    )
+
+    return {"status": "subscription_cancelled"}
+
 
 # ---- VERIFY PAYMENT API ----
 @app.get("/verify-payment")
